@@ -14,4 +14,8 @@ public class Enemy : MonoBehaviour
         health = Mathf.Max(0, health - amount);
         if (health < .01f) Destroy(gameObject);
     }
+    private void OnDestroy()
+    {
+        EnemyManager.instance.activeEnemies.Remove(this);
+    }
 }

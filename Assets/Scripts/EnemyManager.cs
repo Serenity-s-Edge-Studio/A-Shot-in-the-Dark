@@ -66,7 +66,8 @@ public class EnemyManager : MonoBehaviour
             deltaTime = Time.deltaTime,
             timeTillNextRandomDirection = timeTillNextNativeArray,
             random = new Unity.Mathematics.Random((uint)UnityEngine.Random.Range(0, 100000)),
-            results = targets
+            results = targets,
+            playerPosition = Player.instance.transform.position
         };
         MoveEnemiesJob moveJob = new MoveEnemiesJob
         {
@@ -107,6 +108,7 @@ public class EnemyManager : MonoBehaviour
         public NativeArray<Vector2> previousTargets;
         public NativeArray<Vector2> results;
         public NativeArray<float> timeTillNextRandomDirection;
+        public Vector2 playerPosition;
         public float deltaTime;
         public Unity.Mathematics.Random random;
         public void Execute(int index, TransformAccess transform)
@@ -114,6 +116,11 @@ public class EnemyManager : MonoBehaviour
             Vector2 closest = Vector2.zero;
             float lastClosest = float.MaxValue;
             timeTillNextRandomDirection[index] -= deltaTime;
+            if (Vector2.Distance(playerPosition, transform.position) < 5f)
+            {
+                results[index] = playerPosition;
+                return;
+            }
             if (relativeTargets.TryGetFirstValue(index, out Vector2 target, out NativeMultiHashMapIterator<int> it))
             {
                 do

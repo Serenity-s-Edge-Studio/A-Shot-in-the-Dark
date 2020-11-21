@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5472433131352008586}
   - component: {fileID: 5472433131352008587}
   - component: {fileID: 4707286405500349838}
+  - component: {fileID: 1280984747902296557}
   m_Layer: 0
   m_Name: Point Light 2D
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LightType: 3
-  m_BlendStyleIndex: 0
+  m_BlendStyleIndex: 1
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.8490566, g: 0.84328157, b: 0.7809719, a: 1}
   m_Intensity: 1
@@ -53,8 +54,8 @@ MonoBehaviour:
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
-  m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
+  m_LightOrder: 2
+  m_AlphaBlendOnOverlap: 1
   m_ShadowIntensity: 0
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
@@ -85,7 +86,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fbf9e02dcd95341bfd2ff991862a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 0}
   light: {fileID: 5472433131352008587}
   decayTime: 5
   decaySpeed: 3.23
-  rigidbody: {fileID: 0}
+--- !u!58 &1280984747902296557
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5472433131352008308}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2

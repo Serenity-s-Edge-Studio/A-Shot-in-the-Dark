@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private LightDrop LightPrefab;
     [SerializeField]
     private LightDrop Bullet;
-    private Camera camera;
+    private new Camera camera;
     [SerializeField]
     private float projectileSpeed;
     // Start is called before the first frame update
@@ -27,17 +27,13 @@ public class Player : MonoBehaviour
         camera = FindObjectOfType<Camera>();
     }
 
-    private void Shoot_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void Shoot_performed(InputAction.CallbackContext obj)
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
         Instantiate(LightPrefab, transform.position, Quaternion.identity);
         LightDrop bullet = Instantiate(Bullet, transform.position, Quaternion.identity);
         bullet.rigidbody.AddForce((worldPos - ((Vector2)transform.position)).normalized * projectileSpeed);
-    }
-
-    private void Movement_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-    {
     }
 
     // Update is called once per frame

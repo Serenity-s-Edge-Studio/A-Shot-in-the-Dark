@@ -8,13 +8,19 @@ using Unity.Mathematics;
 
 public class EnemyManager : MonoBehaviour
 {
-    List<Enemy> activeEnemies;
+    public List<Enemy> activeEnemies;
     [SerializeField]
     private Rect spawnBounds;
     [SerializeField]
     private Enemy ZombiePrefab;
     [SerializeField]
     private int maxEnemies;
+
+    public static EnemyManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         activeEnemies = new List<Enemy>();

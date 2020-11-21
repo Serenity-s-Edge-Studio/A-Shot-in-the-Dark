@@ -9,6 +9,8 @@ public class LightDrop : MonoBehaviour
     [SerializeField]
     private Light2D light;
     [SerializeField]
+    private bool Decay;
+    [SerializeField]
     private float decayTime;
     [SerializeField]
     private float decaySpeed;
@@ -27,11 +29,14 @@ public class LightDrop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        remainingTime = Mathf.Max(0, remainingTime - Time.deltaTime * decaySpeed);
-        float remaining = remainingTime / decayTime;
-        collider.radius = startingColliderRadius * remaining;
-        if (remainingTime < .01f) Destroy(gameObject);
-        light.intensity = remaining;
+        if (Decay)
+        {
+            remainingTime = Mathf.Max(0, remainingTime - Time.deltaTime * decaySpeed);
+            float remaining = remainingTime / decayTime;
+            collider.radius = startingColliderRadius * remaining;
+            if (remainingTime < .01f) Destroy(gameObject);
+            light.intensity = remaining;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

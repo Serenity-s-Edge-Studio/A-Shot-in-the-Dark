@@ -15,7 +15,9 @@ public class LightDrop : MonoBehaviour
     [SerializeField]
     private float decaySpeed;
     private float remainingTime;
+
     private float startingColliderRadius;
+    private float startingLightRadius;
     private CircleCollider2D collider;
     private List<Enemy> enemiesInRange = new List<Enemy>();
 
@@ -24,7 +26,9 @@ public class LightDrop : MonoBehaviour
         remainingTime = decayTime;
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<CircleCollider2D>();
+        light = GetComponent<Light2D>();
         startingColliderRadius = collider.radius;
+        startingLightRadius = light.pointLightOuterRadius;
     }
     // Update is called once per frame
     void Update()
@@ -33,9 +37,10 @@ public class LightDrop : MonoBehaviour
         {
             remainingTime = Mathf.Max(0, remainingTime - Time.deltaTime * decaySpeed);
             float remaining = remainingTime / decayTime;
-            collider.radius = startingColliderRadius * remaining;
             if (remainingTime < .01f) Destroy(gameObject);
-            light.intensity = remaining;
+            light.pointLightOuterRadius = startingLightRadius * remaining;
+            collider.radius = startingColliderRadius * remaining;
+            //light.intensity = remaining;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

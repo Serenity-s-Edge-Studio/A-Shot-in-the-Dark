@@ -65,7 +65,7 @@ public class EnemyManager : MonoBehaviour
             previousTargets = previousTargetNativeArray,
             deltaTime = Time.deltaTime,
             timeTillNextRandomDirection = timeTillNextNativeArray,
-            random = new Unity.Mathematics.Random((uint)UnityEngine.Random.Range(0, 100000)),
+            random = new Unity.Mathematics.Random((uint)UnityEngine.Random.Range(1, 100000)),
             results = targets,
             playerPosition = Player.instance.transform.position
         };

@@ -28,6 +28,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1280984747902296557, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
+      propertyPath: m_Radius
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4707286405500349838, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
       propertyPath: rigidbody
       value: 

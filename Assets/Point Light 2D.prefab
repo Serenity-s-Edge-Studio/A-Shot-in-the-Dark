@@ -88,6 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
   light: {fileID: 5472433131352008587}
+  Decay: 1
   decayTime: 5
   decaySpeed: 3.23
 --- !u!58 &1280984747902296557

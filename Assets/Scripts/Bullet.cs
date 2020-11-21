@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
         if (collision.CompareTag("Zombie") && collision.TryGetComponent<Enemy>(out Enemy enemy))
         {
             enemy.Damage(damage);
+            Destroy(transform.parent.gameObject);
         }
     }
 }

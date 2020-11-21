@@ -13,10 +13,18 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LightDrop LightPrefab;
     [SerializeField]
+    private LightDrop MuzzleFlash;
+    [SerializeField]
     private LightDrop Bullet;
     private new Camera camera;
     [SerializeField]
     private float projectileSpeed;
+
+    public static Player instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +39,7 @@ public class Player : MonoBehaviour
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
-        Instantiate(LightPrefab, transform.position, Quaternion.identity);
+        Instantiate(MuzzleFlash, transform.position, Quaternion.identity);
         LightDrop bullet = Instantiate(Bullet, transform.position, Quaternion.identity);
         bullet.rigidbody.AddForce((worldPos - ((Vector2)transform.position)).normalized * projectileSpeed);
     }

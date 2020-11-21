@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6205969969142091433}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,6 +118,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   influencingLights: []
+  target: {x: 0, y: 0}
+  timeTillNextRandom: 0
 --- !u!61 &2513685766701094760
 BoxCollider2D:
   m_ObjectHideFlags: 0

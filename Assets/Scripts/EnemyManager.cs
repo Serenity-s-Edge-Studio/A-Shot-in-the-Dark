@@ -5,12 +5,15 @@ using UnityEngine.Jobs;
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class EnemyManager : MonoBehaviour
 {
     public List<Enemy> activeEnemies;
     [SerializeField]
-    private Rect spawnBounds;
+    private Light2D center;
+    [SerializeField]
+    private int spawnRadius;
     [SerializeField]
     private Enemy ZombiePrefab;
     [SerializeField]
@@ -30,17 +33,17 @@ public class EnemyManager : MonoBehaviour
         activeEnemies = new List<Enemy>();
         activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
         InvokeRepeating("spawnEnemies", 1, 1);
+        spawnRadius = Mathf.RoundToInt(Mathf.Max(center.pointLightOuterRadius + 1, spawnRadius));
     }
     private void spawnEnemies()
     {
+        float innerRadius = center.pointLightOuterRadius;
+        float ratio = innerRadius / spawnRadius;
+        float radius = Mathf.Sqrt(UnityEngine.Random.Range(ratio * ratio, 1f)) * spawnRadius;
+        Vector2 point = UnityEngine.Random.insideUnitCircle.normalized * radius;
         if (activeEnemies.Count < maxEnemies)
         activeEnemies.Add(
-            Instantiate(ZombiePrefab, new Vector2(
-                                          UnityEngine.Random.Range(spawnBounds.xMin, spawnBounds.xMax),
-                                          UnityEngine.Random.Range(spawnBounds.yMin, spawnBounds.yMax)
-                                          ),
-                                      Quaternion.identity,
-                                      transform));
+            Instantiate(ZombiePrefab, point, Quaternion.identity, transform));
     }
     // Update is called once per frame
     void Update()
@@ -189,6 +192,7 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireCube((Vector3)spawnBounds.center, new Vector3(spawnBounds.width, spawnBounds.height));
+        Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);
+        Gizmos.DrawWireSphere(Vector3.zero, spawnRadius);
     }
 }

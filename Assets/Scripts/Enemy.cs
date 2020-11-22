@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnDestroy()
     {
+        if (ScoreManager.instance)
         ScoreManager.instance.scoreKill();
         EnemyManager.instance.activeEnemies.Remove(this);
     }

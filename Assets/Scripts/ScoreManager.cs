@@ -27,7 +27,7 @@ public class ScoreManager : MonoBehaviour
 
     public void LoadScene(int index)
     {
-        GameManager.LoadScene(index);
+        GameManager.instance.LoadScene(index);
     }
     public void scoreHit()
     {

@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     private int currentMagazine;
     private Pickup.Type equippedGun = Pickup.Type.Pistol;
     [SerializeField]
-    private bool toggleMovement;
+    public bool toggleMovement;
     private int health = 100;
     [SerializeField]
     private Slider healthBar;

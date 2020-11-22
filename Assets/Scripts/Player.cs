@@ -201,11 +201,18 @@ public class Player : MonoBehaviour
     public void equipWeapon(Pickup.Type type, int ammo, int clipSize, int fireRate)
     {
         if (type != Pickup.Type.Pistol) animator.SetBool("Pistol", false);
+        if (type == equippedGun)
+        {
+            this.ammo += ammo;
+        }
+        else
+        {
+            this.ammo = ammo - clipSize;
+            currentMagazine = clipSize;
+        }
         source.PlayOneShot(pickupClips[(int)type]);
         equippedGun = type;
         this.clipSize = clipSize;
-        currentMagazine = clipSize;
-        this.ammo = ammo - clipSize;
         this.fireRate = 60f / fireRate;
         updateUI();
     }

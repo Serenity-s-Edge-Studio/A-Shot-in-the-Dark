@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnDestroy()
     {
+        ScoreManager.instance.scoreKill();
         EnemyManager.instance.activeEnemies.Remove(this);
     }
 }

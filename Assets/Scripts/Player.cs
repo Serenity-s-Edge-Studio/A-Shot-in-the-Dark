@@ -57,7 +57,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject deathParticles;
     [SerializeField]
+    private AudioClip deathSound;
+    [SerializeField]
     private LightDrop glowStick;
+    private bool isDead = false;
 
     public static Player instance;
     private void Awake()
@@ -221,12 +224,14 @@ public class Player : MonoBehaviour
     public void Damage(int amount)
     {
         health = Mathf.Max(0, health - amount);
-        if (health == 0)
+        if (health == 0 && !isDead)
         {
+            isDead = true;
             deathText.SetActive(true);
             this.enabled = false;
             rigidbody.simulated = false;
             input.Disable();
+            source.PlayOneShot(deathSound);
             Instantiate(deathParticles, transform.position, Quaternion.identity);
         }
         healthBar.value = health;

@@ -49,6 +49,8 @@ public class Player : MonoBehaviour
     private Slider healthBar;
     [SerializeField]
     private GameObject deathText;
+    [SerializeField]
+    private GameObject deathParticles;
 
     public static Player instance;
     private void Awake()
@@ -187,6 +189,7 @@ public class Player : MonoBehaviour
             this.enabled = false;
             rigidbody.simulated = false;
             input.Disable();
+            Instantiate(deathParticles, transform.position, Quaternion.identity);
         }
         healthBar.value = health;
     }

@@ -87,6 +87,7 @@ public class Player : MonoBehaviour
                     updateUI();
                     yield return new WaitForSeconds(1f);
                 }
+                currentFireRate = fireRate;
             }
             yield return null;
         }

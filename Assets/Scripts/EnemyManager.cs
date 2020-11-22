@@ -15,6 +15,10 @@ public class EnemyManager : MonoBehaviour
     private Enemy ZombiePrefab;
     [SerializeField]
     private int maxEnemies;
+    [SerializeField]
+    private int attackRange;
+    [SerializeField]
+    private float cooldown;
 
     public static EnemyManager instance;
     private void Awake()
@@ -44,12 +48,14 @@ public class EnemyManager : MonoBehaviour
         Transform[] transforms = new Transform[activeEnemies.Count];
         Vector2[] previousTargets = new Vector2[activeEnemies.Count];
         float[] timeTillNext = new float[activeEnemies.Count];
+        float[] attackCooldowns = new float[activeEnemies.Count];
         NativeMultiHashMap<int, Vector2> relativePositions = new NativeMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             transforms[i] = activeEnemies[i].transform;
             previousTargets[i] = activeEnemies[i].target;
             timeTillNext[i] = activeEnemies[i].timeTillNextRandom;
+            attackCooldowns[i] = activeEnemies[i].attackCooldown;
             for (int j = 0; j < activeEnemies[i].influencingLights.Count; j++)
             {
                 relativePositions.Add(i, activeEnemies[i].influencingLights[j].transform.position);
@@ -59,6 +65,7 @@ public class EnemyManager : MonoBehaviour
         NativeArray<Vector2> targets = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
         NativeArray<Vector2> previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
         NativeArray<float> timeTillNextNativeArray = new NativeArray<float>(timeTillNext, Allocator.TempJob);
+        NativeArray<float> cooldownNativeArray = new NativeArray<float>(attackCooldowns, Allocator.TempJob);
         FindTargetsJob findTargets = new FindTargetsJob
         {
             relativeTargets = relativePositions,
@@ -74,15 +81,31 @@ public class EnemyManager : MonoBehaviour
             deltaTime = Time.deltaTime,
             targetPositions = targets
         };
+        AttackPlayerJob attackPlayerJob = new AttackPlayerJob
+        {
+            playerPos = Player.instance.transform.position,
+            attackRange = attackRange,
+            cooldown = cooldown,
+            deltaTime = Time.deltaTime,
+            AttackCooldowns = cooldownNativeArray
+        };
         JobHandle findTargetsJobHandle = findTargets.Schedule(transformAccessArray);
         JobHandle moveJobHandle = moveJob.Schedule(transformAccessArray, findTargetsJobHandle);
-        moveJobHandle.Complete();
+        JobHandle attackJobHandle = attackPlayerJob.Schedule(transformAccessArray, moveJobHandle);
+
+        attackJobHandle.Complete();
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             activeEnemies[i].target = targets[i];
-            //activeEnemies[i].transform.LookAt(targets[i]);
+            activeEnemies[i].attackCooldown = cooldownNativeArray[i];
+            if (cooldownNativeArray[i] < .01f)
+            {
+                activeEnemies[i].animator.SetTrigger("Attack");
+                activeEnemies[i].attackCooldown = cooldown;
+            }
             activeEnemies[i].timeTillNextRandom = timeTillNextNativeArray[i];
         }
+        cooldownNativeArray.Dispose();
         previousTargetNativeArray.Dispose();
         timeTillNextNativeArray.Dispose();
         transformAccessArray.Dispose();
@@ -146,6 +169,21 @@ public class EnemyManager : MonoBehaviour
                     results[index] = previousTargets[index];
                 }
             }
+        }
+    }
+    struct AttackPlayerJob : IJobParallelForTransform
+    {
+        public NativeArray<float> AttackCooldowns;
+        public Vector2 playerPos;
+        public float deltaTime;
+        public float cooldown;
+        public int attackRange;
+        public void Execute(int index, TransformAccess transform)
+        {
+            if (Vector2.Distance(transform.position, playerPos) < attackRange)
+                AttackCooldowns[index] -= deltaTime;
+            else
+                AttackCooldowns[index] = cooldown;
         }
     }
     private void OnDrawGizmosSelected()

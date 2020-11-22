@@ -120,6 +120,8 @@ MonoBehaviour:
   influencingLights: []
   target: {x: 0, y: 0}
   timeTillNextRandom: 0
+  animator: {fileID: 3652851660920606014}
+  attackCooldown: 0
 --- !u!61 &2513685766701094760
 BoxCollider2D:
   m_ObjectHideFlags: 0

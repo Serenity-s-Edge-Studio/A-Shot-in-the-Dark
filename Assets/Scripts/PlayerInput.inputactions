@@ -19,7 +19,7 @@
                     "id": "167666ee-f23e-4c3a-95cb-b3356e12c7e1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Mouse position",

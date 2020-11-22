@@ -70,7 +70,9 @@ public class Player : MonoBehaviour
         if (obj.ReadValueAsButton())
             StartCoroutine(ShootCoroutine());
         else
+        {
             StopAllCoroutines();
+        }
     }
     private IEnumerator ShootCoroutine()
     {
@@ -91,7 +93,6 @@ public class Player : MonoBehaviour
                 {
                     if (!Reload())
                         SwitchBackToPistol();
-                    updateUI();
                     yield return new WaitForSeconds(1f);
                 }
                 currentFireRate = fireRate;

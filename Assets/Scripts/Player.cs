@@ -44,6 +44,11 @@ public class Player : MonoBehaviour
     private Pickup.Type equippedGun = Pickup.Type.Pistol;
     [SerializeField]
     private bool toggleMovement;
+    private int health = 100;
+    [SerializeField]
+    private Slider healthBar;
+    [SerializeField]
+    private TextMeshProUGUI deathText;
 
     public static Player instance;
     private void Awake()
@@ -172,5 +177,14 @@ public class Player : MonoBehaviour
         {
             ammoText.text = $"{currentMagazine}/{ammo}";
         }
+    }
+    public void Damage(int amount)
+    {
+        health = Mathf.Max(0, health - amount);
+        if (health == 0)
+        {
+            deathText.gameObject.SetActive(true);
+        }
+        healthBar.value = health;
     }
 }

@@ -102,6 +102,7 @@ public class EnemyManager : MonoBehaviour
             {
                 activeEnemies[i].animator.SetTrigger("Attack");
                 activeEnemies[i].attackCooldown = cooldown;
+                Player.instance.Damage(10);
             }
             activeEnemies[i].timeTillNextRandom = timeTillNextNativeArray[i];
         }

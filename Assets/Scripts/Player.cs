@@ -63,6 +63,9 @@ public class Player : MonoBehaviour
     private bool isDead = false;
 
     public static Player instance;
+    [SerializeField]
+    private bool isInvincible;
+
     private void Awake()
     {
         instance = this;
@@ -230,17 +233,20 @@ public class Player : MonoBehaviour
     }
     public void Damage(int amount)
     {
-        health = Mathf.Max(0, health - amount);
-        if (health == 0 && !isDead)
+        if (!isInvincible)
         {
-            isDead = true;
-            deathText.SetActive(true);
-            this.enabled = false;
-            rigidbody.simulated = false;
-            input.Disable();
-            source.PlayOneShot(deathSound);
-            Instantiate(deathParticles, transform.position, Quaternion.identity);
+            health = Mathf.Max(0, health - amount);
+            if (health == 0 && !isDead)
+            {
+                isDead = true;
+                deathText.SetActive(true);
+                this.enabled = false;
+                rigidbody.simulated = false;
+                input.Disable();
+                source.PlayOneShot(deathSound);
+                Instantiate(deathParticles, transform.position, Quaternion.identity);
+            }
+            healthBar.value = health;
         }
-        healthBar.value = health;
     }
 }

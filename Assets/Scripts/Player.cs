@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Slider healthBar;
     [SerializeField]
-    private TextMeshProUGUI deathText;
+    private GameObject deathText;
 
     public static Player instance;
     private void Awake()
@@ -183,7 +183,10 @@ public class Player : MonoBehaviour
         health = Mathf.Max(0, health - amount);
         if (health == 0)
         {
-            deathText.gameObject.SetActive(true);
+            deathText.SetActive(true);
+            this.enabled = false;
+            rigidbody.simulated = false;
+            input.Disable();
         }
         healthBar.value = health;
     }

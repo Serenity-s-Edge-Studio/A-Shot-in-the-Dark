@@ -98,6 +98,7 @@ public class Player : MonoBehaviour
         equippedGun = Pickup.Type.Pistol;
         clipSize = 7;
         fireRate = 60f/45f;
+        animator.SetBool("Pistol", true);
         Reload();
     }
 
@@ -144,6 +145,7 @@ public class Player : MonoBehaviour
 
     public void equipWeapon(Pickup.Type type, int ammo, int clipSize, int fireRate)
     {
+        if (type != Pickup.Type.Pistol) animator.SetBool("Pistol", false);
         equippedGun = type;
         this.clipSize = clipSize;
         currentMagazine = clipSize;

@@ -157,4 +157,4 @@ MonoBehaviour:
   type: 2
   max: 6
   clipSize: 3
-  fireRate: 10
+  fireRate: 30

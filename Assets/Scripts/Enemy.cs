@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public List<LightDrop> influencingLights = new List<LightDrop>();
     public Vector2 target;
     public float timeTillNextRandom;
+    [SerializeField]
     private float health;
     public Animator animator;
     public float attackCooldown;

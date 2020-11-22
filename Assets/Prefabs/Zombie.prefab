@@ -122,6 +122,7 @@ MonoBehaviour:
   timeTillNextRandom: 0
   animator: {fileID: 3652851660920606014}
   attackCooldown: 0
+  deathParticles: {fileID: 8297048506704701383, guid: c8f4b7bfb93c3964ab31e6b932fbfc20, type: 3}
 --- !u!61 &2513685766701094760
 BoxCollider2D:
   m_ObjectHideFlags: 0

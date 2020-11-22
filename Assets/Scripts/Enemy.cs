@@ -7,11 +7,21 @@ public class Enemy : MonoBehaviour
     public List<LightDrop> influencingLights = new List<LightDrop>();
     public Vector2 target;
     public float timeTillNextRandom;
+    [SerializeField]
     private float health;
+    public Animator animator;
+    public float attackCooldown;
+    public GameObject deathParticles;
 
     public void Damage(float amount)
     {
         health = Mathf.Max(0, health - amount);
         if (health < .01f) Destroy(gameObject);
+        Destroy(Instantiate(deathParticles, transform.position, Quaternion.identity), 5);
+    }
+    private void OnDestroy()
+    {
+        ScoreManager.instance.scoreKill();
+        EnemyManager.instance.activeEnemies.Remove(this);
     }
 }

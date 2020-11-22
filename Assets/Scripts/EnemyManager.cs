@@ -5,32 +5,45 @@ using UnityEngine.Jobs;
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Mathematics;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class EnemyManager : MonoBehaviour
 {
-    List<Enemy> activeEnemies;
+    public List<Enemy> activeEnemies;
     [SerializeField]
-    private Rect spawnBounds;
+    private Light2D center;
+    [SerializeField]
+    private int spawnRadius;
     [SerializeField]
     private Enemy ZombiePrefab;
     [SerializeField]
     private int maxEnemies;
+    [SerializeField]
+    private int attackRange;
+    [SerializeField]
+    private float cooldown;
+
+    public static EnemyManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         activeEnemies = new List<Enemy>();
         activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
         InvokeRepeating("spawnEnemies", 1, 1);
+        spawnRadius = Mathf.RoundToInt(Mathf.Max(center.pointLightOuterRadius + 1, spawnRadius));
     }
     private void spawnEnemies()
     {
+        float innerRadius = center.pointLightOuterRadius;
+        float ratio = innerRadius / spawnRadius;
+        float radius = Mathf.Sqrt(UnityEngine.Random.Range(ratio * ratio, 1f)) * spawnRadius;
+        Vector2 point = UnityEngine.Random.insideUnitCircle.normalized * radius;
         if (activeEnemies.Count < maxEnemies)
         activeEnemies.Add(
-            Instantiate(ZombiePrefab, new Vector2(
-                                          UnityEngine.Random.Range(spawnBounds.xMin, spawnBounds.xMax),
-                                          UnityEngine.Random.Range(spawnBounds.yMin, spawnBounds.yMax)
-                                          ),
-                                      Quaternion.identity,
-                                      transform));
+            Instantiate(ZombiePrefab, point, Quaternion.identity, transform));
     }
     // Update is called once per frame
     void Update()
@@ -38,12 +51,14 @@ public class EnemyManager : MonoBehaviour
         Transform[] transforms = new Transform[activeEnemies.Count];
         Vector2[] previousTargets = new Vector2[activeEnemies.Count];
         float[] timeTillNext = new float[activeEnemies.Count];
+        float[] attackCooldowns = new float[activeEnemies.Count];
         NativeMultiHashMap<int, Vector2> relativePositions = new NativeMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             transforms[i] = activeEnemies[i].transform;
             previousTargets[i] = activeEnemies[i].target;
             timeTillNext[i] = activeEnemies[i].timeTillNextRandom;
+            attackCooldowns[i] = activeEnemies[i].attackCooldown;
             for (int j = 0; j < activeEnemies[i].influencingLights.Count; j++)
             {
                 relativePositions.Add(i, activeEnemies[i].influencingLights[j].transform.position);
@@ -53,29 +68,48 @@ public class EnemyManager : MonoBehaviour
         NativeArray<Vector2> targets = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
         NativeArray<Vector2> previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
         NativeArray<float> timeTillNextNativeArray = new NativeArray<float>(timeTillNext, Allocator.TempJob);
+        NativeArray<float> cooldownNativeArray = new NativeArray<float>(attackCooldowns, Allocator.TempJob);
         FindTargetsJob findTargets = new FindTargetsJob
         {
             relativeTargets = relativePositions,
             previousTargets = previousTargetNativeArray,
             deltaTime = Time.deltaTime,
             timeTillNextRandomDirection = timeTillNextNativeArray,
-            random = new Unity.Mathematics.Random((uint)UnityEngine.Random.Range(0, 100000)),
-            results = targets
+            random = new Unity.Mathematics.Random((uint)UnityEngine.Random.Range(1, 100000)),
+            results = targets,
+            playerPosition = Player.instance.transform.position
         };
         MoveEnemiesJob moveJob = new MoveEnemiesJob
         {
             deltaTime = Time.deltaTime,
             targetPositions = targets
         };
+        AttackPlayerJob attackPlayerJob = new AttackPlayerJob
+        {
+            playerPos = Player.instance.transform.position,
+            attackRange = attackRange,
+            cooldown = cooldown,
+            deltaTime = Time.deltaTime,
+            AttackCooldowns = cooldownNativeArray
+        };
         JobHandle findTargetsJobHandle = findTargets.Schedule(transformAccessArray);
         JobHandle moveJobHandle = moveJob.Schedule(transformAccessArray, findTargetsJobHandle);
-        moveJobHandle.Complete();
+        JobHandle attackJobHandle = attackPlayerJob.Schedule(transformAccessArray, moveJobHandle);
+
+        attackJobHandle.Complete();
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             activeEnemies[i].target = targets[i];
-            //activeEnemies[i].transform.LookAt(targets[i]);
+            activeEnemies[i].attackCooldown = cooldownNativeArray[i];
+            if (cooldownNativeArray[i] < .01f)
+            {
+                activeEnemies[i].animator.SetTrigger("Attack");
+                activeEnemies[i].attackCooldown = cooldown;
+                Player.instance.Damage(10);
+            }
             activeEnemies[i].timeTillNextRandom = timeTillNextNativeArray[i];
         }
+        cooldownNativeArray.Dispose();
         previousTargetNativeArray.Dispose();
         timeTillNextNativeArray.Dispose();
         transformAccessArray.Dispose();
@@ -101,6 +135,7 @@ public class EnemyManager : MonoBehaviour
         public NativeArray<Vector2> previousTargets;
         public NativeArray<Vector2> results;
         public NativeArray<float> timeTillNextRandomDirection;
+        public Vector2 playerPosition;
         public float deltaTime;
         public Unity.Mathematics.Random random;
         public void Execute(int index, TransformAccess transform)
@@ -108,6 +143,11 @@ public class EnemyManager : MonoBehaviour
             Vector2 closest = Vector2.zero;
             float lastClosest = float.MaxValue;
             timeTillNextRandomDirection[index] -= deltaTime;
+            if (Vector2.Distance(playerPosition, transform.position) < 5f)
+            {
+                results[index] = playerPosition;
+                return;
+            }
             if (relativeTargets.TryGetFirstValue(index, out Vector2 target, out NativeMultiHashMapIterator<int> it))
             {
                 do
@@ -135,8 +175,24 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
+    struct AttackPlayerJob : IJobParallelForTransform
+    {
+        public NativeArray<float> AttackCooldowns;
+        public Vector2 playerPos;
+        public float deltaTime;
+        public float cooldown;
+        public int attackRange;
+        public void Execute(int index, TransformAccess transform)
+        {
+            if (Vector2.Distance(transform.position, playerPos) < attackRange)
+                AttackCooldowns[index] -= deltaTime;
+            else
+                AttackCooldowns[index] = cooldown;
+        }
+    }
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireCube((Vector3)spawnBounds.center, new Vector3(spawnBounds.width, spawnBounds.height));
+        Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);
+        Gizmos.DrawWireSphere(Vector3.zero, spawnRadius);
     }
 }

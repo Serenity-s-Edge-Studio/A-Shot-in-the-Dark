@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -40,6 +39,8 @@ public class Player : MonoBehaviour
     private Sprite[] sprites;
     [SerializeField]
     private float fireRate;
+    [SerializeField]
+    private float spreadSize;
     private float currentFireRate = 0;
 
     private int ammo;
@@ -55,6 +56,8 @@ public class Player : MonoBehaviour
     private GameObject deathText;
     [SerializeField]
     private GameObject deathParticles;
+    [SerializeField]
+    private LightDrop glowStick;
 
     public static Player instance;
     private void Awake()
@@ -94,8 +97,37 @@ public class Player : MonoBehaviour
                 Vector2 mousePos = Mouse.current.position.ReadValue();
                 Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
                 Instantiate(MuzzleFlash, transform.position, Quaternion.identity);
-                LightDrop bullet = Instantiate(Bullet, spawnPosition.position, Quaternion.identity);
-                bullet.rigidbody.AddForce((worldPos - ((Vector2)transform.position)).normalized * projectileSpeed);
+                LightDrop bullet;
+                float width;
+                switch (equippedGun) {
+                    case Pickup.Type.Machinegun:
+                        bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
+                        width = Random.Range(-1f, 1f) * (spreadSize + 10f);
+                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+                        bullet.GetComponentInChildren<Bullet>().damage = 4;
+                        break;
+                    case Pickup.Type.Shotgun:
+                        for (int i = 0; i < 4; i++)
+                        {
+                            bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
+                            width = Random.Range(-1f, 1f) * (spreadSize + 45f);
+                            bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+                            bullet.GetComponentInChildren<Bullet>().damage = 3;
+                        }
+                        break;
+                    case Pickup.Type.GlowstickLauncher:
+                        bullet = Instantiate(glowStick, spawnPosition.position, spawnPosition.rotation);
+                        width = Random.Range(-1f, 1f) * (spreadSize);
+                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+                        break;
+                    case Pickup.Type.Pistol:
+                        bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
+                        width = Random.Range(-1f, 1f) * (spreadSize);
+                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+                        bullet.GetComponentInChildren<Bullet>().damage = 5;
+                        break;
+                }
+                
                 animator.SetTrigger("Shoot");
                 source.PlayOneShot(shootingClips[(int)equippedGun]);
                 currentMagazine--;

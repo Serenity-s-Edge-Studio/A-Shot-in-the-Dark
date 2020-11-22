@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     public Vector2 target;
     public float timeTillNextRandom;
     private float health;
+    public Animator animator;
+    public float attackCooldown;
 
     public void Damage(float amount)
     {

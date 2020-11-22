@@ -42,6 +42,8 @@ public class Player : MonoBehaviour
     private int clipSize = 7;
     private int currentMagazine;
     private Pickup.Type equippedGun = Pickup.Type.Pistol;
+    [SerializeField]
+    private bool toggleMovement;
 
     public static Player instance;
     private void Awake()
@@ -144,8 +146,8 @@ public class Player : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         Vector2 axis = input.Movement.ReadValue<Vector2>().normalized;
-
-        transform.position += ((-transform.up * axis.x) + (transform.right * axis.y)).normalized * speed;
+        if (toggleMovement) transform.position += (Vector3)axis * speed;
+        else transform.position += ((-transform.up * axis.x) + (transform.right * axis.y)).normalized * speed;
     }
 
     public void equipWeapon(Pickup.Type type, int ammo, int clipSize, int fireRate)

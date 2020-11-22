@@ -19,7 +19,7 @@ public class PickupSpawner : MonoBehaviour
     void Start()
     {
         pickUps = new Pickup[maxPickups];
-        InvokeRepeating("spawnPickups", 2, 2);
+        InvokeRepeating("spawnPickups", 5, 5);
     }
     private void spawnPickups()
     {

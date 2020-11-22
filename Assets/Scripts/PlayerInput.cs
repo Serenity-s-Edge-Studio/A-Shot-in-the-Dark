@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/PlayerInput.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/PlayerInput.inputactions'
 
 using System;
 using System.Collections;
@@ -32,7 +32,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""id"": ""167666ee-f23e-4c3a-95cb-b3356e12c7e1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""Mouse position"",

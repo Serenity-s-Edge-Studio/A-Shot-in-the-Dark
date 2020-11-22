@@ -292,6 +292,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5472433131352008587, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472433131352008587, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[0]
+      value: 2060545153
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472433131352008587, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[2]
+      value: -2117623057
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472433131352008587, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[3]
+      value: -90921437
+      objectReference: {fileID: 0}
+    - target: {fileID: 5472433131352008587, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[4]
+      value: -241256121
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 721ed88ac1cebe64186777b2f07fa726, type: 3}
 --- !u!1 &5805510795871916867 stripped

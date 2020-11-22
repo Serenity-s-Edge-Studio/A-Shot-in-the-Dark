@@ -11,8 +11,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigidbody;
     public float speed = 1;
     [SerializeField]
-    private LightDrop LightPrefab;
-    [SerializeField]
     private LightDrop MuzzleFlash;
     [SerializeField]
     private LightDrop Bullet;
@@ -20,6 +18,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float projectileSpeed;
     private Animator animator;
+    [SerializeField]
+    private Transform spawnPosition;
 
     public static Player instance;
     private void Awake()
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
         Instantiate(MuzzleFlash, transform.position, Quaternion.identity);
-        LightDrop bullet = Instantiate(Bullet, transform.position, Quaternion.identity);
+        LightDrop bullet = Instantiate(Bullet, spawnPosition.position, Quaternion.identity);
         bullet.rigidbody.AddForce((worldPos - ((Vector2)transform.position)).normalized * projectileSpeed);
         animator.SetTrigger("Shoot");
     }

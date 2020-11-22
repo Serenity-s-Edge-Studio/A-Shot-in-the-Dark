@@ -39,6 +39,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Ground
+    uniqueID: 2060545153
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 2177344239
+    locked: 0
+  - name: Bullet
+    uniqueID: 4204045859
+    locked: 0
+  - name: Zombie
+    uniqueID: 4053711175
     locked: 0

@@ -26,7 +26,11 @@ public class Player : MonoBehaviour
     private Transform spawnPosition;
     private AudioSource source;
     [SerializeField]
-    private AudioClip[] audioClips;
+    private AudioClip[] shootingClips;
+    [SerializeField]
+    private AudioClip[] pickupClips;
+    [SerializeField]
+    private AudioClip[] reloadClips;
 
     [SerializeField]
     private Image gunImage;
@@ -93,7 +97,7 @@ public class Player : MonoBehaviour
                 LightDrop bullet = Instantiate(Bullet, spawnPosition.position, Quaternion.identity);
                 bullet.rigidbody.AddForce((worldPos - ((Vector2)transform.position)).normalized * projectileSpeed);
                 animator.SetTrigger("Shoot");
-                source.PlayOneShot(audioClips[(int)equippedGun]);
+                source.PlayOneShot(shootingClips[(int)equippedGun]);
                 currentMagazine--;
                 updateUI();
                 if (currentMagazine == 0)
@@ -120,6 +124,7 @@ public class Player : MonoBehaviour
     private bool Reload()
     {
         animator.SetTrigger("Reload");
+        source.PlayOneShot(reloadClips[(int)equippedGun]);
         if (equippedGun == Pickup.Type.Pistol)
         {
             currentMagazine = clipSize;
@@ -161,6 +166,7 @@ public class Player : MonoBehaviour
     public void equipWeapon(Pickup.Type type, int ammo, int clipSize, int fireRate)
     {
         if (type != Pickup.Type.Pistol) animator.SetBool("Pistol", false);
+        source.PlayOneShot(pickupClips[(int)type]);
         equippedGun = type;
         this.clipSize = clipSize;
         currentMagazine = clipSize;

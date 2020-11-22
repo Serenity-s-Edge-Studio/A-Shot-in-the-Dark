@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     private Animator animator;
     [SerializeField]
     private Transform spawnPosition;
+    private AudioSource source;
+    [SerializeField]
+    private AudioClip[] audioClips;
 
     [SerializeField]
     private Image gunImage;
@@ -54,6 +57,7 @@ public class Player : MonoBehaviour
         input.Shoot.performed += Shoot_performed;
         camera = FindObjectOfType<Camera>();
         animator = GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
         SwitchBackToPistol();
         updateUI();
     }
@@ -78,6 +82,7 @@ public class Player : MonoBehaviour
                 LightDrop bullet = Instantiate(Bullet, spawnPosition.position, Quaternion.identity);
                 bullet.rigidbody.AddForce((worldPos - ((Vector2)transform.position)).normalized * projectileSpeed);
                 animator.SetTrigger("Shoot");
+                source.PlayOneShot(audioClips[(int)equippedGun]);
                 currentMagazine--;
                 updateUI();
                 if (currentMagazine == 0)

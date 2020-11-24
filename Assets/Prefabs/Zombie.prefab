@@ -121,6 +121,7 @@ MonoBehaviour:
   target: {x: 0, y: 0}
   timeTillNextRandom: 0
   health: 10
+  rigidbody: {fileID: 6205969969142091433}
   animator: {fileID: 3652851660920606014}
   attackCooldown: 0
   deathParticles: {fileID: 8297048506704701383, guid: c8f4b7bfb93c3964ab31e6b932fbfc20, type: 3}

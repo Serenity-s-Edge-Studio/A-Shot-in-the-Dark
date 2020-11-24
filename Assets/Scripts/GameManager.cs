@@ -53,8 +53,14 @@ public class GameManager : MonoBehaviour
 
         foreach (T obj in Resources.FindObjectsOfTypeAll(typeof(T)) as T[])
         {
-            if (!(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave))
+            if (
+#if UNITY_WEBGL
+                !EditorUtility.IsPersistent(obj) && //If platform is webgl check if it is not an editor object
+#endif
+                !(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave))
+            {
                 objectsInScene.Add(obj);
+            }
         }
 
         return objectsInScene;
@@ -65,8 +71,14 @@ public class GameManager : MonoBehaviour
 
         foreach (T obj in Resources.FindObjectsOfTypeAll(typeof(T)) as T[])
         {
-            if (!(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave) && obj.CompareTag(tag))
+            if (
+#if UNITY_WEBGL
+                !EditorUtility.IsPersistent(obj) && //If platform is webgl check if it is not an editor object
+#endif
+                !(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave) && obj.CompareTag(tag))
+            {
                 objectsInScene.Add(obj);
+            }
         }
 
         return objectsInScene;

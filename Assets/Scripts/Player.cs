@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
     private int ammo;
     private int clipSize = 7;
     private int currentMagazine;
-    private Pickup.Type equippedGun = Pickup.Type.Pistol;
+    private Pickup.Type equippedGun = Pickup.Type.Machinegun;
     [SerializeField]
     public bool toggleMovement;
     private int health = 100;
@@ -77,6 +77,7 @@ public class Player : MonoBehaviour
         input = new PlayerInput().Player;
         input.Enable();
         input.Shoot.performed += Shoot_performed;
+        input.DropWeapon.performed += DropWeapon_performed;
         camera = FindObjectOfType<Camera>();
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
@@ -84,6 +85,10 @@ public class Player : MonoBehaviour
         updateUI();
     }
 
+    private void DropWeapon_performed(InputAction.CallbackContext obj)
+    {
+        SwitchBackToPistol();
+    }
 
     private void Shoot_performed(InputAction.CallbackContext obj)
     {
@@ -152,11 +157,14 @@ public class Player : MonoBehaviour
 
     private void SwitchBackToPistol()
     {
-        equippedGun = Pickup.Type.Pistol;
-        clipSize = 7;
-        fireRate = 60f/45f;
-        animator.SetBool("Pistol", true);
-        Reload();
+        if (equippedGun != Pickup.Type.Pistol)
+        {
+            equippedGun = Pickup.Type.Pistol;
+            clipSize = 7;
+            fireRate = 60f / 45f;
+            animator.SetBool("Pistol", true);
+            Reload();
+        }
     }
 
     private bool Reload()

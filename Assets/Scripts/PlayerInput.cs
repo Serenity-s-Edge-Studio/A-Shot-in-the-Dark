@@ -41,6 +41,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Drop Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1436ce9-4657-4aaf-9896-dc2614136252"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -175,6 +183,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Mouse position"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c28e569-ab19-485e-89aa-f67555099021"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +205,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Mouseposition = m_Player.FindAction("Mouse position", throwIfNotFound: true);
+        m_Player_DropWeapon = m_Player.FindAction("Drop Weapon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +258,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Mouseposition;
+    private readonly InputAction m_Player_DropWeapon;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -245,6 +266,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Mouseposition => m_Wrapper.m_Player_Mouseposition;
+        public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +285,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Mouseposition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseposition;
                 @Mouseposition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseposition;
                 @Mouseposition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMouseposition;
+                @DropWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropWeapon;
+                @DropWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropWeapon;
+                @DropWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDropWeapon;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +301,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Mouseposition.started += instance.OnMouseposition;
                 @Mouseposition.performed += instance.OnMouseposition;
                 @Mouseposition.canceled += instance.OnMouseposition;
+                @DropWeapon.started += instance.OnDropWeapon;
+                @DropWeapon.performed += instance.OnDropWeapon;
+                @DropWeapon.canceled += instance.OnDropWeapon;
             }
         }
     }
@@ -285,5 +313,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnMouseposition(InputAction.CallbackContext context);
+        void OnDropWeapon(InputAction.CallbackContext context);
     }
 }

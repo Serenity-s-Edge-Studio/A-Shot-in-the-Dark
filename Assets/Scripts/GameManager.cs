@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         foreach (T obj in Resources.FindObjectsOfTypeAll(typeof(T)) as T[])
         {
-            if (!EditorUtility.IsPersistent(obj) && !(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave))
+            if (!(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave))
                 objectsInScene.Add(obj);
         }
 
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
         foreach (T obj in Resources.FindObjectsOfTypeAll(typeof(T)) as T[])
         {
-            if (!EditorUtility.IsPersistent(obj) && !(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave) && obj.CompareTag(tag))
+            if (!(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave) && obj.CompareTag(tag))
                 objectsInScene.Add(obj);
         }
 

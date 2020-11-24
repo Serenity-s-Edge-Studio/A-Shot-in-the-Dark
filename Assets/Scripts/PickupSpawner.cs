@@ -27,7 +27,7 @@ public class PickupSpawner : MonoBehaviour
         float ratio = innerRadius / spawnRadius;
         float radius = Mathf.Sqrt(Random.Range(ratio * ratio, 1f)) * spawnRadius;
         Vector2 point = Random.insideUnitCircle.normalized * radius;
-        if (pickUps[index] != null) Destroy(pickUps[index]);
+        if (pickUps[index] != null) Destroy(pickUps[index].gameObject);
         pickUps[index] = Instantiate(prefabs[index % prefabs.Length], point,
                                           Quaternion.identity,
                                           transform);

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Zombie
   - SettingsButton
+  - LoadGameButton
   layers:
   - Default
   - TransparentFX

@@ -78,11 +78,18 @@ public class Player : MonoBehaviour
         input.Enable();
         input.Shoot.performed += Shoot_performed;
         input.DropWeapon.performed += DropWeapon_performed;
+        input.Reload.performed += Reload_performed;
         camera = FindObjectOfType<Camera>();
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         SwitchBackToPistol();
         updateUI();
+    }
+
+    private void Reload_performed(InputAction.CallbackContext obj)
+    {
+        StopAllCoroutines();
+        Reload();
     }
 
     private void DropWeapon_performed(InputAction.CallbackContext obj)
@@ -178,6 +185,12 @@ public class Player : MonoBehaviour
         }
         else if (ammo > 0)
         {
+            if (currentMagazine > 0)
+            {
+                ammo += currentMagazine;
+                currentMagazine = 0;
+                updateUI();
+            }
             if (ammo < clipSize)
             {
                 currentMagazine = ammo;

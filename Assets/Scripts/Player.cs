@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
     private int ammo;
     private int clipSize = 7;
     private int currentMagazine;
-    private Pickup.Type equippedGun = Pickup.Type.Machinegun;
+    private Pickup.Type currentGunType = Pickup.Type.Machinegun;
     [SerializeField]
     public bool toggleMovement;
     private int health = 100;
@@ -60,6 +60,10 @@ public class Player : MonoBehaviour
     private AudioClip deathSound;
     [SerializeField]
     private LightDrop glowStick;
+    [SerializeField]
+    private GameObject flameMuzzle;
+    [SerializeField]
+    private LightDrop flameProjectile;
     private bool isDead = false;
 
     public static Player instance;
@@ -114,10 +118,17 @@ public class Player : MonoBehaviour
             {
                 Vector2 mousePos = Mouse.current.position.ReadValue();
                 Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
-                Instantiate(MuzzleFlash, transform.position, Quaternion.identity);
+                if (currentGunType != Pickup.Type.Flamethrower) Instantiate(MuzzleFlash, transform.position, Quaternion.identity);
                 LightDrop bullet;
                 float width;
-                switch (equippedGun) {
+                switch (currentGunType)
+                {
+                    case Pickup.Type.Flamethrower:
+                        flameMuzzle.SetActive(true);
+                        bullet = Instantiate(flameProjectile, spawnPosition.position, spawnPosition.rotation);
+                        width = Random.Range(-1f, 1f) * (spreadSize + 60f);
+                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+                        break;
                     case Pickup.Type.Machinegun:
                         bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
                         width = Random.Range(-1f, 1f) * (spreadSize + 10f);
@@ -147,7 +158,7 @@ public class Player : MonoBehaviour
                 }
                 
                 animator.SetTrigger("Shoot");
-                source.PlayOneShot(shootingClips[(int)equippedGun]);
+                source.PlayOneShot(shootingClips[(int)currentGunType]);
                 currentMagazine--;
                 updateUI();
                 if (currentMagazine == 0)
@@ -164,9 +175,9 @@ public class Player : MonoBehaviour
 
     private void SwitchBackToPistol()
     {
-        if (equippedGun != Pickup.Type.Pistol)
+        if (currentGunType != Pickup.Type.Pistol)
         {
-            equippedGun = Pickup.Type.Pistol;
+            currentGunType = Pickup.Type.Pistol;
             clipSize = 7;
             fireRate = 60f / 45f;
             animator.SetBool("Pistol", true);
@@ -177,8 +188,8 @@ public class Player : MonoBehaviour
     private bool Reload()
     {
         animator.SetTrigger("Reload");
-        source.PlayOneShot(reloadClips[(int)equippedGun]);
-        if (equippedGun == Pickup.Type.Pistol)
+        source.PlayOneShot(reloadClips[(int)currentGunType]);
+        if (currentGunType == Pickup.Type.Pistol)
         {
             currentMagazine = clipSize;
             return true;
@@ -225,7 +236,7 @@ public class Player : MonoBehaviour
     public void equipWeapon(Pickup.Type type, int ammo, int clipSize, int fireRate)
     {
         if (type != Pickup.Type.Pistol) animator.SetBool("Pistol", false);
-        if (type == equippedGun)
+        if (type == currentGunType)
         {
             this.ammo += ammo;
         }
@@ -235,15 +246,15 @@ public class Player : MonoBehaviour
             currentMagazine = clipSize;
         }
         source.PlayOneShot(pickupClips[(int)type]);
-        equippedGun = type;
+        currentGunType = type;
         this.clipSize = clipSize;
         this.fireRate = 60f / fireRate;
         updateUI();
     }
     public void updateUI()
     {
-        gunImage.sprite = sprites[(int)equippedGun];
-        if (equippedGun == Pickup.Type.Pistol)
+        gunImage.sprite = sprites[(int)currentGunType];
+        if (currentGunType == Pickup.Type.Pistol)
         {
             ammoText.text = $"{currentMagazine}/∞";
         }

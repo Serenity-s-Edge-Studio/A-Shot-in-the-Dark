@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField]
     public float damage;
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Zombie") && collision.TryGetComponent<Enemy>(out Enemy enemy))
         {

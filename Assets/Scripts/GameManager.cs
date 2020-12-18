@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         foreach (T obj in Resources.FindObjectsOfTypeAll(typeof(T)) as T[])
         {
             if (
-#if UNITY_WEBGL
+#if !UNITY_WEBGL
                 !EditorUtility.IsPersistent(obj) && //If platform is webgl check if it is not an editor object
 #endif
                 !(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave))
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
         foreach (T obj in Resources.FindObjectsOfTypeAll(typeof(T)) as T[])
         {
             if (
-#if UNITY_WEBGL
+#if !UNITY_WEBGL
                 !EditorUtility.IsPersistent(obj) && //If platform is webgl check if it is not an editor object
 #endif
                 !(obj.hideFlags == HideFlags.NotEditable || obj.hideFlags == HideFlags.HideAndDontSave) && obj.CompareTag(tag))

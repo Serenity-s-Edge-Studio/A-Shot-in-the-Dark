@@ -47,6 +47,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Blood
+    uniqueID: 2021321951
+    locked: 0
   - name: Player
     uniqueID: 2177344239
     locked: 0

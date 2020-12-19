@@ -75,11 +75,26 @@ public class EnemyManager : MonoBehaviour
             spawnEnemies();
             _spawnRate = spawnRate;
         }
+        QueueEnemyAIJobs();
+    }
+    private void LateUpdate()
+    {
+        attackJobHandle.Complete();
+        ApplyJobResults();
+        DisposeJobData();
+    }
+    NativeMultiHashMap<int, Vector2> relativePositions;
+    TransformAccessArray transformAccessArray;
+    NativeArray<Vector2> targets, previousTargetNativeArray, movePositionsNativeArray;
+    NativeArray<float> timeTillNextNativeArray, cooldownNativeArray;
+    JobHandle attackJobHandle;
+    private void QueueEnemyAIJobs()
+    {
         Transform[] transforms = new Transform[activeEnemies.Count];
         Vector2[] previousTargets = new Vector2[activeEnemies.Count];
         float[] timeTillNext = new float[activeEnemies.Count];
         float[] attackCooldowns = new float[activeEnemies.Count];
-        NativeMultiHashMap<int, Vector2> relativePositions = new NativeMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
+        relativePositions = new NativeMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             transforms[i] = activeEnemies[i].transform;
@@ -91,12 +106,12 @@ public class EnemyManager : MonoBehaviour
                 relativePositions.Add(i, activeEnemies[i].influencingLights[j].transform.position);
             }
         }
-        TransformAccessArray transformAccessArray = new TransformAccessArray(transforms, 100);
-        NativeArray<Vector2> targets = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
-        NativeArray<Vector2> previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
-        NativeArray<Vector2> movePositionsNativeArray = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
-        NativeArray<float> timeTillNextNativeArray = new NativeArray<float>(timeTillNext, Allocator.TempJob);
-        NativeArray<float> cooldownNativeArray = new NativeArray<float>(attackCooldowns, Allocator.TempJob);
+        transformAccessArray = new TransformAccessArray(transforms, 100);
+        targets = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
+        previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
+        movePositionsNativeArray = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
+        timeTillNextNativeArray = new NativeArray<float>(timeTillNext, Allocator.TempJob);
+        cooldownNativeArray = new NativeArray<float>(attackCooldowns, Allocator.TempJob);
         FindTargetsJob findTargets = new FindTargetsJob
         {
             relativeTargets = relativePositions,
@@ -123,9 +138,11 @@ public class EnemyManager : MonoBehaviour
         };
         JobHandle findTargetsJobHandle = findTargets.Schedule(transformAccessArray);
         JobHandle moveJobHandle = moveJob.Schedule(transformAccessArray, findTargetsJobHandle);
-        JobHandle attackJobHandle = attackPlayerJob.Schedule(transformAccessArray, moveJobHandle);
+        attackJobHandle = attackPlayerJob.Schedule(transformAccessArray, moveJobHandle);
+    }
 
-        attackJobHandle.Complete();
+    private void ApplyJobResults()
+    {
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             activeEnemies[i].rigidbody.MovePosition(movePositionsNativeArray[i]);
@@ -139,6 +156,9 @@ public class EnemyManager : MonoBehaviour
             }
             activeEnemies[i].timeTillNextRandom = timeTillNextNativeArray[i];
         }
+    }
+    private void DisposeJobData()
+    {
         movePositionsNativeArray.Dispose();
         cooldownNativeArray.Dispose();
         previousTargetNativeArray.Dispose();
@@ -147,6 +167,7 @@ public class EnemyManager : MonoBehaviour
         targets.Dispose();
         relativePositions.Dispose();
     }
+
     struct MoveEnemiesJob : IJobParallelForTransform
     {
         public float deltaTime;

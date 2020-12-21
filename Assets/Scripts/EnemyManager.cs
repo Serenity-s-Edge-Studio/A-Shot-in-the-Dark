@@ -9,7 +9,14 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class EnemyManager : MonoBehaviour
 {
+    public static EnemyManager instance;
+    public bool recycleZombies = true;
+    public int maxEnemies;
+    public float originalSpawnRate;
+    public float spawnRate;
     public List<Enemy> activeEnemies;
+    public int orginalMaxZombies;
+
     [SerializeField]
     private Light2D center;
     [SerializeField]
@@ -17,21 +24,12 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Enemy ZombiePrefab;
     [SerializeField]
-    public int maxEnemies;
-    public float originalSpawnRate;
-    public float spawnRate;
-    private float _spawnRate;
-    [SerializeField]
-    public int orginalMaxZombies;
-    [SerializeField]
     private int attackRange;
     [SerializeField]
     private float cooldown;
 
+    private float _spawnRate;
     private int index = 0;
-
-    public static EnemyManager instance;
-    public bool recycleZombies = true;
 
     private void Awake()
     {
@@ -41,17 +39,13 @@ public class EnemyManager : MonoBehaviour
     {
         activeEnemies = new List<Enemy>();
         activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
-        //InvokeRepeating("spawnEnemies", 1, 1);
         spawnRadius = Mathf.RoundToInt(Mathf.Max(center.pointLightOuterRadius + 1, spawnRadius));
         orginalMaxZombies = maxEnemies;
         originalSpawnRate = spawnRate;
     }
     private void spawnEnemies()
     {
-        float innerRadius = center.pointLightOuterRadius;
-        float ratio = innerRadius / spawnRadius;
-        float radius = Mathf.Sqrt(UnityEngine.Random.Range(ratio * ratio, 1f)) * spawnRadius;
-        Vector2 point = UnityEngine.Random.insideUnitCircle.normalized * radius;
+        Vector2 point = LightManager.instance.FindValidSpawnPosition();
         Enemy newZombie = Instantiate(ZombiePrefab, point, Quaternion.identity, transform);
         if (activeEnemies.Count < maxEnemies)
             activeEnemies.Add(newZombie);
@@ -106,7 +100,7 @@ public class EnemyManager : MonoBehaviour
                 relativePositions.Add(i, activeEnemies[i].influencingLights[j].transform.position);
             }
         }
-        transformAccessArray = new TransformAccessArray(transforms, 100);
+        transformAccessArray = new TransformAccessArray(transforms, 10);
         targets = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
         previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
         movePositionsNativeArray = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);

@@ -22,7 +22,7 @@ public class LightDrop : MonoBehaviour
     private CircleCollider2D collider;
     private List<Enemy> enemiesInRange = new List<Enemy>();
 
-    private void Awake()
+    private void Start()
     {
         remainingTime = decayTime;
         rigidbody = GetComponent<Rigidbody2D>();

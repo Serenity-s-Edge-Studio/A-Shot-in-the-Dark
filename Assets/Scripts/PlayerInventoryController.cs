@@ -11,6 +11,7 @@ public class PlayerInventoryController : InventoryController
     [SerializeField]
     private ItemSlot _ItemPrefab;
     [SerializeField]
+    private List<ItemSlot> _ItemList;
 
     // Start is called before the first frame update
     public override void Start()
@@ -31,6 +32,12 @@ public class PlayerInventoryController : InventoryController
         {
             IStackable<Item> item = sortedList[i];
             Debug.Log($"{item.getValue().name} {item.TotalNumberOfItems}");
+            if (i >= _ItemList.Count)
+            {
+                _ItemList.Add(Instantiate(_ItemPrefab, _InventoryContainer.transform));
+            }
+            _ItemList[i].name = item.getValue().name;
+            _ItemList[i].UpdateUI(item);
         }
         for (int i = sortedList.Length; i < _ItemList.Count; i++)
         {

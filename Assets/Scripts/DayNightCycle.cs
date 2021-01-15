@@ -12,14 +12,14 @@ public class DayNightCycle : MonoBehaviour
 
     [SerializeField]
     private AnimationCurve _IntensityCurve;
-    [SerializeField, Range(0,24)]
+    [SerializeField, Range(0, 24)]
     private float _TimeValue;
     private float _TimeProgress;
     [SerializeField]
     private Light2D _GlobalLight;
-    [SerializeField, Range(0,.5f)]
+    [SerializeField, Range(0, .5f)]
     private float _MinIntensity;
-    [SerializeField,Range(.5f,1f)]
+    [SerializeField, Range(.5f, 1f)]
     private float _MaxInstensity;
     [SerializeField, Header("Day length in seconds")]
     private float DayLength;
@@ -42,7 +42,7 @@ public class DayNightCycle : MonoBehaviour
     }
 
 
-private void Awake()
+    private void Awake()
     {
         if (instance != null) Destroy(instance);
         instance = this;
@@ -60,7 +60,7 @@ private void Awake()
             if (_lastTimePeriod != PeriodOfDay)
                 OnDayPeriodChange.Invoke(PeriodOfDay);
         }
-        _GlobalLight.intensity = Mathf.Clamp(_IntensityCurve.Evaluate(_TimeValue/24f), _MinIntensity, _MaxInstensity);
+        _GlobalLight.intensity = Mathf.Clamp(_IntensityCurve.Evaluate(_TimeValue / 24f), _MinIntensity, _MaxInstensity);
     }
 }
 public enum PartOfDay

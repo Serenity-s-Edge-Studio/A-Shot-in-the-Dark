@@ -22,7 +22,7 @@ Physics2DSettings:
   m_JobOptions:
     serializedVersion: 2
     useMultithreading: 1
-    useConsistencySorting: 0
+    useConsistencySorting: 1
     m_InterpolationPosesPerJob: 100
     m_NewContactsPerJob: 30
     m_CollideContactsPerJob: 100

@@ -70,6 +70,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool isInvincible;
 
+    public Inventory inventory;
+
     private void Awake()
     {
         instance = this;
@@ -86,8 +88,14 @@ public class Player : MonoBehaviour
         camera = FindObjectOfType<Camera>();
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
+        inventory = GetComponent<Inventory>();
         SwitchBackToPistol();
         updateUI();
+        inventory.TryAddItems(0, 1);
+        inventory.TryAddItems(1, 300);
+        inventory.TryAddItems("Wood", 10);
+        foreach(IStackable<Item> item in inventory.GetSortedItems(Inventory.SortingType.Amount, false))
+            Debug.Log(item.TotalNumberOfItems);
     }
 
     private void Reload_performed(InputAction.CallbackContext obj)

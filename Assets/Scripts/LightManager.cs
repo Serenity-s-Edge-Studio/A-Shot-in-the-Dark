@@ -30,11 +30,19 @@ public class LightManager : MonoBehaviour
     {
         DecayLights();
         spawnPositionRefreshTimer -= Time.deltaTime;
-        
     }
     private void LateUpdate()
     {
+
         decayLightsHandle.Complete();
+
+        ApplyLightDecay();
+        lightDropStructs.Dispose();
+
+    }
+
+    private void ApplyLightDecay()
+    {
         for (int i = 0; i < lightDropStructs.Length && i < lights.Count; i++)
         {
             if (lightDropStructs[i].canDecay)
@@ -45,8 +53,8 @@ public class LightManager : MonoBehaviour
                     lights[i].fromLightDropStruct(lightDropStructs[i]);
             }
         }
-        lightDropStructs.Dispose();
     }
+
     NativeArray<LightDropStruct> lightDropStructs;
     JobHandle decayLightsHandle;
     private void DecayLights()
@@ -56,7 +64,7 @@ public class LightManager : MonoBehaviour
         {
             lightDropStructs[i] = lights[i].toLightDropStruct();
         }
-        decayLightsHandle = new DecayJob { lightDrops = lightDropStructs, deltaTime = Time.deltaTime }.Schedule(lightDropStructs.Length, lightDropStructs.Length);
+        decayLightsHandle = new DecayJob { lightDrops = lightDropStructs, deltaTime = Time.deltaTime }.Schedule(lightDropStructs.Length, 1);
     }
     private struct DecayJob : IJobParallelFor
     {

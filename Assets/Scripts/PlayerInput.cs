@@ -57,6 +57,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Open inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""a5e828bd-399e-470c-b535-63e1b1aea39c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -213,6 +221,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e653697-f136-4111-916d-b99971434b82"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -226,6 +245,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_Mouseposition = m_Player.FindAction("Mouse position", throwIfNotFound: true);
         m_Player_DropWeapon = m_Player.FindAction("Drop Weapon", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_Openinventory = m_Player.FindAction("Open inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -280,6 +300,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Mouseposition;
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_Openinventory;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -289,6 +310,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Mouseposition => m_Wrapper.m_Player_Mouseposition;
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @Openinventory => m_Wrapper.m_Player_Openinventory;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -313,6 +335,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Reload.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @Openinventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpeninventory;
+                @Openinventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpeninventory;
+                @Openinventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOpeninventory;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -332,6 +357,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @Openinventory.started += instance.OnOpeninventory;
+                @Openinventory.performed += instance.OnOpeninventory;
+                @Openinventory.canceled += instance.OnOpeninventory;
             }
         }
     }
@@ -343,5 +371,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnMouseposition(InputAction.CallbackContext context);
         void OnDropWeapon(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnOpeninventory(InputAction.CallbackContext context);
     }
 }

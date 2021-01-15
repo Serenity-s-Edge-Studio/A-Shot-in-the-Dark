@@ -91,11 +91,6 @@ public class Player : MonoBehaviour
         inventory = GetComponent<Inventory>();
         SwitchBackToPistol();
         updateUI();
-        inventory.TryAddItems(0, 1);
-        inventory.TryAddItems(1, 300);
-        inventory.TryAddItems("Wood", 10);
-        foreach(IStackable<Item> item in inventory.GetSortedItems(Inventory.SortingType.Amount, false))
-            Debug.Log(item.TotalNumberOfItems);
     }
 
     private void Reload_performed(InputAction.CallbackContext obj)

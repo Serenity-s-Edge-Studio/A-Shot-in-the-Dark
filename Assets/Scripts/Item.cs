@@ -5,6 +5,7 @@ using System;
 [Serializable]
 public class Item
 {
+    public static Sprite Placeholder;
     public string name;
     public int id;
     public string description;
@@ -17,7 +18,13 @@ public class Item
         this.id = id;
         this.description = description;
         this.mass = mass;
-        icon = Resources.Load<Sprite>("Items/Sprites/" + name);
+        icon = Resources.Load<Sprite>("Items/Sprites/" + name); 
+        if (icon == null)
+        {
+            if (Placeholder == null)
+                Placeholder = Resources.Load<Sprite>("Items/Sprites/Placeholder.png");
+            icon = Placeholder;
+        }
     }
     public Item (Item item)
     {

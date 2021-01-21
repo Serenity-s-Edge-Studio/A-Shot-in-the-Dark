@@ -34,6 +34,23 @@ public class Inventory : MonoBehaviour
         m_StackableInventory.Add(item.id, new Stackable<T>(item, amount, stackSize));
         return true;
     }
+    private bool TryRemoveItems<T>(T item, ref int amount) where T : Item
+    {
+        if (m_StackableInventory.TryGetValue(item.id, out IStackable<Item> stack))
+        {
+            if (!(stack.getValue() is T))
+            {
+                Debug.LogError("This inventory has encountered an Item with a duplicate key");
+                return false;
+            }
+            int tempAmount = stack.Remove(amount);
+            if (tempAmount <= 0) m_StackableInventory.Remove(item.id);
+            _CurrentMass -= tempAmount * item.mass;
+            amount = tempAmount;
+            return true;
+        }
+        return false;
+    }
     public bool TryAddItems(int id, int amount)
     {
         return ItemDatabase.instance.TryGetItem(id, out Item item) ? TryAddItems(item, amount) : false;
@@ -42,10 +59,18 @@ public class Inventory : MonoBehaviour
     {
         return ItemDatabase.instance.TryGetItem(name, out Item item) ? TryAddItems(item, amount) : false;
     }
-    public IStackable<Item>[] GetSortedItems(SortingType sorting, bool ascending)
+    public bool TryRemoveItems(int id, ref int amount)
+    {
+        return ItemDatabase.instance.TryGetItem(id, out Item item) ? TryRemoveItems(item, ref amount) : false;
+    }
+    public bool TryRemoveItems(string name, int amount)
+    {
+        return ItemDatabase.instance.TryGetItem(name, out Item item) ? TryRemoveItems(item, ref amount) : false;
+    }
+    public IStackable<Item>[] GetSortedItems(SortingType sortMethod, bool isAscending)
     {
         List<IStackable<Item>> stacks = m_StackableInventory.Values.ToList();
-        stacks.Sort(new StackComparer<Item>(sorting, ascending));
+        stacks.Sort(new StackComparer<Item>(sortMethod, isAscending));
         return stacks.ToArray();
     }
     public enum SortingType

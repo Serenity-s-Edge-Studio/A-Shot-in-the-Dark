@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private bool isInvincible;
 
-    public Inventory inventory;
+    public PlayerInventoryController inventory;
 
     private void Awake()
     {
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
         camera = FindObjectOfType<Camera>();
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
-        inventory = GetComponent<Inventory>();
+        inventory = GetComponent<PlayerInventoryController>();
         SwitchBackToPistol();
         updateUI();
     }
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
 
     private void Shoot_performed(InputAction.CallbackContext obj)
     {
-        if (obj.ReadValueAsButton())
+        if (obj.ReadValueAsButton() && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             StartCoroutine(ShootCoroutine());
         else
         {

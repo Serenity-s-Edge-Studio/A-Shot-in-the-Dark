@@ -28,7 +28,7 @@ public class Stackable<T> : IStackable<T> where T : Item
         size = amount > maxSize ? maxSize : amount;
         this.stackSize = maxSize;
     }
-    public Stackable(Stackable<T> item, int amount) : this(item.getValue(), amount, item.stackSize)
+    public Stackable(IStackable<T> item, int amount) : this(item.getValue(), amount, item.stackSize)
     {
 
     }

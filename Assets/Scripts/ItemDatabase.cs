@@ -18,7 +18,7 @@ public class ItemDatabase : MonoBehaviour
         {
             (new Item("Gun", 0, "Pew pew", 10), 64),
             (new Item("Stick", 1, "Smack smack", 1), 32),
-            (new Item("Wood", 2, "It's woody", 5), 128)
+            (new Item("Wood", 2, "It's woody", 5), 128),
         };
 
         ItemIDDictionary = new Dictionary<int, Item>(items.Count);

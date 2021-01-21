@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -16,8 +18,9 @@ public class ItemSlot : MonoBehaviour
     private TextMeshProUGUI massText;
     [SerializeField]
     private TextMeshProUGUI descriptionText;
-
-    public void UpdateUI(IStackable<Item> item)
+    [SerializeField]
+    private Button _DropItemButton;
+    public void UpdateUI(IStackable<Item> item, InventoryController inventoryController)
     {
         Item value = item.getValue();
         icon.sprite = value.icon;
@@ -25,5 +28,7 @@ public class ItemSlot : MonoBehaviour
         amountText.text = $"Amount: {item.TotalNumberOfItems}";
         massText.text = $"Mass: {item.TotalMass}";
         descriptionText.text = $"Decription: {value.description}";
+        _DropItemButton.onClick.RemoveAllListeners();
+        _DropItemButton.onClick.AddListener(() => inventoryController.DropItem(item));
     }
 }

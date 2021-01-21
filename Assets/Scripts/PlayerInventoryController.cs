@@ -37,12 +37,18 @@ public class PlayerInventoryController : InventoryController
                 _ItemList.Add(Instantiate(_ItemPrefab, _InventoryContainer.transform));
             }
             _ItemList[i].name = item.getValue().name;
-            _ItemList[i].UpdateUI(item);
+            _ItemList[i].UpdateUI(item, this);
+            _ItemList[i].gameObject.SetActive(true);
         }
         for (int i = sortedList.Length; i < _ItemList.Count; i++)
         {
             _ItemList[i].gameObject.SetActive(false);
         }
+    }
+    public override void DropItem(IStackable<Item> stack)
+    {
+        base.DropItem(stack);
+        DisplayInventory();
     }
     public override void HideInventory()
     {

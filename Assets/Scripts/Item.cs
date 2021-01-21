@@ -22,7 +22,7 @@ public class Item
         if (icon == null)
         {
             if (Placeholder == null)
-                Placeholder = Resources.Load<Sprite>("Items/Sprites/Placeholder.png");
+                Placeholder = Resources.Load<Sprite>("Items/Sprites/Placeholder");
             icon = Placeholder;
         }
     }

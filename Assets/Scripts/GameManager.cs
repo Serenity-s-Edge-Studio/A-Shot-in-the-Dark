@@ -24,27 +24,14 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
 #if !UNITY_EDITOR
-        LoadScene(1);
-#else
-        if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
-        {
-            var buttonList = GetAllObjectsOnlyInSceneWithTag<Button>("LoadGameButton");
-            if (buttonList.Count > 0)
-            {
-                Button loadGameButton = buttonList[0];
-                loadGameButton.onClick.AddListener(() => LoadScene(2));
-            }
-            else
-            {
-                Debug.LogWarning("Could not finds settings button in loaded scenes");
-            }
-        }
+        LoadScene(1, new System.Action<AsyncOperation>[] { (AsyncOperation op) => SetLoadButtonListner(2)});
 #endif
     }
     // Start is called before the first frame update
     void Start()
     {
 #if UNITY_EDITOR
+        SetLoadButtonListner(2);
         FindAndUpdateSettingsButton();
 #else
         updateSettings();
@@ -92,11 +79,26 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Could not finds settings button in loaded scenes");
+            Debug.LogWarning("Could not find settings button in loaded scenes");
         }
         updateSettings();
     }
-
+    private void SetLoadButtonListner(int index)
+    {
+        if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
+        {
+            var buttonList = GetAllObjectsOnlyInSceneWithTag<Button>("LoadGameButton");
+            if (buttonList.Count > 0)
+            {
+                Button loadGameButton = buttonList[0];
+                loadGameButton.onClick.AddListener(() => LoadScene(index));
+            }
+            else
+            {
+                Debug.LogWarning("Could not find play button in loaded scenes");
+            }
+        }
+    }
     public List<T> GetAllObjectsOnlyInScene<T>() where T : Object
     {
         List<T> objectsInScene = new List<T>();

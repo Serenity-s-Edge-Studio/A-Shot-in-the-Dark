@@ -10,7 +10,7 @@ public interface IStackable<out R> where R : Item
     public int stacks { get; }
     public int stackSize { get; }
     public int TotalNumberOfItems { get; }
-    public int TotalMass { get; }
+    public float TotalMass { get; }
     public void Add(int amount);
     public int Remove(int amount);
 }
@@ -21,7 +21,7 @@ public class Stackable<T> : IStackable<T> where T : Item
     public int stacks { get; private set; }
     public int stackSize { get; private set; }
     public int TotalNumberOfItems => (stacks * stackSize) + size;
-    public int TotalMass => _value.mass * TotalNumberOfItems;
+    public float TotalMass => _value.mass * TotalNumberOfItems;
     public Stackable(T item, int amount, int maxSize)
     {
         _value = item;

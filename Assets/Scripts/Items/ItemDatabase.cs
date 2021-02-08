@@ -16,9 +16,12 @@ public class ItemDatabase : MonoBehaviour
         instance = this;
         List<(Item item, int? size)> items = new List<(Item item, int? size)>() 
         {
-            (new Item("Gun", 0, "Pew pew", 10), 64),
-            (new Item("Stick", 1, "Smack smack", 1), 32),
-            (new Item("Wood", 2, "It's woody", 5), 128),
+            (new Item("Gun", "Pew pew", 10), 64),
+            (new Item("Stick", "Smack smack", 1), 32),
+            (new Item("Wood",  "It's woody", 5), 128),
+            (new Ammo("5.56x45mm NATO", "The 5.56×45mm NATO is a rimless bottlenecked " +
+            "intermediate cartridge family developed in the late 1970s in Belgium by FN Herstal. " +
+            "It consists of the SS109, SS110, and SS111 cartridges.", 0.00356f, "5.56mm", 10), 20)
         };
 
         ItemIDDictionary = new Dictionary<int, Item>(items.Count);

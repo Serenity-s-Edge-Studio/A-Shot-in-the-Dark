@@ -5,17 +5,19 @@ using System;
 [Serializable]
 public class Item
 {
+    public static int ItemCount;
     public static Sprite Placeholder;
     public string name;
     public int id;
     public string description;
-    public int mass;
+    public float mass;
     public Sprite icon;
 
-    public Item (string name, int id, string description, int mass)
+    public Item (string name, string description, float mass)
     {
         this.name = name;
-        this.id = id;
+        this.id = ItemCount;
+        ItemCount++;
         this.description = description;
         this.mass = mass;
         icon = Resources.Load<Sprite>("Items/Sprites/" + name); 

@@ -9,8 +9,8 @@ public class Inventory : MonoBehaviour
     private Dictionary<int, IStackable<Item>> m_StackableInventory;
     private Dictionary<int, List<Item>> m_UniqueItems;
     [SerializeField]
-    private int _Capacity;
-    private int _CurrentMass;
+    private float _Capacity;
+    private float _CurrentMass;
 
     private void Start()
     {

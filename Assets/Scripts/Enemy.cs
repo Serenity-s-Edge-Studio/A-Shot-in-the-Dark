@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour, IIgnitable
     public float timeTillNextRandom;
     [SerializeField]
     private float health;
-    
+
     public Rigidbody2D rigidbody;
     public Animator animator;
     public float attackCooldown;
@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour, IIgnitable
         }
         Destroy(Instantiate(deathParticles, transform.position, Quaternion.identity), 5);
     }
+
     public void SetFire(float dmgPerSecond)
     {
         if (!isOnFire)
@@ -36,15 +37,17 @@ public class Enemy : MonoBehaviour, IIgnitable
             StartCoroutine(doDamagePerSecond(dmgPerSecond));
         }
     }
+
     private IEnumerator doDamagePerSecond(float dmgPerSecond)
     {
-        while(health > 0.1f)
+        while (health > 0.1f)
         {
             Damage(dmgPerSecond);
             rigidbody.AddTorque(1000);
             yield return new WaitForSeconds(1);
         }
     }
+
     private void OnDestroy()
     {
         EnemyManager.instance.activeEnemies.Remove(this);

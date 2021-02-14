@@ -8,7 +8,7 @@ namespace FibonacciHeap
     /// <typeparam name="T">Type of the object to be stored.</typeparam>
     /// <typeparam name="TKey">Type of the key to be used for the stored object. 
     /// Has to implement the <see cref="IComparable"/> interface.</typeparam>
-    public class FibonacciHeapNode<T, TKey> where TKey: IComparable<TKey>
+    public class FibonacciHeapNode<T, TKey> where TKey : IComparable<TKey>
     {
         public FibonacciHeapNode(T data, TKey key)
         {
@@ -21,7 +21,7 @@ namespace FibonacciHeap
         /// <summary>
         /// Gets or sets the node data object.
         /// </summary>
-        public T Data { get; set;}
+        public T Data { get; set; }
 
         /// <summary>
         /// Gets or sets the reference to the first child node.

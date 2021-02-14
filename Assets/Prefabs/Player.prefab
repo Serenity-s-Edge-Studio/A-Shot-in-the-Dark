@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 487621481}
   - component: {fileID: 487621482}
   - component: {fileID: 6324361574571309894}
+  - component: {fileID: 8365210211415596031}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -488,7 +489,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 6204073370119790633}
+  _DropPrefab: {fileID: 0}
+  _EjectForce: 0
   _InventoryUI: {fileID: 0}
   _InventoryContainer: {fileID: 0}
-  _ItemPrefab: {fileID: 1294690846668743301, guid: 66f8ce81b801fe149b0ab6360a20a0d4, type: 3}
+  _ItemPrefab: {fileID: 0}
   _ItemList: []
+--- !u!114 &8365210211415596031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258652946221112761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1e37687d1e90440a02268ba8d18345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _MuzzleFlash: {fileID: 2224427972352354437, guid: 75a9b5ee0f6999243a68873a176758cb, type: 3}
+  MuzzleTransform: {fileID: 702591502}
+  animator: {fileID: 6258652946221112765}
+  source: {fileID: 487621482}
+  gunImage: {fileID: 0}
+  ammoText: {fileID: 0}

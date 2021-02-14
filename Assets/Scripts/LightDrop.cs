@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -32,8 +31,9 @@ public class LightDrop : MonoBehaviour
         startingLightRadius = light.pointLightOuterRadius;
         LightManager.instance.add(this);
     }
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //if (Decay)
         //{
@@ -45,6 +45,7 @@ public class LightDrop : MonoBehaviour
         //    //light.intensity = remaining;
         //}
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Enemy>(out Enemy enemy))
@@ -53,6 +54,7 @@ public class LightDrop : MonoBehaviour
             enemy.influencingLights.Add(this);
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Enemy>(out Enemy enemy))
@@ -61,6 +63,7 @@ public class LightDrop : MonoBehaviour
             enemy.influencingLights.Remove(this);
         }
     }
+
     private void OnDestroy()
     {
         foreach (Enemy enemy in enemiesInRange)
@@ -69,6 +72,7 @@ public class LightDrop : MonoBehaviour
         }
         LightManager.instance.remove(this);
     }
+
     public LightDropStruct toLightDropStruct()
     {
         return new LightDropStruct
@@ -83,6 +87,7 @@ public class LightDrop : MonoBehaviour
             colliderRadius = collider.radius
         };
     }
+
     public void fromLightDropStruct(LightDropStruct lightDropStruct)
     {
         remainingTime = lightDropStruct.remainingTime;
@@ -90,6 +95,7 @@ public class LightDrop : MonoBehaviour
         collider.radius = lightDropStruct.colliderRadius;
     }
 }
+
 public struct LightDropStruct
 {
     public bool canDecay;
@@ -100,6 +106,7 @@ public struct LightDropStruct
     public float startingLightRadius;
     public float pointLightOuterRadius;
     public float colliderRadius;
+
     public void Decay(float deltaTime)
     {
         if (canDecay)

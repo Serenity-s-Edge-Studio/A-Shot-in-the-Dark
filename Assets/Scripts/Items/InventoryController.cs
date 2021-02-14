@@ -1,18 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class InventoryController : MonoBehaviour
 {
+    [HideInInspector]
+    public Entity entity;
     public Inventory inventory;
+    
     [SerializeField]
     private Pickup _DropPrefab;
     [SerializeField]
     private float _EjectForce;
+
+
     public virtual void Start()
     {
         inventory = GetComponentInChildren<Inventory>();
+        entity = GetComponent<Player>();
     }
+
     public virtual void DropItem(IStackable<Item> stack)
     {
         int amount = stack.TotalNumberOfItems;
@@ -27,6 +32,8 @@ public abstract class InventoryController : MonoBehaviour
             droppedItem.StartCoroutine(droppedItem.PreventCollision());
         }
     }
+
     public abstract void DisplayInventory();
+
     public abstract void HideInventory();
 }

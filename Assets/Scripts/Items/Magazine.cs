@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Magazine<T> : Stackable<T> where T : Ammo
 {
     public Magazine(IStackable<T> item, int amount) : base(item, amount)

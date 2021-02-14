@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -20,6 +16,9 @@ public class ItemSlot : MonoBehaviour
     private TextMeshProUGUI descriptionText;
     [SerializeField]
     private Button _DropItemButton;
+    [SerializeField]
+    private Button _EquipItemButton;
+
     public void UpdateUI(IStackable<Item> item, InventoryController inventoryController)
     {
         Item value = item.getValue();
@@ -30,5 +29,17 @@ public class ItemSlot : MonoBehaviour
         descriptionText.text = $"Decription: {value.description}";
         _DropItemButton.onClick.RemoveAllListeners();
         _DropItemButton.onClick.AddListener(() => inventoryController.DropItem(item));
+        IEquipable equipable = item.getValue() as IEquipable;
+        if (equipable != null)
+        {
+            _EquipItemButton.gameObject.SetActive(true);
+            _EquipItemButton.onClick.RemoveAllListeners();
+            _EquipItemButton.onClick.AddListener(() => equipable.Equip(inventoryController.entity));
+        }
+        else
+        {
+            _EquipItemButton.gameObject.SetActive(false);
+        }
+            
     }
 }

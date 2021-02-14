@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
-using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +18,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI volumeText;
     public static GameManager instance;
     private int CurrentSceneIndex = 1;
+
     private void Awake()
     {
         instance = this;
@@ -27,8 +26,9 @@ public class GameManager : MonoBehaviour
         LoadScene(1, new System.Action<AsyncOperation>[] { (AsyncOperation op) => SetLoadButtonListner(2)});
 #endif
     }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 #if UNITY_EDITOR
         SetLoadButtonListner(2);
@@ -37,16 +37,19 @@ public class GameManager : MonoBehaviour
         updateSettings();
 #endif
     }
+
     public void updateSettings()
     {
         AudioListener.volume = muteToggle.isOn ? 0 : volumeSlider.value;
         Player.instance.toggleMovement = movementToggle.isOn;
         volumeText.text = $"Volume: {Mathf.RoundToInt(volumeSlider.value * 100)}/100";
     }
+
     public void LoadScene(int index)
     {
         LoadScene(index, null);
     }
+
     public void LoadScene(int index, System.Action<AsyncOperation>[] onComplete)
     {
         if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
@@ -83,6 +86,7 @@ public class GameManager : MonoBehaviour
         }
         updateSettings();
     }
+
     private void SetLoadButtonListner(int index)
     {
         if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
@@ -99,6 +103,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public List<T> GetAllObjectsOnlyInScene<T>() where T : Object
     {
         List<T> objectsInScene = new List<T>();
@@ -117,6 +122,7 @@ public class GameManager : MonoBehaviour
 
         return objectsInScene;
     }
+
     public List<T> GetAllObjectsOnlyInSceneWithTag<T>(string tag) where T : Component
     {
         List<T> objectsInScene = new List<T>();

@@ -11,7 +11,7 @@
         /// Initializes the new instance.
         /// Declares the double.NegativeInfinity as minimum possible key value.
         /// </summary>
-        public FibonacciHeapDoubleKey( ) : base( double.NegativeInfinity )
+        public FibonacciHeapDoubleKey() : base(double.NegativeInfinity)
         {
         }
     }

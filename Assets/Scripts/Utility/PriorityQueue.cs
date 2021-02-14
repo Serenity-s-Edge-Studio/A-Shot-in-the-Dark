@@ -1,9 +1,11 @@
 ﻿using FibonacciHeap;
 using System;
+
 public class PriorityQueue<TElement, TPriority> : IPriorityQueue<TElement, TPriority>
     where TPriority : IComparable<TPriority>
 {
     private readonly FibonacciHeap<TElement, TPriority> heap;
+
     public int Count { get; private set; }
 
     public PriorityQueue(TPriority minPriority)
@@ -25,6 +27,7 @@ public class PriorityQueue<TElement, TPriority> : IPriorityQueue<TElement, TPrio
         else
             return default;
     }
+
     public FibonacciHeapNode<TElement, TPriority> PeekNode()
     {
         FibonacciHeapNode<TElement, TPriority> minElement = heap.Min();
@@ -33,6 +36,7 @@ public class PriorityQueue<TElement, TPriority> : IPriorityQueue<TElement, TPrio
         else
             return default;
     }
+
     public TElement Pop()
     {
         FibonacciHeapNode<TElement, TPriority> minElement = heap.RemoveMin();
@@ -44,6 +48,7 @@ public class PriorityQueue<TElement, TPriority> : IPriorityQueue<TElement, TPrio
         else
             return default;
     }
+
     public FibonacciHeapNode<TElement, TPriority> PopNode()
     {
         FibonacciHeapNode<TElement, TPriority> minElement = heap.Min();
@@ -56,6 +61,7 @@ public class PriorityQueue<TElement, TPriority> : IPriorityQueue<TElement, TPrio
             return default;
     }
 }
+
 public interface IPriorityQueue<T, P>
 {
     /// <summary>

@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Jobs;
-using Unity.Jobs;
+﻿using System.Collections.Generic;
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.Jobs;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -35,7 +34,8 @@ public class EnemyManager : MonoBehaviour
     {
         instance = this;
     }
-    void Start()
+
+    private void Start()
     {
         activeEnemies = new List<Enemy>();
         activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
@@ -43,6 +43,7 @@ public class EnemyManager : MonoBehaviour
         orginalMaxZombies = maxEnemies;
         originalSpawnRate = spawnRate;
     }
+
     private void spawnEnemies()
     {
         Vector2 point = LightManager.instance.FindValidSpawnPosition();
@@ -60,8 +61,9 @@ public class EnemyManager : MonoBehaviour
             index++;
         }
     }
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         _spawnRate -= Time.deltaTime;
         if (_spawnRate <= 0)
@@ -71,17 +73,20 @@ public class EnemyManager : MonoBehaviour
         }
         QueueEnemyAIJobs();
     }
+
     private void LateUpdate()
     {
         attackJobHandle.Complete();
         ApplyJobResults();
         DisposeJobData();
     }
-    NativeMultiHashMap<int, Vector2> relativePositions;
-    TransformAccessArray transformAccessArray;
-    NativeArray<Vector2> targets, previousTargetNativeArray, movePositionsNativeArray;
-    NativeArray<float> timeTillNextNativeArray, cooldownNativeArray;
-    JobHandle attackJobHandle;
+
+    private NativeMultiHashMap<int, Vector2> relativePositions;
+    private TransformAccessArray transformAccessArray;
+    private NativeArray<Vector2> targets, previousTargetNativeArray, movePositionsNativeArray;
+    private NativeArray<float> timeTillNextNativeArray, cooldownNativeArray;
+    private JobHandle attackJobHandle;
+
     private void QueueEnemyAIJobs()
     {
         Transform[] transforms = new Transform[activeEnemies.Count];
@@ -151,6 +156,7 @@ public class EnemyManager : MonoBehaviour
             activeEnemies[i].timeTillNextRandom = timeTillNextNativeArray[i];
         }
     }
+
     private void DisposeJobData()
     {
         movePositionsNativeArray.Dispose();
@@ -162,11 +168,12 @@ public class EnemyManager : MonoBehaviour
         relativePositions.Dispose();
     }
 
-    struct MoveEnemiesJob : IJobParallelForTransform
+    private struct MoveEnemiesJob : IJobParallelForTransform
     {
         public float deltaTime;
         public NativeArray<Vector2> targetPositions;
         public NativeArray<Vector2> movePositions;
+
         public void Execute(int index, TransformAccess transform)
         {
             //transform.position = Vector2.Lerp(transform.position, targetPositions[index], deltaTime);
@@ -176,7 +183,8 @@ public class EnemyManager : MonoBehaviour
             movePositions[index] = (Vector2)transform.position + (Vector2.Distance(transform.position, targetPositions[index]) > 2f ? (Vector2)(transform.rotation * Vector2.right * (deltaTime * 2)) : Vector2.zero);
         }
     }
-    struct FindTargetsJob : IJobParallelForTransform
+
+    private struct FindTargetsJob : IJobParallelForTransform
     {
         [ReadOnly]
         public NativeMultiHashMap<int, Vector2> relativeTargets;
@@ -186,6 +194,7 @@ public class EnemyManager : MonoBehaviour
         public Vector2 playerPosition;
         public float deltaTime;
         public Unity.Mathematics.Random random;
+
         public void Execute(int index, TransformAccess transform)
         {
             Vector2 closest = Vector2.zero;
@@ -223,13 +232,15 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
-    struct AttackPlayerJob : IJobParallelForTransform
+
+    private struct AttackPlayerJob : IJobParallelForTransform
     {
         public NativeArray<float> AttackCooldowns;
         public Vector2 playerPos;
         public float deltaTime;
         public float cooldown;
         public int attackRange;
+
         public void Execute(int index, TransformAccess transform)
         {
             if (Vector2.Distance(transform.position, playerPos) < attackRange)
@@ -238,6 +249,7 @@ public class EnemyManager : MonoBehaviour
                 AttackCooldowns[index] = cooldown;
         }
     }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);

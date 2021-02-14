@@ -1,12 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TMPro;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     private PlayerInput.PlayerActions input;
     [SerializeField]
@@ -76,15 +74,16 @@ public class Player : MonoBehaviour
     {
         instance = this;
     }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         input = new PlayerInput().Player;
         input.Enable();
-        input.Shoot.performed += Shoot_performed;
-        input.DropWeapon.performed += DropWeapon_performed;
-        input.Reload.performed += Reload_performed;
+        //input.Shoot.performed += Shoot_performed;
+        //input.DropWeapon.performed += DropWeapon_performed;
+        //input.Reload.performed += Reload_performed;
         camera = FindObjectOfType<Camera>();
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
@@ -113,6 +112,7 @@ public class Player : MonoBehaviour
             StopAllCoroutines();
         }
     }
+
     private IEnumerator ShootCoroutine()
     {
         while (true)
@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
                         bullet.GetComponentInChildren<Bullet>().damage = 5;
                         break;
                 }
-                
+
                 animator.SetTrigger("Shoot");
                 source.PlayOneShot(shootingClips[(int)currentGunType]);
                 currentMagazine--;
@@ -219,12 +219,14 @@ public class Player : MonoBehaviour
         }
         return false;
     }
+
     private void Update()
     {
         currentFireRate = Mathf.Max(0, currentFireRate - Time.deltaTime);
     }
+
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
@@ -254,6 +256,7 @@ public class Player : MonoBehaviour
         this.fireRate = 60f / fireRate;
         updateUI();
     }
+
     public void updateUI()
     {
         gunImage.sprite = sprites[(int)currentGunType];
@@ -266,6 +269,7 @@ public class Player : MonoBehaviour
             ammoText.text = $"{currentMagazine}/{ammo}";
         }
     }
+
     public void Damage(int amount)
     {
         if (!isInvincible)

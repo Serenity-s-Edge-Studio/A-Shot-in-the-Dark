@@ -10,7 +10,7 @@ namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
-        class CameraState
+        private class CameraState
         {
             public float yaw;
             public float pitch;
@@ -43,7 +43,7 @@ namespace UnityTemplateProjects
                 yaw = Mathf.Lerp(yaw, target.yaw, rotationLerpPct);
                 pitch = Mathf.Lerp(pitch, target.pitch, rotationLerpPct);
                 roll = Mathf.Lerp(roll, target.roll, rotationLerpPct);
-                
+
                 x = Mathf.Lerp(x, target.x, positionLerpPct);
                 y = Mathf.Lerp(y, target.y, positionLerpPct);
                 z = Mathf.Lerp(z, target.z, positionLerpPct);
@@ -55,9 +55,9 @@ namespace UnityTemplateProjects
                 t.position = new Vector3(x, y, z);
             }
         }
-        
-        CameraState m_TargetCameraState = new CameraState();
-        CameraState m_InterpolatingCameraState = new CameraState();
+
+        private CameraState m_TargetCameraState = new CameraState();
+        private CameraState m_InterpolatingCameraState = new CameraState();
 
         [Header("Movement Settings")]
         [Tooltip("Exponential boost factor on translation, controllable by mouse wheel.")]
@@ -76,13 +76,13 @@ namespace UnityTemplateProjects
         [Tooltip("Whether or not to invert our Y axis for mouse input to rotation.")]
         public bool invertY = false;
 
-        void OnEnable()
+        private void OnEnable()
         {
             m_TargetCameraState.SetFromTransform(transform);
             m_InterpolatingCameraState.SetFromTransform(transform);
         }
 
-        Vector3 GetInputTranslationDirection()
+        private Vector3 GetInputTranslationDirection()
         {
             Vector3 direction = new Vector3();
             if (Input.GetKey(KeyCode.W))
@@ -111,8 +111,8 @@ namespace UnityTemplateProjects
             }
             return direction;
         }
-        
-        void Update()
+
+        private void Update()
         {
             Vector3 translation = Vector3.zero;
 
@@ -122,9 +122,9 @@ namespace UnityTemplateProjects
             if (Input.GetKey(KeyCode.Escape))
             {
                 Application.Quit();
-				#if UNITY_EDITOR
+#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false; 
-				#endif
+#endif
             }
             // Hide and lock cursor when right mouse button pressed
             if (Input.GetMouseButtonDown(1))
@@ -163,7 +163,7 @@ namespace UnityTemplateProjects
             boost += Input.mouseScrollDelta.y * 0.2f;
             translation *= Mathf.Pow(2.0f, boost);
 
-#elif USE_INPUT_SYSTEM 
+#elif USE_INPUT_SYSTEM
             // TODO: make the new input system work
 #endif
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -23,6 +21,7 @@ public class DayNightCycle : MonoBehaviour
     private float _MaxInstensity;
     [SerializeField, Header("Day length in seconds")]
     private float DayLength;
+
     public PartOfDay PeriodOfDay
     {
         get
@@ -49,7 +48,7 @@ public class DayNightCycle : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Application.isPlaying)
         {
@@ -63,6 +62,7 @@ public class DayNightCycle : MonoBehaviour
         _GlobalLight.intensity = Mathf.Clamp(_IntensityCurve.Evaluate(_TimeValue / 24f), _MinIntensity, _MaxInstensity);
     }
 }
+
 public enum PartOfDay
 {
     Morning,

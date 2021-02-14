@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2bff7c1f5bcb93458cd81d4f8370e74, type: 3}
+  m_Name: 45 ACP
+  m_EditorClassIdentifier: 
+  name: .45 ACP
+  id: 2
+  description: The standard issue military .45 ACP round has a 230-grain bullet that
+    travels at approximately 830 feet per second when fired from the government issue
+    M1911A1 pistol. It operates at a relatively low maximum chamber pressure rating
+    of 21,000 psi (145 MPa) (compared to 35,000 psi/241 MPa for 9mm Parabellum and
+    .40 S&W), which due to a low bolt thrust helps extend service life of weapons.
+    Due to standard pressure .45 ACP rounds being inherently subsonic when fired
+    from handguns and submachine guns, it is a useful caliber for suppressed weapons
+    to eliminate the sonic boom.
+  mass: 0.015
+  icon: {fileID: 7482667652216324306, guid: a0031f4baadda0842ab9e1034fa5f20c, type: 3}
+  caliber: 45 ACP
+  damage: 10
+  BulletPrefab: {fileID: 6499549358662031545, guid: f5afa91c23ab5034394f08c91a17784a, type: 3}

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +11,10 @@ public class PlayerInventoryController : InventoryController
     private ItemSlot _ItemPrefab;
     [SerializeField]
     private List<ItemSlot> _ItemList;
+    [SerializeField]
+    private Item[] _StartingItems;
+    [SerializeField]
+    private int[] amounts;
 
     // Start is called before the first frame update
     public override void Start()
@@ -20,10 +23,12 @@ public class PlayerInventoryController : InventoryController
         var input = new PlayerInput().Player;
         input.Enable();
         input.Openinventory.performed += _ => { if (_InventoryUI.activeInHierarchy) HideInventory(); else DisplayInventory(); };
-        inventory.TryAddItems(0, 1);
-        inventory.TryAddItems(1, 300);
-        inventory.TryAddItems("Wood", 10);
+        for (int i = 0; i < _StartingItems.Length; i++)
+        {
+            inventory.TryAddItems(_StartingItems[i].id, amounts[i]);
+        }
     }
+
     public override void DisplayInventory()
     {
         _InventoryUI.SetActive(true);
@@ -45,11 +50,13 @@ public class PlayerInventoryController : InventoryController
             _ItemList[i].gameObject.SetActive(false);
         }
     }
+
     public override void DropItem(IStackable<Item> stack)
     {
         base.DropItem(stack);
         DisplayInventory();
     }
+
     public override void HideInventory()
     {
         _InventoryUI.SetActive(false);

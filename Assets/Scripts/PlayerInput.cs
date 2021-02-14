@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 public class @PlayerInput : IInputActionCollection, IDisposable
 {
     public InputActionAsset asset { get; }
+
     public @PlayerInput()
     {
         asset = InputActionAsset.FromJson(@"{
@@ -301,21 +302,35 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Openinventory;
+
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
+
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
+
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+
         public InputAction @Mouseposition => m_Wrapper.m_Player_Mouseposition;
+
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
+
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+
         public InputAction @Openinventory => m_Wrapper.m_Player_Openinventory;
+
         public InputActionMap Get() { return m_Wrapper.m_Player; }
+
         public void Enable() { Get().Enable(); }
+
         public void Disable() { Get().Disable(); }
+
         public bool enabled => Get().enabled;
+
         public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+
         public void SetCallbacks(IPlayerActions instance)
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
@@ -363,14 +378,21 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             }
         }
     }
+
     public PlayerActions @Player => new PlayerActions(this);
+
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
+
         void OnShoot(InputAction.CallbackContext context);
+
         void OnMouseposition(InputAction.CallbackContext context);
+
         void OnDropWeapon(InputAction.CallbackContext context);
+
         void OnReload(InputAction.CallbackContext context);
+
         void OnOpeninventory(InputAction.CallbackContext context);
     }
 }

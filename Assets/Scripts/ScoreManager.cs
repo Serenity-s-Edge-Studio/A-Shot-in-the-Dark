@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
-using TMPro;
-using System;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -16,26 +13,30 @@ public class ScoreManager : MonoBehaviour
     private TextMeshProUGUI DeathScoreText;
     private int score;
     public static ScoreManager instance;
+
     private void Awake()
     {
         instance = this;
     }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+
     }
 
     public void LoadScene(int index)
     {
         GameManager.instance.LoadScene(index);
     }
+
     public void scoreHit()
     {
         score += pointsForHit;
         updateUI();
         adjustDifficulty();
     }
+
     public void scoreKill()
     {
         score += pointsForKill;

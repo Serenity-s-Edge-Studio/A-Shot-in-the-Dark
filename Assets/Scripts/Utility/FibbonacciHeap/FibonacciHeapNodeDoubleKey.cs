@@ -6,7 +6,7 @@
     /// <typeparam name="T">Type of the data to be stored.</typeparam>
     public class FibonacciHeapNodeDoubleKey<T> : FibonacciHeapNode<T, double>
     {
-        public FibonacciHeapNodeDoubleKey( T data, double key ) : base( data, key )
+        public FibonacciHeapNodeDoubleKey(T data, double key) : base(data, key)
         {
         }
     }

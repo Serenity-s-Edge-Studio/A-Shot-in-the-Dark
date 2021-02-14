@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pickup : MonoBehaviour
@@ -15,11 +14,13 @@ public class Pickup : MonoBehaviour
     private int clipSize;
     [SerializeField]
     private int fireRate;
+
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<CircleCollider2D>();
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && collision.TryGetComponent<Player>(out Player player))
@@ -33,6 +34,7 @@ public class Pickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     public IEnumerator PreventCollision()
     {
         collider.enabled = false;
@@ -40,10 +42,11 @@ public class Pickup : MonoBehaviour
             yield return new WaitForFixedUpdate();
         collider.enabled = true;
     }
+
     public enum Type
     {
         Pistol,
-        Shotgun, 
+        Shotgun,
         GlowstickLauncher,
         Machinegun,
         Flamethrower

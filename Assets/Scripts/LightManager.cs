@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Jobs;
-using Unity.Jobs;
-using Unity.Collections;
-using Unity.Mathematics;
-using UnityEngine.Experimental.Rendering.Universal;
+
 public class LightManager : MonoBehaviour
 {
     public static LightManager instance;
@@ -14,23 +12,27 @@ public class LightManager : MonoBehaviour
     private Queue<Vector2> spawnPositions = new Queue<Vector2>(new Vector2[20]);
     private float OriginalRefreshTimer = 10;
     private float spawnPositionRefreshTimer;
+
     private void Awake()
     {
         if (instance != null) Destroy(instance);
         instance = this;
     }
+
     private void Start()
     {
         RefreshSpawnQueue();
 
         spawnPositionRefreshTimer = 10;
     }
+
     #region decay job
-    void Update()
+    private void Update()
     {
         DecayLights();
         spawnPositionRefreshTimer -= Time.deltaTime;
     }
+
     private void LateUpdate()
     {
 
@@ -55,8 +57,9 @@ public class LightManager : MonoBehaviour
         }
     }
 
-    NativeArray<LightDropStruct> lightDropStructs;
-    JobHandle decayLightsHandle;
+    private NativeArray<LightDropStruct> lightDropStructs;
+    private JobHandle decayLightsHandle;
+
     private void DecayLights()
     {
         lightDropStructs = new NativeArray<LightDropStruct>(lights.Count, Allocator.TempJob);
@@ -66,10 +69,12 @@ public class LightManager : MonoBehaviour
         }
         decayLightsHandle = new DecayJob { lightDrops = lightDropStructs, deltaTime = Time.deltaTime }.Schedule(lightDropStructs.Length, 1);
     }
+
     private struct DecayJob : IJobParallelFor
     {
         public NativeArray<LightDropStruct> lightDrops;
         public float deltaTime;
+
         public void Execute(int index)
         {
             lightDrops[index].Decay(deltaTime);
@@ -87,17 +92,20 @@ public class LightManager : MonoBehaviour
             }
         }
     }
+
     #endregion
     public void add(LightDrop light)
     {
         lights.Add(light);
         spawnPositionRefreshTimer = 0;
     }
+
     public void remove(LightDrop light)
     {
         lights.Remove(light);
         spawnPositionRefreshTimer = 0;
     }
+
     public Vector2 FindValidSpawnPosition()
     {
         if (spawnPositionRefreshTimer < .01f)
@@ -109,6 +117,7 @@ public class LightManager : MonoBehaviour
         spawnPositions.Enqueue(position);
         return position;
     }
+
     private void RefreshSpawnQueue()
     {
         NativeArray<Vector2> lightPos = new NativeArray<Vector2>(lights.Count, Allocator.TempJob);
@@ -132,6 +141,7 @@ public class LightManager : MonoBehaviour
         lightRadii.Dispose();
         currentSpawnPositions.Dispose();
     }
+
     private struct FindSpawnPositionsJob : IJob
     {
         [ReadOnly]
@@ -140,6 +150,7 @@ public class LightManager : MonoBehaviour
         public NativeArray<float> lightRadiis;
         public NativeArray<Vector2> spawnPositions;
         public Unity.Mathematics.Random random;
+
         public void Execute()
         {
             for (int i = 0; i < spawnPositions.Length; i++)
@@ -148,6 +159,7 @@ public class LightManager : MonoBehaviour
                     spawnPositions[i] = getNewPosition();
             }
         }
+
         private Vector2 getNewPosition()
         {
             Vector2 newPos;
@@ -160,6 +172,7 @@ public class LightManager : MonoBehaviour
             } while (!ValidatePosition(newPos));
             return newPos;
         }
+
         private bool ValidatePosition(Vector2 position)
         {
             for (int i = 0; i < lightPositions.Length; i++)

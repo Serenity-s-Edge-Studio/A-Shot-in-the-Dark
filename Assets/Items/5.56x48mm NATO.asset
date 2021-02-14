@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2bff7c1f5bcb93458cd81d4f8370e74, type: 3}
+  m_Name: 5.56x48mm NATO
+  m_EditorClassIdentifier: 
+  name: 5.56x45mm NATO
+  id: 1
+  description: "The 5.56\xD745mm NATO is a rimless bottlenecked intermediate cartridge
+    family developed in the late 1970s in Belgium by FN Herstal. It consists of the
+    SS109, SS110, and SS111 cartridges."
+  mass: 0.00356
+  icon: {fileID: 7482667652216324306, guid: a0031f4baadda0842ab9e1034fa5f20c, type: 3}
+  caliber: 5.56mm
+  damage: 10
+  BulletPrefab: {fileID: 6499549358662031545, guid: f5afa91c23ab5034394f08c91a17784a, type: 3}

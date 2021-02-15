@@ -26,6 +26,17 @@ public class Inventory : MonoBehaviour
         excess = amount - Mathf.RoundToInt((_Capacity - _CurrentMass) / item.mass);
         return false;
     }
+    public bool TryAddItems(Item item, int amount) 
+    {
+        if (CanStoreItems(item, amount, out _))
+        {
+            _ItemAmountDictionary.TryGetValue(item, out int inStorage);
+            _ItemAmountDictionary[item] = inStorage + amount;
+            _CurrentMass += item.mass * amount;
+            return true;
+        }
+        return false;
+    }
     public bool CanRetrieveItems(Item item, in int amount, out int remaining)
     {
         if (_ItemAmountDictionary.TryGetValue(item, out int inStorage))
@@ -36,10 +47,22 @@ public class Inventory : MonoBehaviour
         remaining = amount;
         return false;
     }
-    public bool TryAddItems(Item item, int amount) 
-    { 
-        CanStoreItems(item, amount, out int excess)
-        if ()
+    /// <summary>
+    /// Will only return true and remove the amount of items 
+    /// if and only if the inventory can retrieve that amount of item.
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="amount"></param>
+    /// <returns></returns>
+    public bool TryRetriveItems(Item item, int amount)
+    {
+        if (CanRetrieveItems(item, in amount, out int remaining))
+        {
+            _CurrentMass -= item.mass * (amount - remaining);
+            _ItemAmountDictionary[item] -= (amount - remaining);
+            return true;
+        }
+        return false;
     }
 
     public bool TryAddItems(IStackable<Item> stackable)

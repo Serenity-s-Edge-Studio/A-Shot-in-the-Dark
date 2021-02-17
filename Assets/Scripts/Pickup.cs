@@ -1,9 +1,11 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public Stackable<Item> item;
+    public ItemStack item;
+    public List<ItemStack> items = new List<ItemStack>();
     public Rigidbody2D rigidbody;
     public CircleCollider2D collider;
     [SerializeField]
@@ -25,13 +27,11 @@ public class Pickup : MonoBehaviour
     {
         if (collision.CompareTag("Player") && collision.TryGetComponent<Player>(out Player player))
         {
-            if (item != null)
+            if (player.inventory.inventory.CanStoreAll(items))
             {
-                if (!player.inventory.inventory.TryAddItems(item.getValue().id, item.TotalNumberOfItems)) return;
+                player.inventory.inventory.TryAddItems(item.item, item.Amount);
+                Destroy(gameObject);
             }
-            else
-                player.equipWeapon(type, Random.Range(clipSize, max), clipSize, fireRate);
-            Destroy(gameObject);
         }
     }
 

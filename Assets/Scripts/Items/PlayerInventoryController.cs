@@ -25,7 +25,7 @@ public class PlayerInventoryController : InventoryController
         input.Openinventory.performed += _ => { if (_InventoryUI.activeInHierarchy) HideInventory(); else DisplayInventory(); };
         for (int i = 0; i < _StartingItems.Length; i++)
         {
-            inventory.TryAddItems(_StartingItems[i].id, amounts[i]);
+            inventory.TryAddItems(_StartingItems[i], amounts[i]);
         }
     }
 
@@ -35,14 +35,14 @@ public class PlayerInventoryController : InventoryController
         var sortedList = inventory.GetSortedItems(Inventory.SortingType.Amount, false);
         for (int i = 0; i < sortedList.Length; i++)
         {
-            IStackable<Item> item = sortedList[i];
-            Debug.Log($"{item.getValue().name} {item.TotalNumberOfItems}");
+            ItemStack stack = sortedList[i];
+            Debug.Log($"{stack.item.name} {stack.Amount}");
             if (i >= _ItemList.Count)
             {
                 _ItemList.Add(Instantiate(_ItemPrefab, _InventoryContainer.transform));
             }
-            _ItemList[i].name = item.getValue().name;
-            _ItemList[i].UpdateUI(item, this);
+            _ItemList[i].name = stack.item.name;
+            _ItemList[i].UpdateUI(stack, this);
             _ItemList[i].gameObject.SetActive(true);
         }
         for (int i = sortedList.Length; i < _ItemList.Count; i++)
@@ -51,7 +51,7 @@ public class PlayerInventoryController : InventoryController
         }
     }
 
-    public override void DropItem(IStackable<Item> stack)
+    public override void DropItem(ItemStack stack)
     {
         base.DropItem(stack);
         DisplayInventory();

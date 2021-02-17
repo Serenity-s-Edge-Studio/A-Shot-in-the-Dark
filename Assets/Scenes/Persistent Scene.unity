@@ -1064,13 +1064,13 @@ MonoBehaviour:
   TotalItems: 0
   itemStackDefinitions:
   - item: {fileID: 11400000, guid: e97798a2f4e4cb343b458b55df5629b6, type: 2}
-    StackSize: 1
+    Amount: 1
   - item: {fileID: 11400000, guid: 2758e02fc886e4d4aa195cc7434aafde, type: 2}
-    StackSize: 20
+    Amount: 20
   - item: {fileID: 11400000, guid: 869601cde4d6f2a43aee9d18beeacd34, type: 2}
-    StackSize: 1
+    Amount: 1
   - item: {fileID: 11400000, guid: a30865ff41ee15d49a5db6436d330733, type: 2}
-    StackSize: 8
+    Amount: 8
 --- !u!1 &1111619767
 GameObject:
   m_ObjectHideFlags: 0

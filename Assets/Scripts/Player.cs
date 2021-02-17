@@ -69,6 +69,7 @@ public class Player : Entity
     private bool isInvincible;
 
     public PlayerInventoryController inventory;
+    private PlayerGunController gunController;
 
     private void Awake()
     {
@@ -88,8 +89,9 @@ public class Player : Entity
         animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         inventory = GetComponent<PlayerInventoryController>();
-        SwitchBackToPistol();
-        updateUI();
+        gunController = GetComponent<PlayerGunController>();
+        //SwitchBackToPistol();
+        //updateUI();
     }
 
     private void Reload_performed(InputAction.CallbackContext obj)
@@ -163,7 +165,7 @@ public class Player : Entity
                 animator.SetTrigger("Shoot");
                 source.PlayOneShot(shootingClips[(int)currentGunType]);
                 currentMagazine--;
-                updateUI();
+                //updateUI();
                 if (currentMagazine == 0)
                 {
                     if (!Reload())
@@ -203,7 +205,7 @@ public class Player : Entity
             {
                 ammo += currentMagazine;
                 currentMagazine = 0;
-                updateUI();
+                //updateUI();
             }
             if (ammo < clipSize)
             {
@@ -254,20 +256,7 @@ public class Player : Entity
         currentGunType = type;
         this.clipSize = clipSize;
         this.fireRate = 60f / fireRate;
-        updateUI();
-    }
-
-    public void updateUI()
-    {
-        gunImage.sprite = sprites[(int)currentGunType];
-        if (currentGunType == Pickup.Type.Pistol)
-        {
-            ammoText.text = $"{currentMagazine}/∞";
-        }
-        else
-        {
-            ammoText.text = $"{currentMagazine}/{ammo}";
-        }
+        //updateUI();
     }
 
     public void Damage(int amount)
@@ -278,6 +267,7 @@ public class Player : Entity
             if (health == 0 && !isDead)
             {
                 isDead = true;
+                gunController.CanShoot = false;
                 deathText.SetActive(true);
                 this.enabled = false;
                 rigidbody.simulated = false;

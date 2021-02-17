@@ -18,15 +18,15 @@ public abstract class InventoryController : MonoBehaviour
         entity = GetComponent<Player>();
     }
 
-    public virtual void DropItem(IStackable<Item> stack)
+    public virtual void DropItem(ItemStack stack)
     {
-        int amount = stack.TotalNumberOfItems;
-        int missing = amount;
-        if (inventory.TryRemoveItems(stack.getValue().id, ref missing))
+        int amount = stack.Amount;
+        inventory.CanRetrieveItems(stack.item, in stack.Amount, out int missing);
+        if (inventory.TryRetriveItems(stack.item, amount - missing))
         {
             Pickup droppedItem = Instantiate(_DropPrefab, gameObject.transform.position, Quaternion.identity);
-            droppedItem.item = new Stackable<Item>(stack, amount - missing);
-            droppedItem.GetComponent<SpriteRenderer>().sprite = stack.getValue().icon;
+            droppedItem.item = new ItemStack { item = stack.item, Amount = amount - missing };
+            droppedItem.GetComponent<SpriteRenderer>().sprite = stack.item.icon;
             Vector2 force = Random.insideUnitCircle * _EjectForce;
             droppedItem.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
             droppedItem.StartCoroutine(droppedItem.PreventCollision());

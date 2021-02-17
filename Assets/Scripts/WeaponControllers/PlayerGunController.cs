@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class PlayerGunController : GunController
 {
+    public bool CanShoot;
+
     private PlayerInput.PlayerActions input;
     private bool isShooting = false;
+    private bool _CanShoot => CanShoot && isShooting && !EventSystem.current.IsPointerOverGameObject();
 
     [SerializeField]
     private Image gunImage;
@@ -26,15 +29,13 @@ public class PlayerGunController : GunController
     private void Update()
     {
         m_Cooldown = Mathf.Max(0, m_Cooldown - Time.deltaTime);
-        if (m_Cooldown < 0.01f && isShooting && !EventSystem.current.IsPointerOverGameObject())
+        if (m_Cooldown < 0.01f && _CanShoot)
         {
             Shoot();
-            if (m_Magazine.TotalNumberOfItems == 0)
+            UpdateUI();
+            if (_BulletsInMagazine == 0)
             {
-                if (!Reload())
-                {
-                    
-                }
+                Reload();
             }
         }
     }
@@ -47,8 +48,8 @@ public class PlayerGunController : GunController
     public void UpdateUI()
     {
         gunImage.sprite = m_EquippedGun.icon;
-        int amountInInventory = m_ConnectedInventory.GetStack(m_EquippedGun.compatibleAmmo, out IStackable<Item> items) ? items.TotalNumberOfItems : 0;
-        ammoText.text = $"{m_Magazine.size} / {amountInInventory}";
+        m_ConnectedInventory.TryGetItem(m_EquippedGun.compatibleAmmo, out int amountInInventory);
+        ammoText.text = $"{_BulletsInMagazine}/{amountInInventory}";
         //if (currentGunType == Pickup.Type.Pistol)
         //{
         //    ammoText.text = $"{currentMagazine}/∞";

@@ -37,14 +37,14 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
-    public bool CanRetrieveItems(Item item, in int amount, out int remaining)
+    public bool CanRetrieveItems(Item item, in int amount, out int missingItems)
     {
         if (_ItemAmountDictionary.TryGetValue(item, out int inStorage))
         {
-            remaining = Mathf.Max(amount - inStorage, 0);
-            return remaining < 1;
+            missingItems = Mathf.Max(amount - inStorage, 0);
+            return missingItems < 1;
         }
-        remaining = amount;
+        missingItems = amount;
         return false;
     }
     /// <summary>
@@ -65,93 +65,29 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public bool TryAddItems(IStackable<Item> stackable)
+    public bool TryGetItem(Item item, out int amount)
     {
-        if (stackable.TotalMass > _Capacity - _CurrentMass) return false;
-        if (m_StackableInventory.TryGetValue(stackable.getValue().id, out IStackable<Item> items))
+        return _ItemAmountDictionary.TryGetValue(item, out amount);
+    }
+
+    public bool CanStoreAll(List<ItemStack> stacks)
+    {
+        float mass = _CurrentMass;
+        foreach (ItemStack stack in stacks)
         {
-            if (!(items.getValue() == stackable.getValue()))
-            {
-                Debug.LogError("This inventory has encountered an Item with a duplicate key");
-                return false;
-            }
-            items.Add(stackable.TotalNumberOfItems);
-            return true;
+            mass += stack.item.mass * stack.Amount;
+            if (mass > _Capacity) return false;
         }
-        m_StackableInventory.Add(stackable.getValue().id, stackable);
         return true;
     }
-
-    private bool TryAddItems<T>(T item, int amount) where T : Item
+    public ItemStack[] GetSortedItems(SortingType sortMethod, bool isAscending)
     {
-        if (item.mass * amount > _Capacity - _CurrentMass) return false;
-        if (m_StackableInventory.TryGetValue(item.id, out IStackable<Item> items))
+        List<ItemStack> stacks = new List<ItemStack>(_ItemAmountDictionary.Count);
+        foreach (Item key in _ItemAmountDictionary.Keys)
         {
-            if (!(items.getValue() is T))
-            {
-                Debug.LogError("This inventory has encountered an Item with a duplicate key");
-                return false;
-            }
-            items.Add(amount);
-            return true;
+            stacks.Add(new ItemStack { item = key, Amount = _ItemAmountDictionary[key] });
         }
-        int stackSize = ItemDatabase.instance.TryGetStackSize(item.id, out int size) ? size : 64;
-        m_StackableInventory.Add(item.id, new Stackable<T>(item, amount, stackSize));
-        return true;
-    }
-
-    /// <summary>
-    /// Tries to remove an amount of an item from the inventory adjusting the current mass in the process.
-    /// </summary>
-    /// <typeparam name="T">The item type to be removed.</typeparam>
-    /// <param name="item">The item reference to be removed.</param>
-    /// <param name="amount">The amount to remove.</param>
-    /// <returns>Returns true if the item exists in the inventory. Sets the out value of amount to be the remaining count of items in the stack.</returns>
-    private bool TryRemoveItems<T>(T item, ref int amount) where T : Item
-    {
-        if (m_StackableInventory.TryGetValue(item.id, out IStackable<Item> stack))
-        {
-            if (!(stack.getValue() is T))
-            {
-                Debug.LogError("This inventory has encountered an Item with a duplicate key");
-                return false;
-            }
-            int tempAmount = stack.Remove(amount);
-            if (tempAmount <= 0) m_StackableInventory.Remove(item.id);
-            _CurrentMass -= tempAmount * item.mass;
-            amount = tempAmount;
-            return true;
-        }
-        return false;
-    }
-    public bool GetStack(Item item, out IStackable<Item> result)
-    {
-        return m_StackableInventory.TryGetValue(item.id, out result);
-    }
-    public bool TryAddItems(int id, int amount)
-    {
-        return ItemDatabase.instance.TryGetItem(id, out Item item) ? TryAddItems(item, amount) : false;
-    }
-
-    public bool TryAddItems(string name, int amount)
-    {
-        return ItemDatabase.instance.TryGetItem(name, out Item item) ? TryAddItems(item, amount) : false;
-    }
-
-    public bool TryRemoveItems(int id, ref int amount)
-    {
-        return ItemDatabase.instance.TryGetItem(id, out Item item) ? TryRemoveItems(item, ref amount) : false;
-    }
-
-    public bool TryRemoveItems(string name, int amount)
-    {
-        return ItemDatabase.instance.TryGetItem(name, out Item item) ? TryRemoveItems(item, ref amount) : false;
-    }
-
-    public IStackable<Item>[] GetSortedItems(SortingType sortMethod, bool isAscending)
-    {
-        List<IStackable<Item>> stacks = m_StackableInventory.Values.ToList();
-        stacks.Sort(new StackComparer<Item>(sortMethod, isAscending));
+        stacks.Sort(new StackComparer<ItemStack>(sortMethod, isAscending));
         return stacks.ToArray();
     }
 

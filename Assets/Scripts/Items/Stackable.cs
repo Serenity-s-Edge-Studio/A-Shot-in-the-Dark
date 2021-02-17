@@ -110,7 +110,7 @@ public class Stackable<T> : IStackable<T> where T : Item
     }
 }
 
-public class StackComparer<U> : IComparer<IStackable<U>> where U : Item
+public class StackComparer<U> : IComparer<U> where U : ItemStack
 {
     private Inventory.SortingType sortingType;
     private bool ascending;
@@ -123,14 +123,14 @@ public class StackComparer<U> : IComparer<IStackable<U>> where U : Item
         this.ascending = ascending;
     }
 
-    public int Compare(IStackable<U> a, IStackable<U> b)
+    public int Compare(U a, U b)
     {
         switch (sortingType)
         {
             case Inventory.SortingType.Amount:
-                return (a.TotalNumberOfItems - b.TotalNumberOfItems) * (ascending ? 1 : -1);
+                return (a.Amount - b.Amount) * (ascending ? 1 : -1);
             case Inventory.SortingType.Name:
-                return string.CompareOrdinal(a.getValue().name, b.getValue().name) * (ascending ? 1 : -1);
+                return string.CompareOrdinal(a.item.name, b.item.name) * (ascending ? 1 : -1);
         }
         return 0;
     }

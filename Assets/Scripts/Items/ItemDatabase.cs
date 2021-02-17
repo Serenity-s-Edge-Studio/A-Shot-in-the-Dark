@@ -6,7 +6,7 @@ public class ItemDatabase : MonoBehaviour
 {
     public static ItemDatabase instance;
     public int TotalItems;
-    public ItemStackDefinition[] itemStackDefinitions;
+    public ItemStack[] itemStackDefinitions;
     private Dictionary<int, Item> ItemIDDictionary;
     private Dictionary<string, int> NameIDDictionary;
     private Dictionary<int, int> StackSizeDictionary;
@@ -19,12 +19,12 @@ public class ItemDatabase : MonoBehaviour
         ItemIDDictionary = new Dictionary<int, Item>(itemStackDefinitions.Length);
         NameIDDictionary = new Dictionary<string, int>(itemStackDefinitions.Length);
         StackSizeDictionary = new Dictionary<int, int>(itemStackDefinitions.Length);
-        foreach (ItemStackDefinition entry in itemStackDefinitions)
+        foreach (ItemStack entry in itemStackDefinitions)
         {
             Item item = entry.item;
             ItemIDDictionary.Add(item.id, item);
             NameIDDictionary.Add(item.name, item.id);
-            StackSizeDictionary.Add(item.id, entry.StackSize);
+            StackSizeDictionary.Add(item.id, entry.Amount);
             TotalItems++;
         }
     }
@@ -55,8 +55,8 @@ public class ItemDatabase : MonoBehaviour
     }
 }
 [Serializable]
-public class ItemStackDefinition
+public class ItemStack
 {
     public Item item;
-    public int StackSize;
+    public int Amount;
 }

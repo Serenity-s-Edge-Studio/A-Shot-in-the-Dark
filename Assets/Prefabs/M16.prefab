@@ -154,9 +154,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb16c82bcd514647a7cf7ebb2090093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item:
-    item: {fileID: 11400000, guid: e97798a2f4e4cb343b458b55df5629b6, type: 2}
+  items:
+  - item: {fileID: 11400000, guid: e97798a2f4e4cb343b458b55df5629b6, type: 2}
     Amount: 1
+  - item: {fileID: 11400000, guid: 2758e02fc886e4d4aa195cc7434aafde, type: 2}
+    Amount: 60
   rigidbody: {fileID: 0}
   collider: {fileID: 0}
   type: 3

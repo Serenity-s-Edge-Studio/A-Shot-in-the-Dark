@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public ItemStack item;
     public List<ItemStack> items = new List<ItemStack>();
     public Rigidbody2D rigidbody;
     public CircleCollider2D collider;
@@ -29,7 +28,8 @@ public class Pickup : MonoBehaviour
         {
             if (player.inventory.inventory.CanStoreAll(items))
             {
-                player.inventory.inventory.TryAddItems(item.item, item.Amount);
+                foreach (ItemStack item in items)
+                    player.inventory.inventory.TryAddItems(item.item, item.Amount);
                 Destroy(gameObject);
             }
         }

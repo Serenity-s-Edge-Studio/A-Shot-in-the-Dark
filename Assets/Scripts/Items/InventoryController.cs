@@ -31,6 +31,7 @@ public abstract class InventoryController : MonoBehaviour
             droppedItem.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
             droppedItem.StartCoroutine(droppedItem.PreventCollision());
         }
+        DisplayInventory();
     }
 
     public abstract void DisplayInventory();

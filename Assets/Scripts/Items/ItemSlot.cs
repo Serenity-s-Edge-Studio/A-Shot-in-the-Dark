@@ -48,7 +48,11 @@ public class ItemSlot : MonoBehaviour
         {
             _EquipItemButton.gameObject.SetActive(true);
             _EquipItemButton.onClick.RemoveAllListeners();
-            _EquipItemButton.onClick.AddListener(() => equipable.Equip(inventoryController.entity));
+            _EquipItemButton.onClick.AddListener(() =>
+            {
+                equipable.Equip(inventoryController.entity);
+                inventoryController.DisplayInventory();
+            });
         }
         else
         {

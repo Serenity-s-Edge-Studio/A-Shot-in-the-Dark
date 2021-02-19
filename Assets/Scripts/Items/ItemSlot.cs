@@ -33,12 +33,13 @@ public class ItemSlot : MonoBehaviour
         if (descriptionText == null)
         {
             descriptionText = Instantiate(_DescriptionPrefab, transform.parent).text;
+            GameObject parentGO = descriptionText.transform.parent.gameObject;
             _ViewDescriptionButton.onClick.AddListener(() =>
             {
                 _ViewDescriptionButton.GetComponent<Animator>().SetTrigger("Flip");
-                GameObject parentGO = descriptionText.transform.parent.gameObject;
                 parentGO.SetActive(!parentGO.activeInHierarchy);
             });
+            parentGO.SetActive(false);
         }
         descriptionText.text = value.description;
         _DropItemButton.onClick.RemoveAllListeners();

@@ -1071,6 +1071,14 @@ MonoBehaviour:
     Amount: 1
   - item: {fileID: 11400000, guid: a30865ff41ee15d49a5db6436d330733, type: 2}
     Amount: 8
+  - item: {fileID: 11400000, guid: 394fac71ed769b341b995f71e30ac17a, type: 2}
+    Amount: 6
+  - item: {fileID: 11400000, guid: 4f6e4ea2e6e523e4c9de8db2371a2107, type: 2}
+    Amount: 3
+  - item: {fileID: 11400000, guid: 7ed0a4c360b5d234bbb592eac9e48f30, type: 2}
+    Amount: 1
+  - item: {fileID: 11400000, guid: a7715e3f6df758047af5262b88eeb09f, type: 2}
+    Amount: 1
 --- !u!1 &1111619767
 GameObject:
   m_ObjectHideFlags: 0

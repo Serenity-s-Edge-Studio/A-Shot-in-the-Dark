@@ -85,7 +85,8 @@ public class Inventory : MonoBehaviour
         List<ItemStack> stacks = new List<ItemStack>(_ItemAmountDictionary.Count);
         foreach (Item key in _ItemAmountDictionary.Keys)
         {
-            stacks.Add(new ItemStack { item = key, Amount = _ItemAmountDictionary[key] });
+            if (_ItemAmountDictionary[key] > 0)
+                stacks.Add(new ItemStack { item = key, Amount = _ItemAmountDictionary[key] });
         }
         stacks.Sort(new StackComparer<ItemStack>(sortMethod, isAscending));
         return stacks.ToArray();

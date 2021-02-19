@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using TMPro;
+#if !UNITY_WEBGL
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

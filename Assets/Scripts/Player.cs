@@ -10,41 +10,10 @@ public class Player : Entity
     [SerializeField]
     private Rigidbody2D rigidbody;
     public float speed = 1;
-    [SerializeField]
-    private LightDrop MuzzleFlash;
-    [SerializeField]
-    private LightDrop Bullet;
 
     private new Camera camera;
-    [SerializeField]
-    private float projectileSpeed;
-    private Animator animator;
-    [SerializeField]
-    private Transform spawnPosition;
     private AudioSource source;
-    [SerializeField]
-    private AudioClip[] shootingClips;
-    [SerializeField]
-    private AudioClip[] pickupClips;
-    [SerializeField]
-    private AudioClip[] reloadClips;
 
-    [SerializeField]
-    private Image gunImage;
-    [SerializeField]
-    private TextMeshProUGUI ammoText;
-    [SerializeField]
-    private Sprite[] sprites;
-    [SerializeField]
-    private float fireRate;
-    [SerializeField]
-    private float spreadSize;
-    private float currentFireRate = 0;
-
-    private int ammo;
-    private int clipSize = 7;
-    private int currentMagazine;
-    private Pickup.Type currentGunType = Pickup.Type.Machinegun;
     [SerializeField]
     public bool toggleMovement;
     private int health = 100;
@@ -56,12 +25,7 @@ public class Player : Entity
     private GameObject deathParticles;
     [SerializeField]
     private AudioClip deathSound;
-    [SerializeField]
-    private LightDrop glowStick;
-    [SerializeField]
-    private GameObject flameMuzzle;
-    [SerializeField]
-    private LightDrop flameProjectile;
+
     private bool isDead = false;
 
     public static Player instance;
@@ -82,149 +46,10 @@ public class Player : Entity
         rigidbody = GetComponent<Rigidbody2D>();
         input = new PlayerInput().Player;
         input.Enable();
-        //input.Shoot.performed += Shoot_performed;
-        //input.DropWeapon.performed += DropWeapon_performed;
-        //input.Reload.performed += Reload_performed;
         camera = FindObjectOfType<Camera>();
-        animator = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         inventory = GetComponent<PlayerInventoryController>();
         gunController = GetComponent<PlayerGunController>();
-        //SwitchBackToPistol();
-        //updateUI();
-    }
-
-    private void Reload_performed(InputAction.CallbackContext obj)
-    {
-        StopAllCoroutines();
-        Reload();
-    }
-
-    private void DropWeapon_performed(InputAction.CallbackContext obj)
-    {
-        SwitchBackToPistol();
-    }
-
-    private void Shoot_performed(InputAction.CallbackContext obj)
-    {
-        if (obj.ReadValueAsButton() && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            StartCoroutine(ShootCoroutine());
-        else
-        {
-            StopAllCoroutines();
-        }
-    }
-
-    private IEnumerator ShootCoroutine()
-    {
-        while (true)
-        {
-            if (currentFireRate < 0.01f)
-            {
-                Vector2 mousePos = Mouse.current.position.ReadValue();
-                Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
-                if (currentGunType != Pickup.Type.Flamethrower) Instantiate(MuzzleFlash, transform.position, Quaternion.identity);
-                LightDrop bullet;
-                float width;
-                switch (currentGunType)
-                {
-                    case Pickup.Type.Flamethrower:
-                        flameMuzzle.SetActive(true);
-                        bullet = Instantiate(flameProjectile, spawnPosition.position, spawnPosition.rotation);
-                        width = Random.Range(-1f, 1f) * (spreadSize + 60f);
-                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
-                        break;
-                    case Pickup.Type.Machinegun:
-                        bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
-                        width = Random.Range(-1f, 1f) * (spreadSize + 10f);
-                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
-                        bullet.GetComponentInChildren<Bullet>().damage = 4;
-                        break;
-                    case Pickup.Type.Shotgun:
-                        for (int i = 0; i < 4; i++)
-                        {
-                            bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
-                            width = Random.Range(-1f, 1f) * (spreadSize + 45f);
-                            bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
-                            bullet.GetComponentInChildren<Bullet>().damage = 3;
-                        }
-                        break;
-                    case Pickup.Type.GlowstickLauncher:
-                        bullet = Instantiate(glowStick, spawnPosition.position, spawnPosition.rotation);
-                        width = Random.Range(-1f, 1f) * (spreadSize);
-                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
-                        break;
-                    case Pickup.Type.Pistol:
-                        bullet = Instantiate(Bullet, spawnPosition.position, spawnPosition.rotation);
-                        width = Random.Range(-1f, 1f) * (spreadSize);
-                        bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
-                        bullet.GetComponentInChildren<Bullet>().damage = 5;
-                        break;
-                }
-
-                animator.SetTrigger("Shoot");
-                source.PlayOneShot(shootingClips[(int)currentGunType]);
-                currentMagazine--;
-                //updateUI();
-                if (currentMagazine == 0)
-                {
-                    if (!Reload())
-                        SwitchBackToPistol();
-                    yield return new WaitForSeconds(1f);
-                }
-                currentFireRate = fireRate;
-            }
-            yield return null;
-        }
-    }
-
-    private void SwitchBackToPistol()
-    {
-        if (currentGunType != Pickup.Type.Pistol)
-        {
-            currentGunType = Pickup.Type.Pistol;
-            clipSize = 7;
-            fireRate = 60f / 45f;
-            animator.SetBool("Pistol", true);
-            Reload();
-        }
-    }
-
-    private bool Reload()
-    {
-        animator.SetTrigger("Reload");
-        source.PlayOneShot(reloadClips[(int)currentGunType]);
-        if (currentGunType == Pickup.Type.Pistol)
-        {
-            currentMagazine = clipSize;
-            return true;
-        }
-        else if (ammo > 0)
-        {
-            if (currentMagazine > 0)
-            {
-                ammo += currentMagazine;
-                currentMagazine = 0;
-                //updateUI();
-            }
-            if (ammo < clipSize)
-            {
-                currentMagazine = ammo;
-                ammo = 0;
-            }
-            else
-            {
-                ammo -= clipSize;
-                currentMagazine = clipSize;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private void Update()
-    {
-        currentFireRate = Mathf.Max(0, currentFireRate - Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -238,25 +63,6 @@ public class Player : Entity
         Vector2 axis = input.Movement.ReadValue<Vector2>().normalized;
         if (toggleMovement) transform.position += (Vector3)axis * speed;
         else transform.position += ((-transform.up * axis.x) + (transform.right * axis.y)).normalized * speed;
-    }
-
-    public void equipWeapon(Pickup.Type type, int ammo, int clipSize, int fireRate)
-    {
-        if (type != Pickup.Type.Pistol) animator.SetBool("Pistol", false);
-        if (type == currentGunType)
-        {
-            this.ammo += ammo;
-        }
-        else
-        {
-            this.ammo = ammo - clipSize;
-            currentMagazine = clipSize;
-        }
-        source.PlayOneShot(pickupClips[(int)type]);
-        currentGunType = type;
-        this.clipSize = clipSize;
-        this.fireRate = 60f / fireRate;
-        //updateUI();
     }
 
     public void Damage(int amount)

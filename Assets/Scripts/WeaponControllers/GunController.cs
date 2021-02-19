@@ -61,14 +61,15 @@ public class GunController : MonoBehaviour
 
     protected virtual void SpawnProjectiles()
     {
-        LightDrop bulletPrefab = _EquippedAmmo.BulletPrefab;
+        LightDrop projectilePrefab = _EquippedAmmo.BulletPrefab;
         float projectileSpeed = m_EquippedGun.MuzzleVelocity;
         for (int i = 0; i < m_EquippedGun.ProjectileAmount; i++)
         {
-            LightDrop bullet = Instantiate(bulletPrefab, MuzzleTransform.position, MuzzleTransform.rotation);
+            LightDrop projectile = Instantiate(projectilePrefab, MuzzleTransform.position, MuzzleTransform.rotation);
             float width = Random.Range(-1f, 1f) * m_EquippedGun.SpreadAngle;
-            bullet.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
-            bullet.GetComponentInChildren<Bullet>().damage = _EquippedAmmo.damage;
+            projectile.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+            Bullet bullet = projectile.GetComponentInChildren<Bullet>();
+            if (bullet != null) bullet.damage = _EquippedAmmo.damage * m_EquippedGun.DamageScale;
         }
     }
     public virtual void EquipGun(Gun gun)

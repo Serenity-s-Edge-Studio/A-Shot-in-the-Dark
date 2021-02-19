@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - item: {fileID: 11400000, guid: 04241697306092b4896626b4abe5d13b, type: 2}
+  - item: {fileID: 11400000, guid: 7ed0a4c360b5d234bbb592eac9e48f30, type: 2}
     Amount: 1
   - item: {fileID: 11400000, guid: 4f6e4ea2e6e523e4c9de8db2371a2107, type: 2}
     Amount: 5

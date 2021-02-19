@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 5.56x48mm NATO
   m_EditorClassIdentifier: 
   name: 5.56x45mm NATO
-  id: 3
+  id: 1
   description: "The 5.56\xD745mm NATO is a rimless bottlenecked intermediate cartridge
     family developed in the late 1970s in Belgium by FN Herstal. It consists of the
     SS109, SS110, and SS111 cartridges."

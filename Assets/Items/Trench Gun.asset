@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Trench Gun
   m_EditorClassIdentifier: 
   name: Winchester Model 1897
-  id: 10
+  id: 6
   description: The Winchester Model 1897, also known as the Model 97, M97, or Trench
     Gun, is a pump-action shotgun with an external hammer and tube magazine manufactured
     by the Winchester Repeating Arms Company. The Model 1897 was an evolution of

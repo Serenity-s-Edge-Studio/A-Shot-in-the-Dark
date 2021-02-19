@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2bff7c1f5bcb93458cd81d4f8370e74, type: 3}
   m_Name: GlowStick
   m_EditorClassIdentifier: 
-  name: 
-  id: 3
-  description: 
-  mass: 0
-  icon: {fileID: 0}
+  name: Glow Stick
+  id: 7
+  description: It's shiny but it'll only last a short period of time.
+  mass: 0.01
+  icon: {fileID: 21300000, guid: ee45d94a17c70b54db20eee6f0239f19, type: 3}
   caliber: 
   damage: 0
-  BulletPrefab: {fileID: 0}
+  BulletPrefab: {fileID: 7813525200171079987, guid: f0a16810b5d33884c8e280c35f87d400, type: 3}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   name: M1911
-  id: 3
+  id: 5
   description: The M1911, also known as the Colt 1911, or the Colt Government, is
     a single-action, semi-automatic, magazine-fed, recoil-operated pistol chambered
     for the .45 ACP cartridge.[7] It served as the standard-issue sidearm for the

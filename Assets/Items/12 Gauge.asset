@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 12 Gauge
   m_EditorClassIdentifier: 
   name: 12 guage
-  id: 11
+  id: 2
   description: A shotgun shell, shotshell or simply shell is a type of rimmed, cylindrical
     (straight-walled) cartridges used specifically by shotguns, and is typically
     loaded with numerous small, pellet-like spherical sub-projectiles called shots,

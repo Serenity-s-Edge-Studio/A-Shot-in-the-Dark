@@ -40,6 +40,7 @@ public class GunController : MonoBehaviour
 
     protected virtual bool Reload()
     {
+        m_Cooldown = m_EquippedGun.ReloadTime;
         if (m_ConnectedInventory.TryAddItems(_EquippedAmmo, _BulletsInMagazine))
         {
             animator.SetTrigger("Reload");

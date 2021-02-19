@@ -23,6 +23,8 @@ public class GunController : MonoBehaviour
     protected virtual void Start()
     {
         this.m_ConnectedInventory = this.GetComponentInChildren<Inventory>();
+        if (m_EquippedGun == null || _EquippedAmmo == null)
+            Debug.LogWarning($"This gun controller on {gameObject.name} is missing either it's equipped gun or ammo, these should be initially assigned in the inspector");
         this.m_Cooldown = this.m_EquippedGun.FireRate;
     }
 

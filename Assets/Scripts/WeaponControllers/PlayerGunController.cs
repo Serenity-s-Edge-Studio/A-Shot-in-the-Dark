@@ -50,13 +50,10 @@ public class PlayerGunController : GunController
         gunImage.sprite = m_EquippedGun.icon;
         m_ConnectedInventory.TryGetItem(m_EquippedGun.compatibleAmmo, out int amountInInventory);
         ammoText.text = $"{_BulletsInMagazine}/{amountInInventory}";
-        //if (currentGunType == Pickup.Type.Pistol)
-        //{
-        //    ammoText.text = $"{currentMagazine}/∞";
-        //}
-        //else
-        //{
-        //    ammoText.text = $"{currentMagazine}/{ammo}";
-        //}
+    }
+    public override void EquipGun(Gun gun)
+    {
+        base.EquipGun(gun);
+        animator.SetBool("Pistol", gun.name.Equals("M1911"));
     }
 }

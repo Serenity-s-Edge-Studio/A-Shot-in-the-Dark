@@ -15,7 +15,7 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private Transform MuzzleTransform;
     [SerializeField]
-    private Animator animator;
+    protected Animator animator;
     [SerializeField]
     private AudioSource source;
 

@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: Trench Gun
   m_EditorClassIdentifier: 
   name: Winchester Model 1897
-  id: 6
-  description: The Winchester Model 1897, also known as the Model 97, M97, or Trench
-    Gun, is a pump-action shotgun with an external hammer and tube magazine manufactured
-    by the Winchester Repeating Arms Company. The Model 1897 was an evolution of
-    the Winchester Model 1893 designed by John Browning.
+  id: 5
+  description: Point this at your problem and click. Now your problem is gone.
   mass: 3.6
   icon: {fileID: -2408530018317867212, guid: 9b741b91bd01e0749ad0ab3f86cbb97a, type: 3}
   FireRate: 1

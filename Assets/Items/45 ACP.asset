@@ -13,15 +13,8 @@ MonoBehaviour:
   m_Name: 45 ACP
   m_EditorClassIdentifier: 
   name: .45 ACP
-  id: 3
-  description: The standard issue military .45 ACP round has a 230-grain bullet that
-    travels at approximately 830 feet per second when fired from the government issue
-    M1911A1 pistol. It operates at a relatively low maximum chamber pressure rating
-    of 21,000 psi (145 MPa) (compared to 35,000 psi/241 MPa for 9mm Parabellum and
-    .40 S&W), which due to a low bolt thrust helps extend service life of weapons.
-    Due to standard pressure .45 ACP rounds being inherently subsonic when fired
-    from handguns and submachine guns, it is a useful caliber for suppressed weapons
-    to eliminate the sonic boom.
+  id: 2
+  description: Fuel for pistols.
   mass: 0.015
   icon: {fileID: 7482667652216324306, guid: a0031f4baadda0842ab9e1034fa5f20c, type: 3}
   caliber: 45 ACP

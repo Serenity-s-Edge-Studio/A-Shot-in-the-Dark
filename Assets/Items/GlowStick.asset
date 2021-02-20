@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: GlowStick
   m_EditorClassIdentifier: 
   name: Glow Stick
-  id: 7
-  description: It's shiny but it'll only last a short period of time.
+  id: 9
+  description: Temporary light source for illuminating dark areas. The light also
+    attracts the undead, so be careful.
   mass: 0.01
   icon: {fileID: 21300000, guid: ee45d94a17c70b54db20eee6f0239f19, type: 3}
   caliber: 

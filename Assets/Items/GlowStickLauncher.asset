@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Glow Stick Launcher
   id: 8
-  description: Clunk Clunk
+  description: 'This is normally used for high grade explosives. Now we use it to
+    light our path
+
+'
   mass: 1
   icon: {fileID: 21300000, guid: 391ca3d49f37b614082123c17736df3a, type: 3}
   FireRate: 1

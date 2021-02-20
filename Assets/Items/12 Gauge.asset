@@ -13,16 +13,8 @@ MonoBehaviour:
   m_Name: 12 Gauge
   m_EditorClassIdentifier: 
   name: 12 guage
-  id: 2
-  description: A shotgun shell, shotshell or simply shell is a type of rimmed, cylindrical
-    (straight-walled) cartridges used specifically by shotguns, and is typically
-    loaded with numerous small, pellet-like spherical sub-projectiles called shots,
-    fired through a smoothbore barrel with a tapered constriction at the muzzle to
-    regulate the extent of scattering. A shell can sometimes also contain only a
-    single large solid projectile known as a slug, fired usually through a rifled
-    slug barrel. The shell casing usually consist of a paper or plastic tube mounted
-    on a brass base holding a primer, and the shots are typically contained by a
-    wadding/sabot inside the case. The caliber of the shotshell is known as its gauge.
+  id: 6
+  description: Fuel for shotguns
   mass: 0.056
   icon: {fileID: -9120936505241938292, guid: 9b741b91bd01e0749ad0ab3f86cbb97a, type: 3}
   caliber: 

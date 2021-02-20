@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: M16
   m_EditorClassIdentifier: 
   name: M16
-  id: 4
-  description: The M16 is a lightweight, 5.56 mm, air-cooled, gas-operated, magazine-fed
-    assault rifle, with a rotating bolt. The M16's receivers are made of 7075 aluminum
-    alloy, its barrel, bolt, and bolt carrier of steel, and its handguards, pistol
-    grip, and buttstock of plastics.
+  id: 7
+  description: Military grade assault rifle with a high rate of fire. Good for those
+    time when you have to spray and pray.
   mass: 2.89
   icon: {fileID: 21300000, guid: f66dd96c2ccc1b34a85bf345d626d299, type: 3}
   FireRate: 0.06315789

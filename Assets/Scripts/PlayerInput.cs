@@ -9,7 +9,6 @@ using UnityEngine.InputSystem.Utilities;
 public class @PlayerInput : IInputActionCollection, IDisposable
 {
     public InputActionAsset asset { get; }
-
     public @PlayerInput()
     {
         asset = InputActionAsset.FromJson(@"{
@@ -235,6 +234,52 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""BuildTool"",
+            ""id"": ""89dc070b-f183-4b1f-947f-e00bf8d3a049"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleBuildTool"",
+                    ""type"": ""Button"",
+                    ""id"": ""2328135f-6cf2-4ef2-b55c-a7385cac3bcf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""PlaceBuilding"",
+                    ""type"": ""Button"",
+                    ""id"": ""2671aedd-d67a-48b0-b3f9-05cc5a33bcb0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1faf628d-1273-49c7-83f4-d28ed5098a7f"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleBuildTool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eaf66afa-edbc-4e84-af35-f568171f0575"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceBuilding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -247,6 +292,10 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_DropWeapon = m_Player.FindAction("Drop Weapon", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_Openinventory = m_Player.FindAction("Open inventory", throwIfNotFound: true);
+        // BuildTool
+        m_BuildTool = asset.FindActionMap("BuildTool", throwIfNotFound: true);
+        m_BuildTool_ToggleBuildTool = m_BuildTool.FindAction("ToggleBuildTool", throwIfNotFound: true);
+        m_BuildTool_PlaceBuilding = m_BuildTool.FindAction("PlaceBuilding", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -302,35 +351,21 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_Openinventory;
-
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
-
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
-
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
-
         public InputAction @Mouseposition => m_Wrapper.m_Player_Mouseposition;
-
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
-
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
-
         public InputAction @Openinventory => m_Wrapper.m_Player_Openinventory;
-
         public InputActionMap Get() { return m_Wrapper.m_Player; }
-
         public void Enable() { Get().Enable(); }
-
         public void Disable() { Get().Disable(); }
-
         public bool enabled => Get().enabled;
-
         public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-
         public void SetCallbacks(IPlayerActions instance)
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
@@ -378,21 +413,60 @@ public class @PlayerInput : IInputActionCollection, IDisposable
             }
         }
     }
-
     public PlayerActions @Player => new PlayerActions(this);
 
+    // BuildTool
+    private readonly InputActionMap m_BuildTool;
+    private IBuildToolActions m_BuildToolActionsCallbackInterface;
+    private readonly InputAction m_BuildTool_ToggleBuildTool;
+    private readonly InputAction m_BuildTool_PlaceBuilding;
+    public struct BuildToolActions
+    {
+        private @PlayerInput m_Wrapper;
+        public BuildToolActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleBuildTool => m_Wrapper.m_BuildTool_ToggleBuildTool;
+        public InputAction @PlaceBuilding => m_Wrapper.m_BuildTool_PlaceBuilding;
+        public InputActionMap Get() { return m_Wrapper.m_BuildTool; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BuildToolActions set) { return set.Get(); }
+        public void SetCallbacks(IBuildToolActions instance)
+        {
+            if (m_Wrapper.m_BuildToolActionsCallbackInterface != null)
+            {
+                @ToggleBuildTool.started -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnToggleBuildTool;
+                @ToggleBuildTool.performed -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnToggleBuildTool;
+                @ToggleBuildTool.canceled -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnToggleBuildTool;
+                @PlaceBuilding.started -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnPlaceBuilding;
+                @PlaceBuilding.performed -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnPlaceBuilding;
+                @PlaceBuilding.canceled -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnPlaceBuilding;
+            }
+            m_Wrapper.m_BuildToolActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleBuildTool.started += instance.OnToggleBuildTool;
+                @ToggleBuildTool.performed += instance.OnToggleBuildTool;
+                @ToggleBuildTool.canceled += instance.OnToggleBuildTool;
+                @PlaceBuilding.started += instance.OnPlaceBuilding;
+                @PlaceBuilding.performed += instance.OnPlaceBuilding;
+                @PlaceBuilding.canceled += instance.OnPlaceBuilding;
+            }
+        }
+    }
+    public BuildToolActions @BuildTool => new BuildToolActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
-
         void OnShoot(InputAction.CallbackContext context);
-
         void OnMouseposition(InputAction.CallbackContext context);
-
         void OnDropWeapon(InputAction.CallbackContext context);
-
         void OnReload(InputAction.CallbackContext context);
-
         void OnOpeninventory(InputAction.CallbackContext context);
+    }
+    public interface IBuildToolActions
+    {
+        void OnToggleBuildTool(InputAction.CallbackContext context);
+        void OnPlaceBuilding(InputAction.CallbackContext context);
     }
 }

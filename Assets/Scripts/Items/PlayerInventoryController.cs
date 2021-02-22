@@ -36,7 +36,6 @@ public class PlayerInventoryController : InventoryController
         for (int i = 0; i < sortedList.Length; i++)
         {
             ItemStack stack = sortedList[i];
-            Debug.Log($"{stack.item.name} {stack.Amount}");
             if (i >= _ItemList.Count)
             {
                 _ItemList.Add(Instantiate(_ItemPrefab, _InventoryContainer.transform));

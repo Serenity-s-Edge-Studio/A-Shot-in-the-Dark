@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 487621482}
   - component: {fileID: 6324361574571309894}
   - component: {fileID: 8365210211415596031}
+  - component: {fileID: 7094269916592450741}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -231,46 +232,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 6258652946221112767}
   speed: 0.1
-  MuzzleFlash: {fileID: 2224427972352354437, guid: 75a9b5ee0f6999243a68873a176758cb, type: 3}
-  Bullet: {fileID: 6499549358662031545, guid: f5afa91c23ab5034394f08c91a17784a, type: 3}
-  projectileSpeed: 1000
-  spawnPosition: {fileID: 702591502}
-  shootingClips:
-  - {fileID: 8300000, guid: b1d9be03646ac574da8c3034b32e455e, type: 3}
-  - {fileID: 8300000, guid: a4dc2ddf5f9f1184bb538710d2dfa3e5, type: 3}
-  - {fileID: 8300000, guid: b4387fd1a0f38434298e7de91ddc7415, type: 3}
-  - {fileID: 8300000, guid: 01f6847d9820cda429f02e6ca3ed6ede, type: 3}
-  - {fileID: 8300000, guid: af068f1e7198eca4b92e4df3c489b57d, type: 3}
-  pickupClips:
-  - {fileID: 8300000, guid: c23afef5a2c01a04096fc3eea478e530, type: 3}
-  - {fileID: 8300000, guid: 58dc59e9a75e4654c9d689fc6e5eb771, type: 3}
-  - {fileID: 8300000, guid: e5e3bead78a73314985633c31b4f6f3a, type: 3}
-  - {fileID: 8300000, guid: dddec82463178dc4bb7fcb9aab4ab5aa, type: 3}
-  - {fileID: 8300000, guid: e5e3bead78a73314985633c31b4f6f3a, type: 3}
-  reloadClips:
-  - {fileID: 8300000, guid: c23afef5a2c01a04096fc3eea478e530, type: 3}
-  - {fileID: 8300000, guid: 58dc59e9a75e4654c9d689fc6e5eb771, type: 3}
-  - {fileID: 8300000, guid: e5e3bead78a73314985633c31b4f6f3a, type: 3}
-  - {fileID: 8300000, guid: 42db1424f02802f40a5a43d7230dac9a, type: 3}
-  - {fileID: 8300000, guid: e5e3bead78a73314985633c31b4f6f3a, type: 3}
-  gunImage: {fileID: 0}
-  ammoText: {fileID: 0}
-  sprites:
-  - {fileID: 21300000, guid: 570e62be06606dc4f9ea56cc54de30b6, type: 3}
-  - {fileID: -2408530018317867212, guid: 9b741b91bd01e0749ad0ab3f86cbb97a, type: 3}
-  - {fileID: 21300000, guid: 391ca3d49f37b614082123c17736df3a, type: 3}
-  - {fileID: 21300000, guid: f66dd96c2ccc1b34a85bf345d626d299, type: 3}
-  - {fileID: 21300000, guid: 570e62be06606dc4f9ea56cc54de30b6, type: 3}
-  fireRate: 0
-  spreadSize: 30
   toggleMovement: 0
   healthBar: {fileID: 0}
   deathText: {fileID: 0}
   deathParticles: {fileID: 2939177451858355477, guid: da5172cf38c67924aa966ab924051876, type: 3}
   deathSound: {fileID: 8300000, guid: ff650cb9b66599e428c0ba7dcf183c8e, type: 3}
-  glowStick: {fileID: 7813525200171079987, guid: f0a16810b5d33884c8e280c35f87d400, type: 3}
-  flameMuzzle: {fileID: 1471828950}
-  flameProjectile: {fileID: 6439590851904347806, guid: 2db45a7e96ca5a94785951a2912d81a4, type: 3}
   isInvincible: 0
   inventory: {fileID: 0}
 --- !u!50 &6258652946221112767
@@ -392,7 +358,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.468
+  m_Volume: 0.167
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -488,13 +454,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606c719b5278b364e95371b3ee81c68c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entity: {fileID: 0}
   inventory: {fileID: 6204073370119790633}
-  _DropPrefab: {fileID: 0}
-  _EjectForce: 0
+  _DropPrefab: {fileID: 4118151290756067400, guid: 9c43492694fd6d44288126d522b21865, type: 3}
+  _EjectForce: 10
   _InventoryUI: {fileID: 0}
   _InventoryContainer: {fileID: 0}
-  _ItemPrefab: {fileID: 0}
+  _ItemPrefab: {fileID: 8363440038266722925, guid: 66f8ce81b801fe149b0ab6360a20a0d4, type: 3}
   _ItemList: []
+  _StartingItems:
+  - {fileID: 11400000, guid: e97798a2f4e4cb343b458b55df5629b6, type: 2}
+  - {fileID: 11400000, guid: 2758e02fc886e4d4aa195cc7434aafde, type: 2}
+  - {fileID: 11400000, guid: a30865ff41ee15d49a5db6436d330733, type: 2}
+  amounts: 0100000028000000e8030000
 --- !u!114 &8365210211415596031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,9 +479,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1e37687d1e90440a02268ba8d18345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EquippedGun: {fileID: 11400000, guid: 869601cde4d6f2a43aee9d18beeacd34, type: 2}
+  _EquippedAmmo: {fileID: 11400000, guid: a30865ff41ee15d49a5db6436d330733, type: 2}
   _MuzzleFlash: {fileID: 2224427972352354437, guid: 75a9b5ee0f6999243a68873a176758cb, type: 3}
   MuzzleTransform: {fileID: 702591502}
   animator: {fileID: 6258652946221112765}
   source: {fileID: 487621482}
+  CanShoot: 1
   gunImage: {fileID: 0}
   ammoText: {fileID: 0}
+--- !u!114 &7094269916592450741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258652946221112761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bda1bcdd9dda3a84990429680ea16896, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _AvailableBuildings:
+  - {fileID: 0}
+  - {fileID: 0}
+  _ButtonContainer: {fileID: 0}
+  _BuildingUI: {fileID: 0}
+  _ButtonPrefab: {fileID: 49708856571688586, guid: f57137d3435e1474a8709f171ed37947, type: 3}
+  _BuildingCostViewPrefab: {fileID: 4014444125621728342, guid: a133095332182b24dae5b6a798c19cbf, type: 3}
+  _BuildingCostContainer: {fileID: 0}

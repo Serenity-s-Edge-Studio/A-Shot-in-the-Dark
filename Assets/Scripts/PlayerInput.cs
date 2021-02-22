@@ -245,7 +245,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""id"": ""2328135f-6cf2-4ef2-b55c-a7385cac3bcf"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""PlaceBuilding"",

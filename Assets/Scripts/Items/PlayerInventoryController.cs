@@ -10,22 +10,21 @@ public class PlayerInventoryController : InventoryController
     [SerializeField]
     private ItemSlot _ItemPrefab;
     [SerializeField]
+    private ItemStack[] _StartingItems;
+
     private List<ItemSlot> _ItemList;
-    [SerializeField]
-    private Item[] _StartingItems;
-    [SerializeField]
-    private int[] amounts;
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
+        _ItemList = new List<ItemSlot>();
         var input = new PlayerInput().Player;
         input.Enable();
         input.Openinventory.performed += _ => { if (_InventoryUI.activeInHierarchy) HideInventory(); else DisplayInventory(); };
         for (int i = 0; i < _StartingItems.Length; i++)
         {
-            inventory.TryAddItems(_StartingItems[i], amounts[i]);
+            inventory.TryAddItems(_StartingItems[i].item, _StartingItems[i].Amount);
         }
     }
 

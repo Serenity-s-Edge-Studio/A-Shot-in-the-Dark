@@ -80,6 +80,13 @@ public class Inventory : MonoBehaviour
         }
         return true;
     }
+    public bool ContainsAll(List<ItemStack> stacks)
+    {
+        return stacks.TrueForAll((stack) =>
+        {
+            return TryGetItem(stack.item, out int inStorage) && stack.Amount <= inStorage;
+        });
+    }
     public ItemStack[] GetSortedItems(SortingType sortMethod, bool isAscending)
     {
         List<ItemStack> stacks = new List<ItemStack>(_ItemAmountDictionary.Count);

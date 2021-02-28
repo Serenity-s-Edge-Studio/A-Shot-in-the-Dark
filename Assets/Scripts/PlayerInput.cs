@@ -254,6 +254,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""RotateBuilding"",
+                    ""type"": ""Button"",
+                    ""id"": ""fe75b75d-66f3-46fd-b7f8-7a0e3d79d0c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)""
                 }
             ],
             ""bindings"": [
@@ -278,6 +286,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""PlaceBuilding"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f0e3cdf-a712-426a-bf90-69986e60745c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateBuilding"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -296,6 +315,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_BuildTool = asset.FindActionMap("BuildTool", throwIfNotFound: true);
         m_BuildTool_ToggleBuildTool = m_BuildTool.FindAction("ToggleBuildTool", throwIfNotFound: true);
         m_BuildTool_PlaceBuilding = m_BuildTool.FindAction("PlaceBuilding", throwIfNotFound: true);
+        m_BuildTool_RotateBuilding = m_BuildTool.FindAction("RotateBuilding", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -420,12 +440,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private IBuildToolActions m_BuildToolActionsCallbackInterface;
     private readonly InputAction m_BuildTool_ToggleBuildTool;
     private readonly InputAction m_BuildTool_PlaceBuilding;
+    private readonly InputAction m_BuildTool_RotateBuilding;
     public struct BuildToolActions
     {
         private @PlayerInput m_Wrapper;
         public BuildToolActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ToggleBuildTool => m_Wrapper.m_BuildTool_ToggleBuildTool;
         public InputAction @PlaceBuilding => m_Wrapper.m_BuildTool_PlaceBuilding;
+        public InputAction @RotateBuilding => m_Wrapper.m_BuildTool_RotateBuilding;
         public InputActionMap Get() { return m_Wrapper.m_BuildTool; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -441,6 +463,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @PlaceBuilding.started -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnPlaceBuilding;
                 @PlaceBuilding.performed -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnPlaceBuilding;
                 @PlaceBuilding.canceled -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnPlaceBuilding;
+                @RotateBuilding.started -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnRotateBuilding;
+                @RotateBuilding.performed -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnRotateBuilding;
+                @RotateBuilding.canceled -= m_Wrapper.m_BuildToolActionsCallbackInterface.OnRotateBuilding;
             }
             m_Wrapper.m_BuildToolActionsCallbackInterface = instance;
             if (instance != null)
@@ -451,6 +476,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @PlaceBuilding.started += instance.OnPlaceBuilding;
                 @PlaceBuilding.performed += instance.OnPlaceBuilding;
                 @PlaceBuilding.canceled += instance.OnPlaceBuilding;
+                @RotateBuilding.started += instance.OnRotateBuilding;
+                @RotateBuilding.performed += instance.OnRotateBuilding;
+                @RotateBuilding.canceled += instance.OnRotateBuilding;
             }
         }
     }
@@ -468,5 +496,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     {
         void OnToggleBuildTool(InputAction.CallbackContext context);
         void OnPlaceBuilding(InputAction.CallbackContext context);
+        void OnRotateBuilding(InputAction.CallbackContext context);
     }
 }

@@ -13,6 +13,7 @@ public class PlayerBuildTool : MonoBehaviour
     private new Camera camera;
     private List<BuildingCostUI> _BuildingCosts = new List<BuildingCostUI>();
     private InventoryController inventoryController;
+    private bool _IsRotating = false;
     
     [SerializeField]
     private ConstructableSO[] _AvailableBuildings;
@@ -34,6 +35,7 @@ public class PlayerBuildTool : MonoBehaviour
         input = new PlayerInput().BuildTool;
         input.ToggleBuildTool.performed += ToggleBuildTool_performed;
         input.PlaceBuilding.performed += PlaceBuilding_performed;
+        input.RotateBuilding.performed += ctx => _IsRotating = ctx.ReadValueAsButton();
         input.Enable();
         camera = Camera.main;
         inventoryController = GetComponentInChildren<InventoryController>();
@@ -53,7 +55,16 @@ public class PlayerBuildTool : MonoBehaviour
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
-            _SelectedBuildingPreview.transform.position = worldPos;
+            if (_IsRotating)
+            {
+                Vector2 dir = worldPos - (Vector2)_SelectedBuildingPreview.transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                _SelectedBuildingPreview.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+            else
+            {
+                _SelectedBuildingPreview.transform.position = worldPos;
+            }
         }
     }
     private void PlaceBuilding_performed(InputAction.CallbackContext obj)

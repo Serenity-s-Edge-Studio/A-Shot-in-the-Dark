@@ -9,8 +9,11 @@ public class Building : Entity
     private ItemStack[] _Costs;
     [SerializeField]
     private int _MaxHealth;
+    [SerializeField]
+    private Collider2D _BuildAreaCollider;
 
     private int currentHealth;
+    public List<Collider2D> _Obstacles = new List<Collider2D>();
     public bool isBuilt;
 
     public UnityEvent OnBuilt;
@@ -21,8 +24,23 @@ public class Building : Entity
         isBuilt = true;
         currentHealth = _MaxHealth;
         OnBuilt.Invoke();
+        _BuildAreaCollider.isTrigger = false;
     }
 
+    public bool BuildAreaClear()
+    {
+        return _Obstacles.Count == 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _Obstacles.Add(collision);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        _Obstacles.Remove(collision);
+    }
     public ItemStack[] GetRequiredItems()
     {
         float percentageMissing = 1 - (currentHealth / _MaxHealth);

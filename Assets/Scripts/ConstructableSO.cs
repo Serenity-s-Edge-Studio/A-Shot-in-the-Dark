@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Building", menuName = "Building")]
 public class ConstructableSO : ScriptableObject
 {
-    public ItemStack[] RequiredResources;
+    public List<ItemStack> RequiredResources;
     public Building buildingPrefab;
     public Sprite icon;
 }

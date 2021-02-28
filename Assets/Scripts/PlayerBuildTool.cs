@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerBuildTool : MonoBehaviour
 {
-    private Building SelectedBuilding;
+    private Building _SelectedBuildingPreview;
+    private ConstructableSO _SelectedBuildingSO;
     private PlayerInput.BuildToolActions input;
     private new Camera camera;
     private List<BuildingCostUI> _BuildingCosts = new List<BuildingCostUI>();
@@ -48,35 +49,45 @@ public class PlayerBuildTool : MonoBehaviour
 
     private void Update()
     {
-        if (SelectedBuilding != null)
+        if (_SelectedBuildingPreview != null)
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
-            SelectedBuilding.transform.position = worldPos;
+            _SelectedBuildingPreview.transform.position = worldPos;
         }
     }
     private void PlaceBuilding_performed(InputAction.CallbackContext obj)
     {
-        if (SelectedBuilding != null)
+        if (_SelectedBuildingPreview != null && _SelectedBuildingSO)
         {
             Debug.Log("Place Building");
+            if (inventoryController.inventory.ContainsAll(_SelectedBuildingSO.RequiredResources))
+            {
+                foreach (ItemStack stack in _SelectedBuildingSO.RequiredResources)
+                    inventoryController.inventory.TryRetriveItems(stack.item, stack.Amount);
+                _SelectedBuildingPreview.Build();
+                _SelectedBuildingPreview = Instantiate(_SelectedBuildingSO.buildingPrefab);
+            }
         }
     }
 
     private void ToggleBuildTool_performed(InputAction.CallbackContext obj)
     {
         _BuildingUI.SetActive(!_BuildingUI.activeInHierarchy);
-        if (SelectedBuilding != null) Destroy(SelectedBuilding);
+        if (_SelectedBuildingPreview != null) Destroy(_SelectedBuildingPreview.gameObject);
     }
     public void SelectBuilding(ConstructableSO constructable)
     {
         Debug.Log("Building Selected");
+        _BuildingUI.SetActive(false);
+        _SelectedBuildingSO = constructable;
+        _SelectedBuildingPreview = Instantiate(constructable.buildingPrefab);
     }
     public void UpdatePriceInfo(ConstructableSO constructable)
     {
         _NameText.gameObject.SetActive(true);
         _NameText.text = constructable.name;
-        for (int i = 0; i < constructable.RequiredResources.Length; i++)
+        for (int i = 0; i < constructable.RequiredResources.Count; i++)
         {
             if (i >= _BuildingCosts.Count)
             {
@@ -86,7 +97,7 @@ public class PlayerBuildTool : MonoBehaviour
             _BuildingCosts[i].UpdateUI(constructable.RequiredResources[i], inventoryController);
             _BuildingCosts[i].gameObject.SetActive(true);
         }
-        for (int i = constructable.RequiredResources.Length; i < _BuildingCosts.Count; i++)
+        for (int i = constructable.RequiredResources.Count; i < _BuildingCosts.Count; i++)
         {
             _BuildingCosts[i].gameObject.SetActive(false);
         }

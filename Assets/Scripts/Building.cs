@@ -20,6 +20,7 @@ public class Building : Entity
     {
         isBuilt = true;
         currentHealth = _MaxHealth;
+        OnBuilt.Invoke();
     }
 
     public ItemStack[] GetRequiredItems()

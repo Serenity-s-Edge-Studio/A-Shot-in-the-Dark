@@ -13,7 +13,6 @@ public class Building : Entity
     private Collider2D _BuildAreaCollider;
 
     private int currentHealth;
-    public List<Collider2D> _Obstacles = new List<Collider2D>();
     public bool isBuilt;
 
     public UnityEvent OnBuilt;
@@ -29,17 +28,10 @@ public class Building : Entity
 
     public bool BuildAreaClear()
     {
-        return _Obstacles.Count == 0;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        _Obstacles.Add(collision);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        _Obstacles.Remove(collision);
+        List<Collider2D> colliders = new List<Collider2D>();
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("Building"));
+        return _BuildAreaCollider.OverlapCollider(filter, colliders) == 0;
     }
     public ItemStack[] GetRequiredItems()
     {

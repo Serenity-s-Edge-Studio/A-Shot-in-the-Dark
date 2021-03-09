@@ -45,8 +45,8 @@ public class GunController : MonoBehaviour
         m_Cooldown = m_EquippedGun.ReloadTime;
         if (m_ConnectedInventory.TryAddItems(_EquippedAmmo, _BulletsInMagazine))
         {
-            animator.SetTrigger("Reload");
-            source.PlayOneShot(m_EquippedGun.ReloadClip);
+            if (animator != null) animator.SetTrigger("Reload");
+            if (source != null) source.PlayOneShot(m_EquippedGun.ReloadClip);
             //Get magazine capacity.
             ItemDatabase.instance.TryGetStackSize(m_EquippedGun.compatibleAmmo.id, out int magSize);
             //Set ammo type.

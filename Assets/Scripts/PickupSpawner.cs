@@ -24,15 +24,14 @@ public class PickupSpawner : MonoBehaviour
     private void spawnPickups()
     {
         Vector2 point = LightManager.instance.FindValidSpawnPosition();
+        if (index > maxPickups)
+            index = 0;
         //Recycle old pickup
         if (pickUps[index] != null) Destroy(pickUps[index].gameObject);
         pickUps[index] = Instantiate(prefabs[index % prefabs.Length], point,
                                           Quaternion.identity,
                                           transform);
-        if (index >= maxPickups)
-            index = 0;
-        else
-            index++;
+        index++;
 
     }
 

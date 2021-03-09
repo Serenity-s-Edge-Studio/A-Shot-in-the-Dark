@@ -250,6 +250,16 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public NativeArray<float2> GetActiveEnemyPositionsAsNativeArray(Allocator allocator)
+    {
+        NativeArray<float2> result = new NativeArray<float2>(activeEnemies.Count, allocator, NativeArrayOptions.UninitializedMemory);
+        for (int i = 0; i < activeEnemies.Count; i++)
+        {
+            result[i] = (Vector2)activeEnemies[i].transform.position;
+        }
+        return result;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);

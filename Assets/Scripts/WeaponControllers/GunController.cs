@@ -69,7 +69,7 @@ public class GunController : MonoBehaviour
         {
             LightDrop projectile = Instantiate(projectilePrefab, MuzzleTransform.position, MuzzleTransform.rotation);
             float width = Random.Range(-1f, 1f) * m_EquippedGun.SpreadAngle;
-            projectile.rigidbody.AddForce(transform.right * projectileSpeed + transform.up * width);
+            projectile.rigidbody.AddForce(MuzzleTransform.right * projectileSpeed + MuzzleTransform.up * width);
             Bullet bullet = projectile.GetComponentInChildren<Bullet>();
             if (bullet != null) bullet.damage = _EquippedAmmo.damage * m_EquippedGun.DamageScale;
         }

@@ -17,6 +17,8 @@ public class TurretGunController : GunController
     }
     public void ShootTurret()
     {
+        //Implement removing bullets from magazine and integrate inventory.
+        _BulletsInMagazine++;
         Shoot();
     }
     public void OnEnable()

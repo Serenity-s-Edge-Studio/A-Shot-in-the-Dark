@@ -8,4 +8,5 @@ public class ConstructableSO : ScriptableObject
     public List<ItemStack> RequiredResources;
     public Building buildingPrefab;
     public Sprite icon;
+    public bool CanRotate = true;
 }

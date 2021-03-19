@@ -55,7 +55,7 @@ public class PlayerBuildTool : MonoBehaviour
         {
             Vector2 mousePos = Mouse.current.position.ReadValue();
             Vector2 worldPos = camera.ScreenToWorldPoint(mousePos);
-            if (_IsRotating)
+            if (_IsRotating && _SelectedBuildingSO.CanRotate)
             {
                 Vector2 dir = worldPos - (Vector2)_SelectedBuildingPreview.transform.position;
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

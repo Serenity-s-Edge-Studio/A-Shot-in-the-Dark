@@ -199,6 +199,8 @@ MonoBehaviour:
     Amount: 100
   _MaxHealth: 10
   _BuildAreaCollider: {fileID: 2723659218240656268}
+  currentHealth: 0
+  DestructionEffect: {fileID: 8285258145387576087, guid: 4831bff20f38ca747b47adfe76372004, type: 3}
   isBuilt: 0
   OnBuilt:
     m_PersistentCalls:

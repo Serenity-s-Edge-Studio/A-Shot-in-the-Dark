@@ -229,6 +229,7 @@ MonoBehaviour:
   MuzzleTransform: {fileID: 213208529}
   animator: {fileID: 0}
   source: {fileID: 1063520502}
+  TargetPos: {x: 0, y: 0}
 --- !u!1 &7279320053911378178
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,11 +329,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Costs:
   - item: {fileID: 11400000, guid: e97798a2f4e4cb343b458b55df5629b6, type: 2}
-    Amount: -889
+    Amount: 1
   - item: {fileID: 11400000, guid: 699fd54f526f1eb44bbfbb95f3aaf653, type: 2}
     Amount: 10
   _MaxHealth: 15
   _BuildAreaCollider: {fileID: 232916444083371386}
+  currentHealth: 0
+  DestructionEffect: {fileID: 4549813979471325439, guid: a75393a9df878b243bbf03848b98d99d, type: 3}
   isBuilt: 0
   OnBuilt:
     m_PersistentCalls:

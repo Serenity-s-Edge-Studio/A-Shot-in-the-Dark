@@ -13,6 +13,8 @@ public class Building : Entity
     private Collider2D _BuildAreaCollider;
     [SerializeField]
     private int currentHealth;
+    [SerializeField]
+    private GameObject DestructionEffect;
     public bool isBuilt;
 
     public UnityEvent OnBuilt;
@@ -24,6 +26,8 @@ public class Building : Entity
         currentHealth = _MaxHealth;
         OnBuilt.Invoke();
         _BuildAreaCollider.isTrigger = false;
+        OnDeath.AddListener(() => 
+            Instantiate(DestructionEffect, transform.position, transform.rotation * Quaternion.AngleAxis(-90f, Vector3.right)));
     }
 
     public bool BuildAreaClear()
@@ -49,6 +53,7 @@ public class Building : Entity
 
     public void Damage(int damage)
     {
+        if (!isBuilt) return;
         currentHealth -= damage;
         if (currentHealth < 0.01f)
         {

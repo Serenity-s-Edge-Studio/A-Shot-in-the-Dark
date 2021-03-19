@@ -32,20 +32,6 @@ public class LightDrop : MonoBehaviour
         LightManager.instance.add(this);
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        //if (Decay)
-        //{
-        //    remainingTime = Mathf.Max(0, remainingTime - Time.deltaTime * decaySpeed);
-        //    float remaining = remainingTime / decayTime;
-        //    if (remainingTime < .01f) Destroy(gameObject);
-        //    light.pointLightOuterRadius = startingLightRadius * remaining;
-        //    collider.radius = startingColliderRadius * remaining;
-        //    //light.intensity = remaining;
-        //}
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Enemy>(out Enemy enemy))

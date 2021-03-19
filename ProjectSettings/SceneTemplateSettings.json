@@ -2,7 +2,7 @@
     "templatePinStates": [
         {
             "templateId": "Empty (Built-in)",
-            "isEnabled": false
+            "isEnabled": true
         }
     ],
     "dependencyTypeInfos": [

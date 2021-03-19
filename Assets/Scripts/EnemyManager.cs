@@ -72,11 +72,12 @@ public class EnemyManager : MonoBehaviour
             _spawnRate = spawnRate;
         }
         QueueEnemyAIJobs();
+        AttackTargets();
     }
 
     private void LateUpdate()
     {
-        attackJobHandle.Complete();
+        moveJobHandle.Complete();
         ApplyJobResults();
         DisposeJobData();
     }
@@ -84,22 +85,21 @@ public class EnemyManager : MonoBehaviour
     private NativeMultiHashMap<int, Vector2> relativePositions;
     private TransformAccessArray transformAccessArray;
     private NativeArray<Vector2> targets, previousTargetNativeArray, movePositionsNativeArray;
-    private NativeArray<float> timeTillNextNativeArray, cooldownNativeArray;
-    private JobHandle attackJobHandle;
+    private NativeArray<float> timeTillNextNativeArray;
+    private JobHandle moveJobHandle;
 
     private void QueueEnemyAIJobs()
     {
         Transform[] transforms = new Transform[activeEnemies.Count];
         Vector2[] previousTargets = new Vector2[activeEnemies.Count];
         float[] timeTillNext = new float[activeEnemies.Count];
-        float[] attackCooldowns = new float[activeEnemies.Count];
         relativePositions = new NativeMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
+        //Iterate through all enemies storing the necessary info.
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             transforms[i] = activeEnemies[i].transform;
             previousTargets[i] = activeEnemies[i].target;
             timeTillNext[i] = activeEnemies[i].timeTillNextRandom;
-            attackCooldowns[i] = activeEnemies[i].attackCooldown;
             for (int j = 0; j < activeEnemies[i].influencingLights.Count; j++)
             {
                 relativePositions.Add(i, activeEnemies[i].influencingLights[j].transform.position);
@@ -110,7 +110,6 @@ public class EnemyManager : MonoBehaviour
         previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
         movePositionsNativeArray = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
         timeTillNextNativeArray = new NativeArray<float>(timeTillNext, Allocator.TempJob);
-        cooldownNativeArray = new NativeArray<float>(attackCooldowns, Allocator.TempJob);
         FindTargetsJob findTargets = new FindTargetsJob
         {
             relativeTargets = relativePositions,
@@ -127,40 +126,24 @@ public class EnemyManager : MonoBehaviour
             targetPositions = targets,
             movePositions = movePositionsNativeArray
         };
-        AttackPlayerJob attackPlayerJob = new AttackPlayerJob
-        {
-            playerPos = Player.instance.transform.position,
-            attackRange = attackRange,
-            cooldown = cooldown,
-            deltaTime = Time.deltaTime,
-            AttackCooldowns = cooldownNativeArray
-        };
         JobHandle findTargetsJobHandle = findTargets.Schedule(transformAccessArray);
-        JobHandle moveJobHandle = moveJob.Schedule(transformAccessArray, findTargetsJobHandle);
-        attackJobHandle = attackPlayerJob.Schedule(transformAccessArray, moveJobHandle);
+        moveJobHandle = moveJob.Schedule(transformAccessArray, findTargetsJobHandle);
     }
 
     private void ApplyJobResults()
     {
         for (int i = 0; i < activeEnemies.Count; i++)
         {
-            activeEnemies[i].rigidbody.MovePosition(movePositionsNativeArray[i]);
-            activeEnemies[i].target = targets[i];
-            activeEnemies[i].attackCooldown = cooldownNativeArray[i];
-            if (cooldownNativeArray[i] < .01f)
-            {
-                activeEnemies[i].animator.SetTrigger("Attack");
-                activeEnemies[i].attackCooldown = cooldown;
-                Player.instance.Damage(10);
-            }
-            activeEnemies[i].timeTillNextRandom = timeTillNextNativeArray[i];
+            Enemy enemy = activeEnemies[i];
+            enemy.rigidbody.MovePosition(movePositionsNativeArray[i]);
+            enemy.target = targets[i];
+            enemy.timeTillNextRandom = timeTillNextNativeArray[i];
         }
     }
 
     private void DisposeJobData()
     {
         movePositionsNativeArray.Dispose();
-        cooldownNativeArray.Dispose();
         previousTargetNativeArray.Dispose();
         timeTillNextNativeArray.Dispose();
         transformAccessArray.Dispose();
@@ -168,15 +151,43 @@ public class EnemyManager : MonoBehaviour
         relativePositions.Dispose();
     }
 
+    private void AttackTargets()
+    {
+        foreach(Enemy enemy in activeEnemies)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, enemy.transform.right, attackRange, LayerMask.GetMask("Building"));
+            bool playerInRange = Vector2.Distance(Player.instance.transform.position, enemy.transform.position) < attackRange;
+            bool hitBuilding = hit.collider != null;
+            if (playerInRange || hitBuilding)
+            {
+                enemy.attackCooldown -= Time.deltaTime;
+                if (enemy.attackCooldown <= 0.01f)
+                {
+                    if (hitBuilding && hit.collider.TryGetComponent(out Building building))
+                    {
+                        building.Damage(enemy.AttackDamage);
+                    }
+                    else if (playerInRange)
+                    {
+                        Player.instance.Damage(enemy.AttackDamage);
+                    }
+                    enemy.animator.SetTrigger("Attack");
+                    enemy.attackCooldown = cooldown;
+                }
+            }
+        }
+    }
     private struct MoveEnemiesJob : IJobParallelForTransform
     {
+        [ReadOnly]
         public float deltaTime;
+        [ReadOnly]
         public NativeArray<Vector2> targetPositions;
+        [WriteOnly]
         public NativeArray<Vector2> movePositions;
 
         public void Execute(int index, TransformAccess transform)
         {
-            //transform.position = Vector2.Lerp(transform.position, targetPositions[index], deltaTime);
             Vector2 dir = targetPositions[index] - (Vector2)transform.position;
             float angle = math.degrees(math.atan2(dir.y, dir.x));
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -188,23 +199,29 @@ public class EnemyManager : MonoBehaviour
     {
         [ReadOnly]
         public NativeMultiHashMap<int, Vector2> relativeTargets;
+        [ReadOnly]
         public NativeArray<Vector2> previousTargets;
+        [WriteOnly]
         public NativeArray<Vector2> results;
         public NativeArray<float> timeTillNextRandomDirection;
+        [ReadOnly]
         public Vector2 playerPosition;
+
         public float deltaTime;
+        public float EnemyVisibility;
         public Unity.Mathematics.Random random;
 
         public void Execute(int index, TransformAccess transform)
         {
-            Vector2 closest = Vector2.zero;
-            float lastClosest = float.MaxValue;
             timeTillNextRandomDirection[index] -= deltaTime;
+            //Exit early if player is in range
             if (Vector2.Distance(playerPosition, transform.position) < 10f)
             {
                 results[index] = playerPosition;
                 return;
             }
+            Vector2 closest = Vector2.zero;
+            float lastClosest = float.MaxValue;
             if (relativeTargets.TryGetFirstValue(index, out Vector2 target, out NativeMultiHashMapIterator<int> it))
             {
                 do
@@ -230,23 +247,6 @@ public class EnemyManager : MonoBehaviour
                     results[index] = previousTargets[index];
                 }
             }
-        }
-    }
-
-    private struct AttackPlayerJob : IJobParallelForTransform
-    {
-        public NativeArray<float> AttackCooldowns;
-        public Vector2 playerPos;
-        public float deltaTime;
-        public float cooldown;
-        public int attackRange;
-
-        public void Execute(int index, TransformAccess transform)
-        {
-            if (Vector2.Distance(transform.position, playerPos) < attackRange)
-                AttackCooldowns[index] -= deltaTime;
-            else
-                AttackCooldowns[index] = cooldown;
         }
     }
 

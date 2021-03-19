@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -241256121
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1b587a785d217024cbc84f9fb55ba1c5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -125,6 +125,7 @@ MonoBehaviour:
   animator: {fileID: 3652851660920606014}
   attackCooldown: 0
   deathParticles: {fileID: 8297048506704701383, guid: c8f4b7bfb93c3964ab31e6b932fbfc20, type: 3}
+  AttackDamage: 10
 --- !u!61 &2513685766701094760
 BoxCollider2D:
   m_ObjectHideFlags: 0

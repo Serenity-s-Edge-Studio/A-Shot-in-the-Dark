@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour, IIgnitable
     public Animator animator;
     public float attackCooldown;
     public GameObject deathParticles;
+    public int AttackDamage;
     private bool isOnFire = false;
 
     public void Damage(float amount)

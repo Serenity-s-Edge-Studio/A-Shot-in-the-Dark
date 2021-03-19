@@ -11,7 +11,7 @@ public class Building : Entity
     private int _MaxHealth;
     [SerializeField]
     private Collider2D _BuildAreaCollider;
-
+    [SerializeField]
     private int currentHealth;
     public bool isBuilt;
 

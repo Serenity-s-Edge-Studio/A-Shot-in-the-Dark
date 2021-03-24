@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 404825803d46ac54e8fd46fca4d0422b, type: 3}
+  m_Name: Normal Difficulty
+  m_EditorClassIdentifier: 
+  MinVisibility: 2
+  MaxVisiblity: 200
+  VisibilityToTimeRatio:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.08333
+      value: 0.025
+      inSlope: Infinity
+      outSlope: Infinity
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25365207
+      value: 0.025
+      inSlope: 0.8967274
+      outSlope: 0.8967274
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.375
+      value: 0.115
+      inSlope: -0.44902986
+      outSlope: -0.44902986
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5389807
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: -0.13440037
+      outSlope: -0.13440037
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6538841
+      value: 0.09098253
+      inSlope: -0.75029165
+      outSlope: -0.75029165
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.7626746
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.875
+      value: 0.03781659
+      inSlope: -0.84471196
+      outSlope: -0.84471196
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.32357308
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  MaxZombies: 500
+  ZombieIncreaseMulti: 0.2
+  TurretRangeMulti: 1

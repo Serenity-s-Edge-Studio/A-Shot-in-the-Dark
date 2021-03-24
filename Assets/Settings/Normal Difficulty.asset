@@ -94,4 +94,4 @@ MonoBehaviour:
     m_RotationOrder: 4
   MaxZombies: 500
   ZombieIncreaseMulti: 0.2
-  TurretRangeMulti: 1
+  StartingMaxZombies: 10

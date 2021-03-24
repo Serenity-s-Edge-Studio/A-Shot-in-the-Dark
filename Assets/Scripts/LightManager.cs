@@ -113,9 +113,17 @@ public class LightManager : MonoBehaviour
             RefreshSpawnQueue();
             spawnPositionRefreshTimer = OriginalRefreshTimer;
         }
-        Vector2 position = spawnPositions.Dequeue();
-        spawnPositions.Enqueue(position);
-        return position;
+        Vector2 position;
+        for (int i = 0; i < spawnPositions.Count; i++)
+        {
+            position = spawnPositions.Dequeue();
+            spawnPositions.Enqueue(position);
+            if (!Player.instance.IsPositionInFOV(position))
+                return position;
+        }
+        RefreshSpawnQueue();
+
+        return FindValidSpawnPosition();
     }
 
     private void RefreshSpawnQueue()
@@ -148,6 +156,7 @@ public class LightManager : MonoBehaviour
         public NativeArray<Vector2> lightPositions;
         [ReadOnly]
         public NativeArray<float> lightRadiis;
+
         public NativeArray<Vector2> spawnPositions;
         public Unity.Mathematics.Random random;
 

@@ -50,16 +50,17 @@ public class EnemyManager : MonoBehaviour
 
     private void spawnEnemies()
     {
+        if (MaxEnemies <= 0) MaxEnemies = 10;
         Vector2 point = LightManager.instance.FindValidSpawnPosition();
         Enemy newZombie = Instantiate(ZombiePrefab, point, Quaternion.identity, transform);
         if (activeEnemies.Count < MaxEnemies)
             activeEnemies.Add(newZombie);
         else if (recycleZombies)
         {
-            if (index >= activeEnemies.Count)
-            {
-                index = 0;
-            }
+            do
+                index = index < activeEnemies.Count ? index + 1 : 0;
+            while (Player.instance.IsPositionInFOV(activeEnemies[index].transform.position));
+                
             Destroy(activeEnemies[index].gameObject);
             activeEnemies[index] = newZombie;
             index++;

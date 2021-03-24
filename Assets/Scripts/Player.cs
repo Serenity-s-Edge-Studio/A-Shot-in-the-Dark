@@ -84,4 +84,9 @@ public class Player : Entity
             healthBar.value = health;
         }
     }
+    public bool IsPositionInFOV(Vector2 position)
+    {
+        Vector2 screenPos = camera.WorldToScreenPoint(position);
+        return Mathf.Abs(screenPos.x) > 1 || Mathf.Abs(screenPos.y) > 1;
+    }
 }

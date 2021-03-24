@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour, IIgnitable
     [SerializeField]
     private float health;
 
-    public Rigidbody2D rigidbody;
+    public new Rigidbody2D rigidbody;
     public Animator animator;
     public float attackCooldown;
     public GameObject deathParticles;

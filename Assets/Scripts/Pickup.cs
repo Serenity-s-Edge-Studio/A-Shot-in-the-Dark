@@ -5,8 +5,8 @@ using UnityEngine;
 public class Pickup : MonoBehaviour
 {
     public List<ItemStack> items = new List<ItemStack>();
-    public Rigidbody2D rigidbody;
-    public CircleCollider2D collider;
+    public new Rigidbody2D rigidbody;
+    public new CircleCollider2D collider;
     [SerializeField]
     private Type type;
     [SerializeField]

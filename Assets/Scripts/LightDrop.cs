@@ -5,9 +5,9 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class LightDrop : MonoBehaviour
 {
-    public Rigidbody2D rigidbody;
+    public new Rigidbody2D rigidbody;
     [SerializeField]
-    public Light2D light;
+    public new Light2D light;
     [SerializeField]
     private bool Decay;
     [SerializeField]
@@ -18,7 +18,7 @@ public class LightDrop : MonoBehaviour
 
     private float startingColliderRadius;
     private float startingLightRadius;
-    private CircleCollider2D collider;
+    private new CircleCollider2D collider;
     private List<Enemy> enemiesInRange = new List<Enemy>();
 
     private void Start()

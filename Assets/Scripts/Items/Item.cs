@@ -6,7 +6,7 @@ public class Item : ScriptableObject
 {
     public static int ItemCount = 1;
     public static Sprite Placeholder;
-    public string name;
+    public new string name;
     public int id;
     [TextArea]
     public string description;

@@ -8,7 +8,7 @@ public class Player : Entity
 {
     private PlayerInput.PlayerActions input;
     [SerializeField]
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
     public float speed = 1;
 
     private new Camera camera;

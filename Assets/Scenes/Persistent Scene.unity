@@ -1035,6 +1035,7 @@ MonoBehaviour:
   volumeSlider: {fileID: 769177799}
   movementToggle: {fileID: 1774127024}
   volumeText: {fileID: 855536620}
+  SelectedDifficulty: {fileID: 11400000, guid: ea3c870c2fd684d4784ce899e5d6314f, type: 2}
 --- !u!4 &1089917219
 Transform:
   m_ObjectHideFlags: 0

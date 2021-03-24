@@ -10,7 +10,7 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager instance;
     public bool recycleZombies = true;
-    public int maxEnemies;
+    public int MaxEnemies;
     public float originalSpawnRate;
     public float spawnRate;
     public List<Enemy> activeEnemies;
@@ -42,16 +42,17 @@ public class EnemyManager : MonoBehaviour
         activeEnemies = new List<Enemy>();
         activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
         spawnRadius = Mathf.RoundToInt(Mathf.Max(center.pointLightOuterRadius + 1, spawnRadius));
-        orginalMaxZombies = maxEnemies;
+        MaxEnemies = GameManager.instance.SelectedDifficulty.StartingMaxZombies;
+        orginalMaxZombies = MaxEnemies;
         originalSpawnRate = spawnRate;
-        DayNightCycle.instance.OnDayPeriodChange.AddListener(ChangeVisibility);
+        //DayNightCycle.instance.OnDayPeriodChange.AddListener(ChangeVisibility);
     }
 
     private void spawnEnemies()
     {
         Vector2 point = LightManager.instance.FindValidSpawnPosition();
         Enemy newZombie = Instantiate(ZombiePrefab, point, Quaternion.identity, transform);
-        if (activeEnemies.Count < maxEnemies)
+        if (activeEnemies.Count < MaxEnemies)
             activeEnemies.Add(newZombie);
         else if (recycleZombies)
         {
@@ -68,6 +69,7 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        _Visibility = GameManager.instance.SelectedDifficulty.ComputeVisibility(DayNightCycle.instance._TimeValue/24f);
         _spawnRate -= Time.deltaTime;
         if (_spawnRate <= 0)
         {

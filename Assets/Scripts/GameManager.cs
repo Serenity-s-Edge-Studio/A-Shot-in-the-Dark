@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private Toggle movementToggle;
     [SerializeField]
     private TextMeshProUGUI volumeText;
+    public DifficultySettingsSO SelectedDifficulty;
     public static GameManager instance;
     private int CurrentSceneIndex = 1;
 

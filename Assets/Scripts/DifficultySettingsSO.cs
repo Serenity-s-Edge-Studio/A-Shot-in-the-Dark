@@ -11,7 +11,7 @@ public class DifficultySettingsSO : ScriptableObject
 
     public int MaxZombies;
     public float ZombieIncreaseMulti;
-    public float TurretRangeMulti;
+    public int StartingMaxZombies;
 
     public float ComputeVisibility(float time)
     {

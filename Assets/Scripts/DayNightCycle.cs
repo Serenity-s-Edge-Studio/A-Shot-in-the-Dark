@@ -11,8 +11,8 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField]
     private AnimationCurve _IntensityCurve;
     [SerializeField, Range(0, 24)]
-    private float _TimeValue;
-    private float _TimeProgress;
+    public float _TimeValue;
+    public float _TimeProgress;
     [SerializeField]
     private Light2D _GlobalLight;
     [SerializeField, Range(0, .5f)]

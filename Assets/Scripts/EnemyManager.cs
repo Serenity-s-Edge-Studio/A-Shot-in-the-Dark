@@ -10,7 +10,7 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager instance;
     public bool recycleZombies = true;
-    public int maxEnemies;
+    public int MaxEnemies;
     public float originalSpawnRate;
     public float spawnRate;
     public List<Enemy> activeEnemies;
@@ -26,6 +26,8 @@ public class EnemyManager : MonoBehaviour
     private int attackRange;
     [SerializeField]
     private float cooldown;
+    [SerializeField]
+    private float _Visibility = 10f;
 
     private float _spawnRate;
     private int index = 0;
@@ -40,15 +42,17 @@ public class EnemyManager : MonoBehaviour
         activeEnemies = new List<Enemy>();
         activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
         spawnRadius = Mathf.RoundToInt(Mathf.Max(center.pointLightOuterRadius + 1, spawnRadius));
-        orginalMaxZombies = maxEnemies;
+        MaxEnemies = GameManager.instance.SelectedDifficulty.StartingMaxZombies;
+        orginalMaxZombies = MaxEnemies;
         originalSpawnRate = spawnRate;
+        //DayNightCycle.instance.OnDayPeriodChange.AddListener(ChangeVisibility);
     }
 
     private void spawnEnemies()
     {
         Vector2 point = LightManager.instance.FindValidSpawnPosition();
         Enemy newZombie = Instantiate(ZombiePrefab, point, Quaternion.identity, transform);
-        if (activeEnemies.Count < maxEnemies)
+        if (activeEnemies.Count < MaxEnemies)
             activeEnemies.Add(newZombie);
         else if (recycleZombies)
         {
@@ -65,6 +69,7 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        _Visibility = GameManager.instance.SelectedDifficulty.ComputeVisibility(DayNightCycle.instance._TimeValue/24f);
         _spawnRate -= Time.deltaTime;
         if (_spawnRate <= 0)
         {
@@ -118,7 +123,8 @@ public class EnemyManager : MonoBehaviour
             timeTillNextRandomDirection = timeTillNextNativeArray,
             random = new Unity.Mathematics.Random((uint)UnityEngine.Random.Range(1, 100000)),
             results = targets,
-            playerPosition = Player.instance.transform.position
+            playerPosition = Player.instance.transform.position,
+            EnemyVisibility = _Visibility
         };
         MoveEnemiesJob moveJob = new MoveEnemiesJob
         {
@@ -215,7 +221,7 @@ public class EnemyManager : MonoBehaviour
         {
             timeTillNextRandomDirection[index] -= deltaTime;
             //Exit early if player is in range
-            if (Vector2.Distance(playerPosition, transform.position) < 10f)
+            if (Vector2.Distance(playerPosition, transform.position) < EnemyVisibility)
             {
                 results[index] = playerPosition;
                 return;
@@ -258,6 +264,28 @@ public class EnemyManager : MonoBehaviour
             result[i] = (Vector2)activeEnemies[i].transform.position;
         }
         return result;
+    }
+
+    private void ChangeVisibility(PartOfDay period)
+    {
+        switch (period)
+        {
+            case PartOfDay.Morning:
+                _Visibility = 10;
+                break;
+            case PartOfDay.Noon:
+                _Visibility = 30;
+                break;
+            case PartOfDay.Afternoon:
+                _Visibility = 50;
+                break;
+            case PartOfDay.Evening:
+                _Visibility = 15;
+                break;
+            case PartOfDay.Night:
+                _Visibility = 5;
+                break;
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -25,11 +25,6 @@ public class ScoreManager : MonoBehaviour
 
     }
 
-    public void LoadScene(int index)
-    {
-        GameManager.instance.LoadScene(index);
-    }
-
     public void scoreHit()
     {
         score += pointsForHit;
@@ -48,7 +43,8 @@ public class ScoreManager : MonoBehaviour
     {
         int difficultyLevel = score / 500;
         EnemyManager.instance.spawnRate = EnemyManager.instance.originalSpawnRate / (difficultyLevel + 1);
-        EnemyManager.instance.maxEnemies = Mathf.RoundToInt(EnemyManager.instance.orginalMaxZombies * Mathf.Pow(1.2f, difficultyLevel));
+        float multi = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieIncreaseMulti, difficultyLevel);
+        EnemyManager.instance.MaxEnemies = Mathf.Min(Mathf.RoundToInt(EnemyManager.instance.orginalMaxZombies * multi), GameManager.instance.SelectedDifficulty.MaxZombies);
     }
 
     private void updateUI()

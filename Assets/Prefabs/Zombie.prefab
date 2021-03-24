@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3652851660920606015}
   - component: {fileID: 3652851660920606014}
   - component: {fileID: -5464493428897337393}
-  - component: {fileID: 2513685766701094760}
   - component: {fileID: 6205969969142091433}
+  - component: {fileID: 7816410479634652119}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Zombie
@@ -126,32 +126,6 @@ MonoBehaviour:
   attackCooldown: 0
   deathParticles: {fileID: 8297048506704701383, guid: c8f4b7bfb93c3964ab31e6b932fbfc20, type: 3}
   AttackDamage: 10
---- !u!61 &2513685766701094760
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3652851660920606013}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.41, y: 2.22}
-    newSize: {x: 2.41, y: 2.22}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.41, y: 2.22}
-  m_EdgeRadius: 0
 --- !u!50 &6205969969142091433
 Rigidbody2D:
   serializedVersion: 4
@@ -164,7 +138,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 5.3502
+  m_Mass: 1.8145839
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -173,3 +147,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &7816410479634652119
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3652851660920606013}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.76

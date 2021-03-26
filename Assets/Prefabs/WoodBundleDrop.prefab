@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodBundleDrop
       objectReference: {fileID: 0}
+    - target: {fileID: 2979815442460265283, guid: 63ed52baff615b54b887f304d0230e3c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a7aeefff89e134717970f564357ac93c, type: 3}
     - target: {fileID: 3661720397798768463, guid: 63ed52baff615b54b887f304d0230e3c, type: 3}
       propertyPath: m_RootOrder
       value: 0

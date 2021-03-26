@@ -58,7 +58,7 @@ public class EnemyManager : MonoBehaviour
         else if (recycleZombies)
         {
             do
-                index = index < activeEnemies.Count ? index + 1 : 0;
+                index = index < activeEnemies.Count - 1 ? index + 1 : 0;
             while (Player.instance.IsPositionInFOV(activeEnemies[index].transform.position));
                 
             Destroy(activeEnemies[index].gameObject);

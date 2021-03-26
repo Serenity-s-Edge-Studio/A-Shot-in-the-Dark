@@ -72,7 +72,7 @@ public class PlayerBuildTool : MonoBehaviour
         if (_SelectedBuildingPreview != null && _SelectedBuildingSO)
         {
             Debug.Log("Place Building");
-            if (_SelectedBuildingPreview.BuildAreaClear() && inventoryController.inventory.ContainsAll(_SelectedBuildingSO.RequiredResources))
+            if (_SelectedBuildingPreview.IsBuildAreaClear() && inventoryController.inventory.ContainsAll(_SelectedBuildingSO.RequiredResources))
             {
                 foreach (ItemStack stack in _SelectedBuildingSO.RequiredResources)
                     inventoryController.inventory.TryRetriveItems(stack.item, stack.Amount);

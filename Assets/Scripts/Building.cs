@@ -30,7 +30,7 @@ public class Building : Entity
             Instantiate(DestructionEffect, transform.position, transform.rotation * Quaternion.AngleAxis(-90f, Vector3.right)));
     }
 
-    public bool BuildAreaClear()
+    public bool IsBuildAreaClear()
     {
         List<Collider2D> colliders = new List<Collider2D>();
         ContactFilter2D filter = new ContactFilter2D();

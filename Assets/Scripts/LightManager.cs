@@ -9,7 +9,7 @@ public class LightManager : MonoBehaviour
 {
     public static LightManager instance;
     public List<LightDrop> lights = new List<LightDrop>();
-    private Queue<Vector2> spawnPositions = new Queue<Vector2>(new Vector2[20]);
+    private Queue<Vector2> spawnPositions = new Queue<Vector2>(new Vector2[100]);
     private float OriginalRefreshTimer = 10;
     private float spawnPositionRefreshTimer;
 

@@ -18,21 +18,6 @@ public class Item : ScriptableObject
         ItemCount++;
         id = ItemCount;
     }
-    //public Item(string name, string description, float mass)
-    //{
-    //    this.name = name;
-    //    this.id = ItemCount;
-    //    ItemCount++;
-    //    this.description = description;
-    //    this.mass = mass;
-    //    icon = Resources.Load<Sprite>("Items/Sprites/" + name);
-    //    if (icon == null)
-    //    {
-    //        if (Placeholder == null)
-    //            Placeholder = Resources.Load<Sprite>("Items/Sprites/Placeholder");
-    //        icon = Placeholder;
-    //    }
-    //}
 
     public override int GetHashCode()
     {

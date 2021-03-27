@@ -8,6 +8,8 @@ public class PickupSpawner : MonoBehaviour
     [SerializeField]
     private Pickup[] prefabs;
     [SerializeField]
+    private PickupSpawnChance[] items;
+    [SerializeField]
     private float spawnRadius;
     [SerializeField]
     private Light2D center;
@@ -18,7 +20,21 @@ public class PickupSpawner : MonoBehaviour
     private void Start()
     {
         pickUps = new Pickup[maxPickups];
-        InvokeRepeating("spawnPickups", 5, 5);
+        //Find sum of priorities
+        float total = 0;
+        foreach (PickupSpawnChance itemSpawnChance in items)
+        {
+            total += itemSpawnChance.Priority;
+        }
+        System.Array.Sort(items, (a, b) => a.Priority - b.Priority);
+        float previousSpawnChance = 0f;
+        foreach (PickupSpawnChance item in items)
+        {
+            float spawnChance = previousSpawnChance + (item.Priority / total);
+            item.SpawnChance = spawnChance;
+            previousSpawnChance = spawnChance;
+        }
+        InvokeRepeating(nameof(spawnPickups), 5, 5);
     }
 
     private void spawnPickups()
@@ -28,7 +44,10 @@ public class PickupSpawner : MonoBehaviour
             index = 0;
         //Recycle old pickup
         if (pickUps[index] != null) Destroy(pickUps[index].gameObject);
-        pickUps[index] = Instantiate(prefabs[index % prefabs.Length], point,
+        float chance = Random.Range(0f, 1f);
+        Debug.Log(chance);
+        Pickup drawnPickup = System.Array.Find(items, item => chance <= item.SpawnChance).item;
+        pickUps[index] = Instantiate(drawnPickup, point,
                                           Quaternion.identity,
                                           transform);
         index++;
@@ -39,5 +58,14 @@ public class PickupSpawner : MonoBehaviour
     {
         Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);
         Gizmos.DrawWireSphere(Vector3.zero, spawnRadius);
+    }
+    [System.Serializable]
+    private class PickupSpawnChance
+    {
+        public Pickup item;
+        public int Priority;
+        //public int Min, Max;
+        //[HideInInspector]
+        public float SpawnChance;
     }
 }

@@ -21,6 +21,8 @@ public class ItemSlot : MonoBehaviour
     [SerializeField]
     private Button _EquipItemButton;
     [SerializeField]
+    private Button _ConsumeItemButton;
+    [SerializeField]
     private Button _ViewDescriptionButton;
 
     public void UpdateUI(ItemStack stack, InventoryController inventoryController)
@@ -44,8 +46,13 @@ public class ItemSlot : MonoBehaviour
         descriptionText.text = value.description;
         _DropItemButton.onClick.RemoveAllListeners();
         _DropItemButton.onClick.AddListener(() => inventoryController.DropItem(stack));
-        IEquipable equipable = stack.item as IEquipable;
-        if (equipable != null)
+        EnableContextualActionButtons(stack, inventoryController);
+
+    }
+
+    private void EnableContextualActionButtons(ItemStack stack, InventoryController inventoryController)
+    {
+        if (stack.item is IEquipable equipable)
         {
             _EquipItemButton.gameObject.SetActive(true);
             _EquipItemButton.onClick.RemoveAllListeners();
@@ -59,6 +66,19 @@ public class ItemSlot : MonoBehaviour
         {
             _EquipItemButton.gameObject.SetActive(false);
         }
-            
+        if (stack.item is IConsumable consumable)
+        {
+            _ConsumeItemButton.gameObject.SetActive(true);
+            _ConsumeItemButton.onClick.RemoveAllListeners();
+            _ConsumeItemButton.onClick.AddListener(() =>
+            {
+                consumable.Consume(inventoryController.entity);
+                inventoryController.DisplayInventory();
+            });
+        }
+        else
+        {
+            _ConsumeItemButton.gameObject.SetActive(false);
+        }
     }
 }

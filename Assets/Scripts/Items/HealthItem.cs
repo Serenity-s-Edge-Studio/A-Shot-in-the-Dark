@@ -9,5 +9,9 @@ public class HealthItem : Item, IConsumable
     public void Consume(Entity entity)
     {
         entity.Heal(RestoredHealth);
+        if (entity.TryGetComponent(out InventoryController inventoryController))
+        {
+            inventoryController.inventory.TryRetriveItems(this, 1);
+        }
     }
 }

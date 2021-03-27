@@ -6,8 +6,6 @@ public class PickupSpawner : MonoBehaviour
     [SerializeField]
     private int maxPickups;
     [SerializeField]
-    private Pickup[] prefabs;
-    [SerializeField]
     private PickupSpawnChance[] items;
     [SerializeField]
     private float spawnRadius;
@@ -45,7 +43,6 @@ public class PickupSpawner : MonoBehaviour
         //Recycle old pickup
         if (pickUps[index] != null) Destroy(pickUps[index].gameObject);
         float chance = Random.Range(0f, 1f);
-        Debug.Log(chance);
         Pickup drawnPickup = System.Array.Find(items, item => chance <= item.SpawnChance).item;
         pickUps[index] = Instantiate(drawnPickup, point,
                                           Quaternion.identity,
@@ -64,8 +61,7 @@ public class PickupSpawner : MonoBehaviour
     {
         public Pickup item;
         public int Priority;
-        //public int Min, Max;
-        //[HideInInspector]
+        [HideInInspector]
         public float SpawnChance;
     }
 }

@@ -51,7 +51,7 @@ public class Building : Entity
         return requiredItems;
     }
 
-    public void Damage(int damage)
+    public override void Damage(int damage)
     {
         if (!isBuilt) return;
         currentHealth -= damage;
@@ -60,5 +60,9 @@ public class Building : Entity
             OnDeath.Invoke();
             Destroy(gameObject);
         }
+    }
+    public override void Heal(int amount)
+    {
+        throw new System.NotImplementedException();
     }
 }

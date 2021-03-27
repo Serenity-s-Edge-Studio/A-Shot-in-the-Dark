@@ -16,7 +16,6 @@ public class Player : Entity
 
     [SerializeField]
     public bool toggleMovement;
-    private int health = 100;
     [SerializeField]
     private Slider healthBar;
     [SerializeField]
@@ -50,6 +49,8 @@ public class Player : Entity
         source = GetComponent<AudioSource>();
         inventory = GetComponent<PlayerInventoryController>();
         gunController = GetComponent<PlayerGunController>();
+        health = maxHealth;
+        healthBar.maxValue = maxHealth;
     }
 
     // Update is called once per frame
@@ -65,7 +66,7 @@ public class Player : Entity
         else transform.position += ((-transform.up * axis.x) + (transform.right * axis.y)).normalized * speed;
     }
 
-    public void Damage(int amount)
+    public override void Damage(int amount)
     {
         if (!isInvincible)
         {
@@ -83,6 +84,11 @@ public class Player : Entity
             }
             healthBar.value = health;
         }
+    }
+    public override void Heal(int amount)
+    {
+        health = Mathf.Min(health + amount, maxHealth);
+        healthBar.value = health;
     }
     public bool IsPositionInFOV(Vector2 position)
     {

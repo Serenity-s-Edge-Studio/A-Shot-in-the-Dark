@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Trench Gun
   m_EditorClassIdentifier: 
   name: Winchester Model 1897
-  id: 5
+  id: 10
   description: Point this at your problem and click. Now your problem is gone.
   mass: 3.6
   icon: {fileID: -2408530018317867212, guid: 9b741b91bd01e0749ad0ab3f86cbb97a, type: 3}
-  FireRate: 1
-  ReloadTime: 3
+  FireRate: 0.8333333
+  ReloadTime: 1
   DamageScale: 1
   ProjectileAmount: 4
   SpreadAngle: 65

@@ -158,6 +158,7 @@ MonoBehaviour:
     m_PostInfinity: 1
     m_RotationOrder: 4
   _TimeValue: 24
+  _TimeProgress: 0
   _GlobalLight: {fileID: 691498693617839894}
   _MinIntensity: 0.01
   _MaxInstensity: 0.8

@@ -16,4 +16,4 @@ MonoBehaviour:
   id: 10
   description: Some old wood. Still sturdy enough to craft with.
   mass: 10
-  icon: {fileID: 21300000, guid: 831acebd34cb5974a917067374118bec, type: 3}
+  icon: {fileID: 21300000, guid: a7aeefff89e134717970f564357ac93c, type: 3}

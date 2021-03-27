@@ -93,5 +93,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   MaxZombies: 500
-  ZombieIncreaseMulti: 0.2
+  ZombieIncreaseMulti: 1.2
   StartingMaxZombies: 200

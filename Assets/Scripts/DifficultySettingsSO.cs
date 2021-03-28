@@ -10,6 +10,7 @@ public class DifficultySettingsSO : ScriptableObject
     private AnimationCurve VisibilityToTimeRatio;
 
     public int MaxZombies;
+    [Range(1, 10)]
     public float ZombieIncreaseMulti;
     public int StartingMaxZombies;
 

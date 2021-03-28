@@ -111,7 +111,7 @@ public class EnemyManager : MonoBehaviour
                 relativePositions.Add(i, activeEnemies[i].influencingLights[j].transform.position);
             }
         }
-        transformAccessArray = new TransformAccessArray(transforms, 10);
+        transformAccessArray = new TransformAccessArray(transforms, 32);
         targets = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
         previousTargetNativeArray = new NativeArray<Vector2>(previousTargets, Allocator.TempJob);
         movePositionsNativeArray = new NativeArray<Vector2>(activeEnemies.Count, Allocator.TempJob);
@@ -216,6 +216,7 @@ public class EnemyManager : MonoBehaviour
 
         public float deltaTime;
         public float EnemyVisibility;
+        [ReadOnly]
         public Unity.Mathematics.Random random;
 
         public void Execute(int index, TransformAccess transform)
@@ -265,28 +266,6 @@ public class EnemyManager : MonoBehaviour
             result[i] = (Vector2)activeEnemies[i].transform.position;
         }
         return result;
-    }
-
-    private void ChangeVisibility(PartOfDay period)
-    {
-        switch (period)
-        {
-            case PartOfDay.Morning:
-                _Visibility = 10;
-                break;
-            case PartOfDay.Noon:
-                _Visibility = 30;
-                break;
-            case PartOfDay.Afternoon:
-                _Visibility = 50;
-                break;
-            case PartOfDay.Evening:
-                _Visibility = 15;
-                break;
-            case PartOfDay.Night:
-                _Visibility = 5;
-                break;
-        }
     }
 
     private void OnDrawGizmosSelected()

@@ -16,4 +16,4 @@ MonoBehaviour:
   id: 11
   description: Various metal parts we need for our more advanced projects.
   mass: 10
-  icon: {fileID: 21300000, guid: 86a71b9b027af6742b18b26fc762f68a, type: 3}
+  icon: {fileID: 21300000, guid: c7055c546417c43499899da0759627fa, type: 3}

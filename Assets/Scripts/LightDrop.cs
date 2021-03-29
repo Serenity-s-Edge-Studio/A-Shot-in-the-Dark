@@ -21,7 +21,7 @@ public class LightDrop : MonoBehaviour
     private new CircleCollider2D collider;
     private List<Enemy> enemiesInRange = new List<Enemy>();
 
-    private void Start()
+    protected virtual void Start()
     {
         remainingTime = decayTime;
         rigidbody = GetComponent<Rigidbody2D>();
@@ -50,7 +50,7 @@ public class LightDrop : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         foreach (Enemy enemy in enemiesInRange)
         {

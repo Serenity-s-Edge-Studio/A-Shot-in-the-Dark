@@ -12,7 +12,8 @@ public class PoissonTest : MonoBehaviour
     private float displayRadius;
     [SerializeField]
     private int numSamplesBeforeRejection;
-
+    [SerializeField]
+    private LayerMask layerMask;
     [SerializeField]
     private List<Vector2> points;
     private void OnValidate()
@@ -23,7 +24,7 @@ public class PoissonTest : MonoBehaviour
     public void Compute()
     {
         if (collider != null)
-            points = PoissonDiscSampling.GetPositions(collider, null, radius, numSamplesBeforeRejection);
+            points = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection);
     }
     private void OnDrawGizmosSelected()
     {
@@ -33,6 +34,6 @@ public class PoissonTest : MonoBehaviour
                 Gizmos.DrawSphere(point, displayRadius);
             }
         if (collider != null)
-            Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.extents);
+            Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.size);
     }
 }

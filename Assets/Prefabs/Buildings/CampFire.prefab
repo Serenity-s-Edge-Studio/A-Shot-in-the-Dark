@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2723659217509860048}
   - component: {fileID: 2723659217509860060}
   - component: {fileID: 2438233425873697933}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CampFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 5573213697885590165}
   - component: {fileID: 6884994743196431663}
   - component: {fileID: 9211963728781837279}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: LightSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class ScoreManager : MonoBehaviour
     private TextMeshProUGUI DeathScoreText;
     private int score;
     public static ScoreManager instance;
+    public event Action<float> UpdateSpawnRate;
 
     private void Awake()
     {
@@ -42,7 +44,7 @@ public class ScoreManager : MonoBehaviour
     private void adjustDifficulty()
     {
         int difficultyLevel = score / 500;
-        EnemyManager.instance.spawnRate = EnemyManager.instance.originalSpawnRate / (difficultyLevel + 1);
+        UpdateSpawnRate(1f / (difficultyLevel + 1));
         float multi = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieIncreaseMulti, difficultyLevel);
         EnemyManager.instance.MaxEnemies = Mathf.Min(Mathf.RoundToInt(EnemyManager.instance.orginalMaxZombies * multi), GameManager.instance.SelectedDifficulty.MaxZombies);
     }

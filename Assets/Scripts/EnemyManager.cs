@@ -5,6 +5,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Jobs;
+using System.Linq;
+using System;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -32,6 +34,9 @@ public class EnemyManager : MonoBehaviour
     private float _spawnRate;
     private int index = 0;
 
+    private Queue<Enemy> EnemyPool;
+    private int activeZombies = 0;
+
     private void Awake()
     {
         instance = this;
@@ -39,13 +44,21 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        activeEnemies = new List<Enemy>();
-        activeEnemies.AddRange(GetComponentsInChildren<Enemy>());
-        spawnRadius = Mathf.RoundToInt(Mathf.Max(center.pointLightOuterRadius + 1, spawnRadius));
         MaxEnemies = GameManager.instance.SelectedDifficulty.StartingMaxZombies;
         orginalMaxZombies = MaxEnemies;
         originalSpawnRate = spawnRate;
-        //DayNightCycle.instance.OnDayPeriodChange.AddListener(ChangeVisibility);
+        InitializePool();
+    }
+
+    private void InitializePool()
+    {
+        EnemyPool = new Queue<Enemy>(GameManager.instance.SelectedDifficulty.MaxZombies);
+        for (int i = 0; i < GameManager.instance.SelectedDifficulty.MaxZombies; i++)
+        {
+            Enemy zombie = Instantiate(ZombiePrefab, transform);
+            zombie.gameObject.SetActive(false);
+            EnemyPool.Enqueue(zombie);
+        }
     }
 
     private void spawnEnemies()
@@ -71,23 +84,24 @@ public class EnemyManager : MonoBehaviour
     private void Update()
     {
         _Visibility = GameManager.instance.SelectedDifficulty.ComputeVisibility(DayNightCycle.instance._TimeValue/24f);
-        _spawnRate -= Time.deltaTime;
-        if (_spawnRate <= 0)
+        activeEnemies = EnemyPool.ToList().FindAll(enemy => enemy.isActiveAndEnabled);
+        if (activeEnemies.Count > 0)
         {
-            spawnEnemies();
-            _spawnRate = spawnRate;
+            QueueEnemyAIJobs();
+            AttackTargets();
         }
-        QueueEnemyAIJobs();
-        AttackTargets();
     }
 
     private void LateUpdate()
     {
-        moveJobHandle.Complete();
-        ApplyJobResults();
+        if (activeEnemies.Count > 0)
+        {
+            moveJobHandle.Complete();
+            ApplyJobResults();
+        }
         DisposeJobData();
     }
-
+    #region AI jobs
     private NativeMultiHashMap<int, Vector2> relativePositions;
     private TransformAccessArray transformAccessArray;
     private NativeArray<Vector2> targets, previousTargetNativeArray, movePositionsNativeArray;
@@ -150,12 +164,18 @@ public class EnemyManager : MonoBehaviour
 
     private void DisposeJobData()
     {
-        movePositionsNativeArray.Dispose();
-        previousTargetNativeArray.Dispose();
-        timeTillNextNativeArray.Dispose();
-        transformAccessArray.Dispose();
-        targets.Dispose();
-        relativePositions.Dispose();
+        if (movePositionsNativeArray.IsCreated)
+            movePositionsNativeArray.Dispose();
+        if (previousTargetNativeArray.IsCreated)
+            previousTargetNativeArray.Dispose();
+        if (timeTillNextNativeArray.IsCreated)
+            timeTillNextNativeArray.Dispose();
+        if (transformAccessArray.isCreated)
+            transformAccessArray.Dispose();
+        if (targets.IsCreated)
+            targets.Dispose();
+        if (relativePositions.IsCreated)
+            relativePositions.Dispose();
     }
 
     private void AttackTargets()
@@ -257,7 +277,7 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
-
+    #endregion
     public NativeArray<float2> GetActiveEnemyPositionsAsNativeArray(Allocator allocator)
     {
         NativeArray<float2> result = new NativeArray<float2>(activeEnemies.Count, allocator, NativeArrayOptions.UninitializedMemory);
@@ -267,7 +287,34 @@ public class EnemyManager : MonoBehaviour
         }
         return result;
     }
-
+    public Enemy GetNextEnemyInPool()
+    {
+        Enemy spawnedEnemy;
+        if (activeZombies < MaxEnemies)
+        {
+            index = 0;
+            do
+            {
+                spawnedEnemy = EnemyPool.Dequeue();
+                EnemyPool.Enqueue(spawnedEnemy);
+                index++;
+            } while (spawnedEnemy.isActiveAndEnabled && index < EnemyPool.Count);
+            activeZombies++;
+        }
+        else
+        {
+            spawnedEnemy = EnemyPool.Dequeue();
+            EnemyPool.Enqueue(spawnedEnemy);
+        }
+        spawnedEnemy.OnObjectSpawn();
+        spawnedEnemy.gameObject.SetActive(true);
+        return spawnedEnemy;
+    }
+    public void DisableEnemy(Enemy enemy)
+    {
+        enemy.gameObject.SetActive(false);
+        activeZombies--;
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);

@@ -9,6 +9,7 @@ public class LightManager : MonoBehaviour
 {
     public static LightManager instance;
     public List<LightDrop> lights = new List<LightDrop>();
+    public List<Campfire> campfires = new List<Campfire>();
     private Queue<Vector2> spawnPositions = new Queue<Vector2>(new Vector2[100]);
     private float OriginalRefreshTimer = 10;
     private float spawnPositionRefreshTimer;
@@ -96,18 +97,23 @@ public class LightManager : MonoBehaviour
     #endregion
     public void add(LightDrop light)
     {
+        if (light is Campfire campfire)
+            campfires.Add(campfire);
         lights.Add(light);
         spawnPositionRefreshTimer = 0;
     }
 
     public void remove(LightDrop light)
     {
+        if (light is Campfire campfire)
+            campfires.Remove(campfire);
         lights.Remove(light);
         spawnPositionRefreshTimer = 0;
     }
 
     public Vector2 FindValidSpawnPosition()
     {
+        
         if (spawnPositionRefreshTimer < .01f)
         {
             RefreshSpawnQueue();

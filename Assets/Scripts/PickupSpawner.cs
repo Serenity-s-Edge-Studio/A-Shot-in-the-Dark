@@ -1,18 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 
-public class PickupSpawner : MonoBehaviour
+public class PickupSpawner : PoissonSpawner
 {
     [SerializeField]
     private int maxPickups;
+    private int index;
     [SerializeField]
     private PickupSpawnChance[] items;
-    [SerializeField]
-    private float spawnRadius;
-    [SerializeField]
-    private Light2D center;
-    private int index;
+
     private Pickup[] pickUps;
+    private Queue<Vector2> spawnPositions;
 
     // Start is called before the first frame update
     private void Start()
@@ -37,25 +36,21 @@ public class PickupSpawner : MonoBehaviour
 
     private void spawnPickups()
     {
-        Vector2 point = LightManager.instance.FindValidSpawnPosition();
-        if (index > maxPickups)
-            index = 0;
-        //Recycle old pickup
-        if (pickUps[index] != null) Destroy(pickUps[index].gameObject);
-        float chance = Random.Range(0f, 1f);
-        Pickup drawnPickup = System.Array.Find(items, item => chance <= item.SpawnChance).item;
-        pickUps[index] = Instantiate(drawnPickup, point,
-                                          Quaternion.identity,
-                                          transform);
-        index++;
-
+        if (GetNextPosition(out Vector2 point))
+        {
+            if (index == pickUps.Length)
+                index = 0;
+            //Recycle old pickup
+            if (pickUps[index] != null) Destroy(pickUps[index].gameObject);
+            float chance = Random.Range(0f, 1f);
+            Pickup drawnPickup = System.Array.Find(items, item => chance <= item.SpawnChance).item;
+            pickUps[index] = Instantiate(drawnPickup, point,
+                                              Quaternion.identity,
+                                              transform);
+            index++;
+        }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(Vector3.zero, center.pointLightOuterRadius);
-        Gizmos.DrawWireSphere(Vector3.zero, spawnRadius);
-    }
     [System.Serializable]
     private class PickupSpawnChance
     {

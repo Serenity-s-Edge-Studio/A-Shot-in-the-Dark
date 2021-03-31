@@ -11,12 +11,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Cinemachine
   - Water
   - UI
   - Building
-  - 
-  - 
+  - NoSpawn
+  - Unwalkable
   - 
   - 
   - 

@@ -54,4 +54,8 @@ public class ScoreManager : MonoBehaviour
         ScoreText.text = $"Score: {score}";
         DeathScoreText.text = $"Score: {score}";
     }
+    public void LoadScene(int scene)
+    {
+        GameManager.instance.LoadScene(scene);
+    }
 }

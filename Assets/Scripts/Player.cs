@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,7 +20,11 @@ public class Player : Entity
     [SerializeField]
     private Slider healthBar;
     [SerializeField]
-    private GameObject deathText;
+    private GameObject deathContainer;
+    [SerializeField]
+    private Button respawnButton;
+    [SerializeField]
+    private TextMeshProUGUI campfireCount;
     [SerializeField]
     private GameObject deathParticles;
     [SerializeField]
@@ -73,18 +78,46 @@ public class Player : Entity
             health = Mathf.Max(0, health - amount);
             if (health == 0 && !isDead)
             {
-                isDead = true;
-                gunController.CanShoot = false;
-                deathText.SetActive(true);
-                this.enabled = false;
-                rigidbody.simulated = false;
-                input.Disable();
-                source.PlayOneShot(deathSound);
-                Instantiate(deathParticles, transform.position, Quaternion.identity);
+                Die();
             }
             healthBar.value = health;
         }
     }
+
+    private void Die()
+    {
+        isDead = true;
+        gunController.CanShoot = false;
+
+        deathContainer.SetActive(true);
+        int avaliableCampfires = BuildingManager.instance.SpawnPoints.Count;
+        respawnButton.interactable = avaliableCampfires > 0;
+        campfireCount.text = $"Avaliable campfires: {avaliableCampfires}";
+        respawnButton.onClick.RemoveAllListeners();
+        respawnButton.onClick.AddListener(Respawn);
+
+        this.enabled = false;
+        rigidbody.simulated = false;
+        input.Disable();
+        source.PlayOneShot(deathSound);
+        Instantiate(deathParticles, transform.position, Quaternion.identity);
+    }
+
+    private void Respawn()
+    {
+        isDead = false;
+        gunController.CanShoot = true;
+
+        deathContainer.SetActive(false);
+
+        this.enabled = true;
+        rigidbody.simulated = true;
+        input.Enable();
+        Heal(maxHealth);
+
+        transform.position = BuildingManager.instance.GetClosestRespawnPoint(transform.position);
+    }
+
     public override void Heal(int amount)
     {
         health = Mathf.Min(health + amount, maxHealth);

@@ -15,6 +15,6 @@ MonoBehaviour:
   RequiredResources:
   - item: {fileID: 11400000, guid: df22a6e86f0836f469130bd08cac29f8, type: 2}
     Amount: 10
-  buildingPrefab: {fileID: 2723659217509860060, guid: 6f79adf2abf03414d94d9d553646c548, type: 3}
+  buildingPrefab: {fileID: 50011486664876345, guid: 6f79adf2abf03414d94d9d553646c548, type: 3}
   icon: {fileID: -3495731254311694543, guid: 924e95f95b3eb6844acf22c29d4c5d12, type: 3}
   CanRotate: 0

@@ -19,7 +19,11 @@ public class Building : Entity
 
     public UnityEvent OnBuilt;
     public UnityEvent OnDeath;
-
+    private void Start()
+    {
+        if (isBuilt)
+            Build();
+    }
     public void Build()
     {
         isBuilt = true;
@@ -28,6 +32,7 @@ public class Building : Entity
         _BuildAreaCollider.isTrigger = false;
         OnDeath.AddListener(() => 
             Instantiate(DestructionEffect, transform.position, transform.rotation * Quaternion.AngleAxis(-90f, Vector3.right)));
+        BuildingManager.instance.Add(this);
     }
 
     public bool IsBuildAreaClear()
@@ -58,6 +63,7 @@ public class Building : Entity
         if (currentHealth < 0.01f)
         {
             OnDeath.Invoke();
+            BuildingManager.instance.Remove(this);
             Destroy(gameObject);
         }
     }

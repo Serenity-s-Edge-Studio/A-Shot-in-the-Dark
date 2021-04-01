@@ -97,16 +97,12 @@ public class LightManager : MonoBehaviour
     #endregion
     public void add(LightDrop light)
     {
-        if (light is Campfire campfire)
-            campfires.Add(campfire);
         lights.Add(light);
         spawnPositionRefreshTimer = 0;
     }
 
     public void remove(LightDrop light)
     {
-        if (light is Campfire campfire)
-            campfires.Remove(campfire);
         lights.Remove(light);
         spawnPositionRefreshTimer = 0;
     }

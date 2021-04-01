@@ -56,9 +56,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2723659217509860054}
+  - component: {fileID: 50011486664876345}
   - component: {fileID: 2723659217509860055}
   - component: {fileID: 2723659217509860048}
-  - component: {fileID: 2723659217509860060}
   - component: {fileID: 2438233425873697933}
   m_Layer: 6
   m_Name: CampFire
@@ -83,6 +83,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &50011486664876345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723659217509860061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eac64c3dd4dd454dba47de8fe897801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  _Costs:
+  - item: {fileID: 11400000, guid: df22a6e86f0836f469130bd08cac29f8, type: 2}
+    Amount: 100
+  _MaxHealth: 10
+  _BuildAreaCollider: {fileID: 2438233425873697933}
+  currentHealth: 0
+  DestructionEffect: {fileID: 8285258145387576087, guid: 4831bff20f38ca747b47adfe76372004, type: 3}
+  isBuilt: 0
+  OnBuilt:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5573213697885590165}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 2438233425873697933}
+        m_TargetAssemblyTypeName: UnityEngine.Collider2D, UnityEngine
+        m_MethodName: set_isTrigger
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &2723659217509860055
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -153,57 +204,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2723659217509860060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2723659217509860061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d564147166546d243bdb36dbb8d3ea75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-  _Costs:
-  - item: {fileID: 11400000, guid: df22a6e86f0836f469130bd08cac29f8, type: 2}
-    Amount: 100
-  _MaxHealth: 10
-  _BuildAreaCollider: {fileID: 2438233425873697933}
-  currentHealth: 0
-  DestructionEffect: {fileID: 8285258145387576087, guid: 4831bff20f38ca747b47adfe76372004, type: 3}
-  isBuilt: 0
-  OnBuilt:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5573213697885590165}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 2438233425873697933}
-        m_TargetAssemblyTypeName: UnityEngine.Collider2D, UnityEngine
-        m_MethodName: set_isTrigger
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!58 &2438233425873697933
 CircleCollider2D:
   m_ObjectHideFlags: 0

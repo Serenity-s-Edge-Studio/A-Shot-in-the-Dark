@@ -256,6 +256,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2329144}
   m_CullTransparentMesh: 0
+--- !u!60 &53862693 stripped
+PolygonCollider2D:
+  m_CorrespondingSourceObject: {fileID: 5543347576035574440, guid: 8e20f8df34f4e4d689bee80ccc7d103d, type: 3}
+  m_PrefabInstance: {fileID: 1746238720}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &77481255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4224,7 +4229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ConfineMode: 0
   m_BoundingVolume: {fileID: 0}
-  m_BoundingShape2D: {fileID: 0}
+  m_BoundingShape2D: {fileID: 53862693}
   m_ConfineScreenEdges: 1
   m_Damping: 0
 --- !u!1 &1864424270

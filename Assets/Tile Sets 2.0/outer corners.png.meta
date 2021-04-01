@@ -14,6 +14,12 @@ TextureImporter:
   - first:
       213: -6034620375689370385
     second: outer corners_3
+  - first:
+      213: 6539560160429907793
+    second: outer corners_4
+  - first:
+      213: -6069572668657851422
+    second: outer corners_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -154,7 +160,7 @@ TextureImporter:
       name: outer corners_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 100
         y: 200
         width: 100
         height: 100
@@ -175,8 +181,8 @@ TextureImporter:
       name: outer corners_1
       rect:
         serializedVersion: 2
-        x: 100
-        y: 200
+        x: 0
+        y: 100
         width: 100
         height: 100
       alignment: 0
@@ -196,7 +202,7 @@ TextureImporter:
       name: outer corners_2
       rect:
         serializedVersion: 2
-        x: 0
+        x: 100
         y: 100
         width: 100
         height: 100
@@ -217,7 +223,7 @@ TextureImporter:
       name: outer corners_3
       rect:
         serializedVersion: 2
-        x: 100
+        x: 200
         y: 100
         width: 100
         height: 100
@@ -234,10 +240,52 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: outer corners_4
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15f98bd515f21ca50800000000000000
+      internalID: 6539560160429907793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outer corners_5
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e3aa3ad0db84cba0800000000000000
+      internalID: -6069572668657851422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 02e65870f536e4354b72d0e0c09c4b7f
+    spriteID: f98c6a4be498748cb8d561501478ccad
     internalID: 0
     vertices: []
     indices: 

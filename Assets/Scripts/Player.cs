@@ -95,6 +95,7 @@ public class Player : Entity
         campfireCount.text = $"Avaliable campfires: {avaliableCampfires}";
         respawnButton.onClick.RemoveAllListeners();
         respawnButton.onClick.AddListener(Respawn);
+        inventory.DropAllItems(.5f);
 
         this.enabled = false;
         rigidbody.simulated = false;

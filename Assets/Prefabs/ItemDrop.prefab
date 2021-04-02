@@ -155,12 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb16c82bcd514647a7cf7ebb2090093, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items: []
   rigidbody: {fileID: 8478253152820961003}
   collider: {fileID: 7112529243961764110}
-  type: 1
-  max: 24
-  clipSize: 6
-  fireRate: 40
+  _PickUpClip: {fileID: 8300000, guid: f574bd13269f83640bd50b2c72130f78, type: 3}
 --- !u!50 &8478253152820961003
 Rigidbody2D:
   serializedVersion: 4

@@ -44,6 +44,10 @@ PrefabInstance:
       value: WoodDrop
       objectReference: {fileID: 0}
     - target: {fileID: 4118151290756067400, guid: 9c43492694fd6d44288126d522b21865, type: 3}
+      propertyPath: _PickUpClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f574bd13269f83640bd50b2c72130f78, type: 3}
+    - target: {fileID: 4118151290756067400, guid: 9c43492694fd6d44288126d522b21865, type: 3}
       propertyPath: items.Array.size
       value: 1
       objectReference: {fileID: 0}

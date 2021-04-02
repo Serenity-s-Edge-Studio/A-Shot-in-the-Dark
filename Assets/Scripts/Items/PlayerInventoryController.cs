@@ -52,7 +52,7 @@ public class PlayerInventoryController : InventoryController
     public override void DropItem(ItemStack stack)
     {
         base.DropItem(stack);
-        DisplayInventory();
+        if(_InventoryUI.activeInHierarchy) DisplayInventory();
     }
 
     public override void HideInventory()

@@ -60,6 +60,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3962991475586675180, guid: 63ed52baff615b54b887f304d0230e3c, type: 3}
+      propertyPath: _PickUpClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f574bd13269f83640bd50b2c72130f78, type: 3}
+    - target: {fileID: 3962991475586675180, guid: 63ed52baff615b54b887f304d0230e3c, type: 3}
       propertyPath: items.Array.data[0].Amount
       value: 5
       objectReference: {fileID: 0}

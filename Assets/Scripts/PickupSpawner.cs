@@ -14,8 +14,9 @@ public class PickupSpawner : PoissonSpawner
     private Queue<Vector2> spawnPositions;
 
     // Start is called before the first frame update
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         pickUps = new Pickup[maxPickups];
         //Find sum of priorities
         float total = 0;

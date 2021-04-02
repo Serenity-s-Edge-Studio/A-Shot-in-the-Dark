@@ -24,7 +24,7 @@ public class PoissonTest : MonoBehaviour
     public void Compute()
     {
         if (collider != null)
-            points = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection);
+            points = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection).points;
     }
     private void OnDrawGizmosSelected()
     {

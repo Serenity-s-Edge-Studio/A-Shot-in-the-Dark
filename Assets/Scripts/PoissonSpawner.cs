@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PoissonSpawner : MonoBehaviour
 {
@@ -18,25 +19,31 @@ public class PoissonSpawner : MonoBehaviour
     [SerializeField]
     private Queue<Vector2> points;
 
+    private PoissonGrid pGrid;
+    protected virtual void Start()
+    {
+        GeneratePositions();
+    }
     protected bool GetNextPosition(out Vector2 position)
     {
-        if (points != null && points.Count > 0)
-        {
-            position = points.Dequeue();
-            return true;
-        }
+        position = Vector2.zero;
         if (collider == null)
-        {
-            position = Vector2.zero;
             return false;
+        if (points != null)
+        {
+            List<Collider2D> colliders = PoissonDiscSampling.CastColliders(collider, layerMask);
+            while (points.Count > 0)
+            {
+                position = points.Dequeue();
+                bool inFOV = Player.instance.IsPositionInFOV(position);
+                foreach (Collider2D other in colliders)
+                {
+                    if (!inFOV && !other.OverlapPoint(position))
+                        return true;
+                }
+            }
         }
         GeneratePositions();
-        if (points.Count > 0)
-        {
-            position = points.Dequeue();
-            return true;
-        }
-        position = Vector2.zero;
         return false;
     }
     private void OnDrawGizmosSelected()
@@ -59,7 +66,8 @@ public class PoissonSpawner : MonoBehaviour
     }
     public void GeneratePositions()
     {
-        List<Vector2> newPositions = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection);
+        pGrid = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection);
+        List<Vector2> newPositions = pGrid.points.ToArray().ToList();
         newPositions.Shuffle();
         points = new Queue<Vector2>(newPositions);
     }

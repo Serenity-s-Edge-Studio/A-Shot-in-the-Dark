@@ -5,7 +5,7 @@ using System.Linq;
 
 public class PoissonDiscSampling : MonoBehaviour
 {
-    public static List<Vector2> GetPositions(Collider2D collider, LayerMask OverlapCollider, float radius, int numSamplesBeforeRejection = 30)
+    public static PoissonGrid GetPositions(Collider2D collider, LayerMask OverlapCollider, float radius, int numSamplesBeforeRejection = 30)
     {
         float cellSize = radius / Mathf.Sqrt(2);
         Bounds bounds = collider.bounds;
@@ -26,7 +26,7 @@ public class PoissonDiscSampling : MonoBehaviour
                 Vector2 dir = Random.insideUnitCircle;
                 //float currentRadius = storedRadii.TryGetValue(spawnCentre, out float stored) ? stored : radius;
                 Vector2 candidate = spawnCentre + dir * Random.Range(radius, 2 * radius);
-                if (IsCandidateValid(candidate, collider, cellSize, radius, points, grid, colliders))
+                if (ValidatePosition(candidate, collider, cellSize, radius, points, grid, colliders))
                 {
                     points.Add(candidate);
                     spawnPoints.Add(candidate);
@@ -42,7 +42,14 @@ public class PoissonDiscSampling : MonoBehaviour
                 spawnPoints.RemoveAt(spawnIndex);
             }
         }
-        return points;
+        return new PoissonGrid
+        {
+            points = points,
+            cellSize = cellSize,
+            radius = radius,
+            collider = collider,
+            grid = grid
+        };
     }
 
     private static List<Vector2> CalculateStartingSpawnPoints(Collider2D collider, List<Collider2D> others)
@@ -59,7 +66,7 @@ public class PoissonDiscSampling : MonoBehaviour
         return spawnPoints;
     }
 
-    private static List<Collider2D> CastColliders(Collider2D collider, LayerMask OverlapCollider)
+    public static List<Collider2D> CastColliders(Collider2D collider, LayerMask OverlapCollider)
     {
         List<Collider2D> colliders = new List<Collider2D>();
         ContactFilter2D contactFilter = new ContactFilter2D();
@@ -75,7 +82,7 @@ public class PoissonDiscSampling : MonoBehaviour
         Vector2 adjusted = position - center;
         return new Vector2Int(Mathf.FloorToInt(adjusted.x / cellSize), Mathf.FloorToInt(adjusted.y / cellSize));
     }
-    private static bool IsCandidateValid(Vector2 candidate, Collider2D collider, float cellSize, float radius, List<Vector2> points, int?[,] grid, List<Collider2D> otherColliders)
+    public static bool ValidatePosition(Vector2 candidate, Collider2D collider, float cellSize, float radius, List<Vector2> points, int?[,] grid, List<Collider2D> otherColliders)
     {
         if (!collider.OverlapPoint(candidate))
             return false;
@@ -120,4 +127,12 @@ public class PoissonDiscSampling : MonoBehaviour
         }
         return true;
     }
+}
+public class PoissonGrid
+{
+    public Collider2D collider;
+    public float cellSize;
+    public float radius;
+    public List<Vector2> points;
+    public int?[,] grid;
 }

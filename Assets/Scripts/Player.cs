@@ -125,7 +125,7 @@ public class Player : Entity
     }
     public bool IsPositionInFOV(Vector2 position)
     {
-        Vector2 screenPos = camera.WorldToScreenPoint(position);
-        return Mathf.Abs(screenPos.x) < 1 || Mathf.Abs(screenPos.y) < 1;
+        Vector2 screenPos = camera.WorldToViewportPoint(position);
+        return screenPos.x < 1f && screenPos.x > 0f && screenPos.y < 1f && screenPos.y > 0f;
     }
 }

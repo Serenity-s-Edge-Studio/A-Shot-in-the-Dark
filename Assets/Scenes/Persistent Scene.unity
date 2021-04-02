@@ -1011,6 +1011,7 @@ GameObject:
   - component: {fileID: 1089917219}
   - component: {fileID: 1089917218}
   - component: {fileID: 1089917220}
+  - component: {fileID: 1089917221}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1080,6 +1081,20 @@ MonoBehaviour:
     Amount: 1
   - item: {fileID: 11400000, guid: a7715e3f6df758047af5262b88eeb09f, type: 2}
     Amount: 1
+--- !u!114 &1089917221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089917217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451e13305ae749649b8f2835c7c46579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeBuildings: []
+  SpawnPoints: []
 --- !u!1 &1111619767
 GameObject:
   m_ObjectHideFlags: 0

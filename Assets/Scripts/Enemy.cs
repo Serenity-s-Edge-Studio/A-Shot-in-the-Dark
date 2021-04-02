@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IIgnitable
+public class Enemy : MonoBehaviour, IIgnitable, IPooledObject
 {
     public List<LightDrop> influencingLights = new List<LightDrop>();
     public Vector2 target;
     public float timeTillNextRandom;
     [SerializeField]
+    private float StartingHealth;
     private float health;
 
     public new Rigidbody2D rigidbody;
@@ -17,6 +18,10 @@ public class Enemy : MonoBehaviour, IIgnitable
     public int AttackDamage;
     private bool isOnFire = false;
 
+    public void OnObjectSpawn()
+    {
+        health = StartingHealth;
+    }
     public void Damage(float amount)
     {
         health = Mathf.Max(0, health - amount);
@@ -24,7 +29,7 @@ public class Enemy : MonoBehaviour, IIgnitable
         {
             if (ScoreManager.instance)
                 ScoreManager.instance.scoreKill();
-            Destroy(gameObject);
+            EnemyManager.instance.DisableEnemy(this);
         }
         Destroy(Instantiate(deathParticles, transform.position, Quaternion.identity), 5);
     }
@@ -47,10 +52,5 @@ public class Enemy : MonoBehaviour, IIgnitable
             rigidbody.AddTorque(1000);
             yield return new WaitForSeconds(1);
         }
-    }
-
-    private void OnDestroy()
-    {
-        EnemyManager.instance.activeEnemies.Remove(this);
     }
 }

@@ -9,6 +9,7 @@ public class LightManager : MonoBehaviour
 {
     public static LightManager instance;
     public List<LightDrop> lights = new List<LightDrop>();
+    public List<Campfire> campfires = new List<Campfire>();
     private Queue<Vector2> spawnPositions = new Queue<Vector2>(new Vector2[100]);
     private float OriginalRefreshTimer = 10;
     private float spawnPositionRefreshTimer;
@@ -108,6 +109,7 @@ public class LightManager : MonoBehaviour
 
     public Vector2 FindValidSpawnPosition()
     {
+        
         if (spawnPositionRefreshTimer < .01f)
         {
             RefreshSpawnQueue();

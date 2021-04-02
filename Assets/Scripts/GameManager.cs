@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI volumeText;
     public DifficultySettingsSO SelectedDifficulty;
     public static GameManager instance;
-    private int CurrentSceneIndex = 1;
+    private int CurrentSceneIndex = 2;
 
     private void Awake()
     {

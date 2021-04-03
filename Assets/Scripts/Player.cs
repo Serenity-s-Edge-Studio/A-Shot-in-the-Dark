@@ -11,7 +11,7 @@ public class Player : Entity
     [SerializeField]
     private new Rigidbody2D rigidbody;
     public float speed = 1;
-
+    [SerializeField]
     private new Camera camera;
     private AudioSource source;
 

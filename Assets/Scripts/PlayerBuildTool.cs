@@ -113,4 +113,8 @@ public class PlayerBuildTool : MonoBehaviour
             _BuildingCosts[i].gameObject.SetActive(false);
         }
     }
+    private void OnDestroy()
+    {
+        input.Disable();
+    }
 }

@@ -35,7 +35,7 @@ public class PoissonSpawner : MonoBehaviour
             while (points.Count > 0)
             {
                 position = points.Dequeue();
-                bool inFOV = Player.instance.IsPositionInFOV(position);
+                bool inFOV = Player.instance != null ? Player.instance.IsPositionInFOV(position) : false;
                 foreach (Collider2D other in colliders)
                 {
                     if (!inFOV && !other.OverlapPoint(position))

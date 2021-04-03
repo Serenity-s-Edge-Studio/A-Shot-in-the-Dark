@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,9 +20,16 @@ public class GameManager : MonoBehaviour
     private Toggle movementToggle;
     [SerializeField]
     private TextMeshProUGUI volumeText;
+    [SerializeField]
+    private Button closeSettingsMenu;
+    [SerializeField]
+    private GameObject LoadingScreen;
     public DifficultySettingsSO SelectedDifficulty;
     public static GameManager instance;
+    [SerializeField]
     private int CurrentSceneIndex = 2;
+    [SerializeField]
+    private Camera persistentCamera;
 
     private void Awake()
     {
@@ -35,6 +43,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 #if UNITY_EDITOR
+        CurrentSceneIndex = SceneManager.GetSceneByBuildIndex(1).isLoaded ? 1 : 2;
         SetLoadButtonListner(2);
         FindAndUpdateSettingsButton();
 #else
@@ -56,6 +65,8 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(int index, System.Action<AsyncOperation>[] onComplete)
     {
+        LoadingScreen.SetActive(true);
+        persistentCamera.gameObject.SetActive(true);
         if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
             SceneManager.UnloadSceneAsync(CurrentSceneIndex);
         AsyncOperation LoadSceneOperation = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
@@ -66,14 +77,17 @@ public class GameManager : MonoBehaviour
                 LoadSceneOperation.completed += operation;
             }
         }
-        LoadSceneOperation.completed += GameManager_completed;
         CurrentSceneIndex = index;
+        LoadSceneOperation.completed += GameManager_completed;
     }
 
     private void GameManager_completed(AsyncOperation obj)
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(CurrentSceneIndex));
+        SetLoadButtonListner(2);
         FindAndUpdateSettingsButton();
+        LoadingScreen.SetActive(false);
+        persistentCamera.gameObject.SetActive(false);
     }
 
     private void FindAndUpdateSettingsButton()
@@ -82,7 +96,11 @@ public class GameManager : MonoBehaviour
         if (buttonList.Count > 0)
         {
             Button settingsButton = buttonList[0];
+            settingsButton.onClick.RemoveAllListeners();
             settingsButton.onClick.AddListener(() => settingsGO.SetActive(!settingsGO.activeInHierarchy));
+            var menu = GetAllObjectsOnlyInSceneWithTag<Transform>("Menu")?.FirstOrDefault();
+            if (menu != null)
+                closeSettingsMenu.onClick.AddListener(() => menu.gameObject.SetActive(true));
         }
         else
         {
@@ -93,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     private void SetLoadButtonListner(int index)
     {
-        if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
+        if (SceneManager.GetSceneByBuildIndex(1).isLoaded)
         {
             var buttonList = GetAllObjectsOnlyInSceneWithTag<Button>("LoadGameButton");
             if (buttonList.Count > 0)

@@ -84,7 +84,13 @@ public class PlayerBuildTool : MonoBehaviour
 
     private void ToggleBuildTool_performed(InputAction.CallbackContext obj)
     {
+        Player.instance.closeWindows();
         _BuildingUI.SetActive(!_BuildingUI.activeInHierarchy);
+        if (_SelectedBuildingPreview != null) Destroy(_SelectedBuildingPreview.gameObject);
+    }
+    public void HideBuildTool()
+    {
+        _BuildingUI.SetActive(false);
         if (_SelectedBuildingPreview != null) Destroy(_SelectedBuildingPreview.gameObject);
     }
     public void SelectBuilding(ConstructableSO constructable)

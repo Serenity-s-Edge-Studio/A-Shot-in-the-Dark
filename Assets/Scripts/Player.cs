@@ -38,6 +38,7 @@ public class Player : Entity
 
     public PlayerInventoryController inventory;
     private PlayerGunController gunController;
+    private PlayerBuildTool buildTool;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class Player : Entity
         gunController = GetComponent<PlayerGunController>();
         health = maxHealth;
         healthBar.maxValue = maxHealth;
+        buildTool = GetComponent<PlayerBuildTool>();
     }
 
     // Update is called once per frame
@@ -128,5 +130,11 @@ public class Player : Entity
     {
         Vector2 screenPos = camera.WorldToViewportPoint(position);
         return screenPos.x < 1f && screenPos.x > 0f && screenPos.y < 1f && screenPos.y > 0f;
+    }
+    public void closeWindows()
+    {
+        inventory.HideInventory();
+        buildTool.HideBuildTool();
+        gunController.CanShoot = true;
     }
 }

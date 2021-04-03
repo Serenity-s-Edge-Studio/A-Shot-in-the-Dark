@@ -13,15 +13,24 @@ public class PlayerInventoryController : InventoryController
     private ItemStack[] _StartingItems;
 
     private List<ItemSlot> _ItemList;
+    private PlayerInput.PlayerActions input;
 
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
         _ItemList = new List<ItemSlot>();
-        var input = new PlayerInput().Player;
+        input = new PlayerInput().Player;
         input.Enable();
-        input.Openinventory.performed += _ => { if (_InventoryUI.activeInHierarchy) HideInventory(); else DisplayInventory(); };
+        input.Openinventory.performed += _ => 
+        {
+            if (_InventoryUI.activeInHierarchy) HideInventory();
+            else
+            {
+                Player.instance.closeWindows();
+                DisplayInventory();
+            }
+        };
         for (int i = 0; i < _StartingItems.Length; i++)
         {
             inventory.TryAddItems(_StartingItems[i].item, _StartingItems[i].Amount);
@@ -58,5 +67,9 @@ public class PlayerInventoryController : InventoryController
     public override void HideInventory()
     {
         _InventoryUI.SetActive(false);
+    }
+    private void OnDestroy()
+    {
+        input.Disable();
     }
 }

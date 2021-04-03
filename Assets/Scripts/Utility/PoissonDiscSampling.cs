@@ -73,7 +73,6 @@ public class PoissonDiscSampling : MonoBehaviour
         contactFilter.SetLayerMask(OverlapCollider);
         contactFilter.useTriggers = true;
         Physics2D.OverlapCollider(collider, contactFilter, colliders);
-        Debug.Log(colliders.Count);
         return colliders;
     }
 

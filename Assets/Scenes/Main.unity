@@ -4888,7 +4888,7 @@ PrefabInstance:
       objectReference: {fileID: 1456348552}
     - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
       propertyPath: _StartingItems.Array.size
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
       propertyPath: _StartingItems.Array.data[0].item
@@ -4915,6 +4915,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 699fd54f526f1eb44bbfbb95f3aaf653, type: 2}
     - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
+      propertyPath: _StartingItems.Array.data[6].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 7ed0a4c360b5d234bbb592eac9e48f30, type: 2}
+    - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
+      propertyPath: _StartingItems.Array.data[7].item
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f6e4ea2e6e523e4c9de8db2371a2107, type: 2}
+    - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
       propertyPath: _StartingItems.Array.data[0].Amount
       value: 3
       objectReference: {fileID: 0}
@@ -4937,6 +4945,14 @@ PrefabInstance:
     - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
       propertyPath: _StartingItems.Array.data[5].Amount
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
+      propertyPath: _StartingItems.Array.data[6].Amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324361574571309894, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
+      propertyPath: _StartingItems.Array.data[7].Amount
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7094269916592450741, guid: d4eb2a2990ce08547b6c2b57c58f3085, type: 3}
       propertyPath: _NameText

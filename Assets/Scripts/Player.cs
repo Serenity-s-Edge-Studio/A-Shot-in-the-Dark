@@ -91,6 +91,7 @@ public class Player : Entity
         isDead = true;
         gunController.CanShoot = false;
 
+        closeWindows();
         deathContainer.SetActive(true);
         int avaliableCampfires = BuildingManager.instance.SpawnPoints.Count;
         respawnButton.interactable = avaliableCampfires > 0;

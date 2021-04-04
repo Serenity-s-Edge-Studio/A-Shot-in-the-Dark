@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GlowStickLauncher
   m_EditorClassIdentifier: 
   name: Glow Stick Launcher
-  id: 10
+  id: 8
   description: 'This is normally used for high grade explosives. Now we use it to
-    light our path.
+    light our path
 
 '
   mass: 1

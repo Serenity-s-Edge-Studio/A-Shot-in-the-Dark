@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Bandage
   m_EditorClassIdentifier: 
   name: Bandage
-  id: 12
-  description: Some medical gauze. Good for treating minor wounds.
+  id: 20
+  description: 
   mass: 1
   icon: {fileID: 21300000, guid: 62036098c0083432baade881c0a0ce68, type: 3}
   RestoredHealth: 10

@@ -47,6 +47,7 @@ public class EnemyManager : MonoBehaviour
         MaxEnemies = GameManager.instance.SelectedDifficulty.StartingMaxZombies;
         orginalMaxZombies = MaxEnemies;
         originalSpawnRate = spawnRate;
+        activeEnemies = new List<Enemy>();
         InitializePool();
     }
 
@@ -61,34 +62,14 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private void spawnEnemies()
-    {
-        if (MaxEnemies <= 0) MaxEnemies = 10;
-        Vector2 point = LightManager.instance.FindValidSpawnPosition();
-        Enemy newZombie = Instantiate(ZombiePrefab, point, Quaternion.identity, transform);
-        if (activeEnemies.Count < MaxEnemies)
-            activeEnemies.Add(newZombie);
-        else if (recycleZombies)
-        {
-            do
-                index = index < activeEnemies.Count - 1 ? index + 1 : 0;
-            while (Player.instance.IsPositionInFOV(activeEnemies[index].transform.position));
-                
-            Destroy(activeEnemies[index].gameObject);
-            activeEnemies[index] = newZombie;
-            index++;
-        }
-    }
-
     // Update is called once per frame
     private void Update()
     {
         _Visibility = GameManager.instance.SelectedDifficulty.ComputeVisibility(DayNightCycle.instance._TimeValue/24f);
-        activeEnemies = EnemyPool.ToList().FindAll(enemy => enemy.isActiveAndEnabled);
         if (activeEnemies.Count > 0)
         {
-            QueueEnemyAIJobs();
             AttackTargets();
+            QueueEnemyAIJobs();
         }
     }
 
@@ -307,13 +288,20 @@ public class EnemyManager : MonoBehaviour
             EnemyPool.Enqueue(spawnedEnemy);
         }
         spawnedEnemy.OnObjectSpawn();
-        spawnedEnemy.gameObject.SetActive(true);
+        EnableEnemy(spawnedEnemy);
         return spawnedEnemy;
     }
     public void DisableEnemy(Enemy enemy)
     {
         enemy.gameObject.SetActive(false);
+        activeEnemies.Remove(enemy);
         activeZombies--;
+    }
+    public void EnableEnemy(Enemy enemy)
+    {
+        enemy.gameObject.SetActive(true);
+        activeEnemies.Add(enemy);
+        activeZombies++;
     }
     private void OnDrawGizmosSelected()
     {

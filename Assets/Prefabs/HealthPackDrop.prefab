@@ -160,10 +160,7 @@ MonoBehaviour:
     Amount: 1
   rigidbody: {fileID: 8061816883134895837}
   collider: {fileID: 8718223713219191096}
-  type: 1
-  max: 24
-  clipSize: 6
-  fireRate: 40
+  _PickUpClip: {fileID: 8300000, guid: f574bd13269f83640bd50b2c72130f78, type: 3}
 --- !u!50 &8061816883134895837
 Rigidbody2D:
   serializedVersion: 4

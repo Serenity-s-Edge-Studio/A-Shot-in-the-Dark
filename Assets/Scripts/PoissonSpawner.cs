@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PoissonSpawner : MonoBehaviour
 {
@@ -18,25 +19,32 @@ public class PoissonSpawner : MonoBehaviour
     [SerializeField]
     private Queue<Vector2> points;
 
+    private PoissonGrid pGrid;
+    private bool isGenerating;
+    protected virtual void Start()
+    {
+        StartCoroutine(GeneratePositions(1000));
+    }
     protected bool GetNextPosition(out Vector2 position)
     {
-        if (points != null && points.Count > 0)
-        {
-            position = points.Dequeue();
-            return true;
-        }
-        if (collider == null)
-        {
-            position = Vector2.zero;
-            return false;
-        }
-        GeneratePositions();
-        if (points.Count > 0)
-        {
-            position = points.Dequeue();
-            return true;
-        }
         position = Vector2.zero;
+        if (collider == null || isGenerating)
+            return false;
+        if (points != null)
+        {
+            List<Collider2D> colliders = PoissonDiscSampling.CastColliders(collider, layerMask);
+            while (points.Count > 0)
+            {
+                position = points.Dequeue();
+                bool inFOV = Player.instance != null ? Player.instance.IsPositionInFOV(position) : false;
+                foreach (Collider2D other in colliders)
+                {
+                    if (!inFOV && !other.OverlapPoint(position))
+                        return true;
+                }
+            }
+        }
+        StartCoroutine(GeneratePositions(10));
         return false;
     }
     private void OnDrawGizmosSelected()
@@ -57,10 +65,15 @@ public class PoissonSpawner : MonoBehaviour
             Gizmos.DrawWireCube(bounds.center, bounds.size);
         }
     }
-    public void GeneratePositions()
+    public IEnumerator GeneratePositions(int stepTime)
     {
-        List<Vector2> newPositions = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection);
+        isGenerating = true;
+        pGrid = new PoissonGrid
+        { collider = this.collider, radius = this.radius };
+        yield return PoissonDiscSampling.GetPositionsCoroutine(pGrid, layerMask, numSamplesBeforeRejection, stepTime);
+        List<Vector2> newPositions = pGrid.points.ToArray().ToList();
         newPositions.Shuffle();
         points = new Queue<Vector2>(newPositions);
+        isGenerating = false;
     }
 }

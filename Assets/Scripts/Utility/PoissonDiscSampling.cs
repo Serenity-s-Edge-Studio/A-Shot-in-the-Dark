@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Diagnostics;
 
 public class PoissonDiscSampling : MonoBehaviour
 {
-    public static List<Vector2> GetPositions(Collider2D collider, LayerMask OverlapCollider, float radius, int numSamplesBeforeRejection = 30)
+    public static IEnumerator GetPositionsCoroutine(PoissonGrid pGrid, LayerMask OverlapCollider, int numSamplesBeforeRejection = 30, int stepTime = 10)
     {
+        Collider2D collider = pGrid.collider;
+        float radius = pGrid.radius;
         float cellSize = radius / Mathf.Sqrt(2);
+        pGrid.cellSize = cellSize;
         Bounds bounds = collider.bounds;
         Vector3 size = bounds.size;
         int?[,] grid = new int?[Mathf.CeilToInt(size.x / cellSize), Mathf.CeilToInt(size.y / cellSize)];
+        pGrid.grid = grid;
         List<Vector2> points = new List<Vector2>(); //Where the points will actually be;
+        pGrid.points = points;
         List<Collider2D> colliders = CastColliders(collider, OverlapCollider);
         List<Vector2> spawnPoints = CalculateStartingSpawnPoints(collider, colliders);
 
+        var watch = new Stopwatch();
+        watch.Start();
         while (spawnPoints.Count > 0)
         {
             int spawnIndex = Random.Range(0, spawnPoints.Count);
@@ -24,13 +32,11 @@ public class PoissonDiscSampling : MonoBehaviour
             for (int i = 0; i < numSamplesBeforeRejection; i++)
             {
                 Vector2 dir = Random.insideUnitCircle;
-                //float currentRadius = storedRadii.TryGetValue(spawnCentre, out float stored) ? stored : radius;
                 Vector2 candidate = spawnCentre + dir * Random.Range(radius, 2 * radius);
-                if (IsCandidateValid(candidate, collider, cellSize, radius, points, grid, colliders))
+                if (ValidatePosition(candidate, collider, cellSize, radius, points, grid, colliders))
                 {
                     points.Add(candidate);
                     spawnPoints.Add(candidate);
-                    //storedRadii.Add(candidate, radius);
                     Vector2Int gridPos = GetIndex(candidate, bounds.min, cellSize);
                     grid[gridPos.x, gridPos.y] = points.Count - 1;
                     candidateAccepted = true;
@@ -41,10 +47,14 @@ public class PoissonDiscSampling : MonoBehaviour
             {
                 spawnPoints.RemoveAt(spawnIndex);
             }
+            if (watch.ElapsedMilliseconds > stepTime)
+            {
+                yield return null;
+                watch.Reset();
+            }
         }
-        return points;
+        watch.Stop();
     }
-
     private static List<Vector2> CalculateStartingSpawnPoints(Collider2D collider, List<Collider2D> others)
     {
         List<Vector2> spawnPoints = new List<Vector2>(); //Where we'll try to spawn points around;
@@ -59,14 +69,13 @@ public class PoissonDiscSampling : MonoBehaviour
         return spawnPoints;
     }
 
-    private static List<Collider2D> CastColliders(Collider2D collider, LayerMask OverlapCollider)
+    public static List<Collider2D> CastColliders(Collider2D collider, LayerMask OverlapCollider)
     {
         List<Collider2D> colliders = new List<Collider2D>();
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(OverlapCollider);
         contactFilter.useTriggers = true;
         Physics2D.OverlapCollider(collider, contactFilter, colliders);
-        Debug.Log(colliders.Count);
         return colliders;
     }
 
@@ -75,7 +84,7 @@ public class PoissonDiscSampling : MonoBehaviour
         Vector2 adjusted = position - center;
         return new Vector2Int(Mathf.FloorToInt(adjusted.x / cellSize), Mathf.FloorToInt(adjusted.y / cellSize));
     }
-    private static bool IsCandidateValid(Vector2 candidate, Collider2D collider, float cellSize, float radius, List<Vector2> points, int?[,] grid, List<Collider2D> otherColliders)
+    public static bool ValidatePosition(Vector2 candidate, Collider2D collider, float cellSize, float radius, List<Vector2> points, int?[,] grid, List<Collider2D> otherColliders)
     {
         if (!collider.OverlapPoint(candidate))
             return false;
@@ -120,4 +129,12 @@ public class PoissonDiscSampling : MonoBehaviour
         }
         return true;
     }
+}
+public class PoissonGrid
+{
+    public Collider2D collider;
+    public float cellSize;
+    public float radius;
+    public List<Vector2> points;
+    public int?[,] grid;
 }

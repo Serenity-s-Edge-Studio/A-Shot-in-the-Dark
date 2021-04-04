@@ -4,7 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Base Item", menuName = "Items/Base Item")]
 public class Item : ScriptableObject
 {
-    public static int ItemCount = 1;
     public static Sprite Placeholder;
     public new string name;
     public int id;
@@ -13,11 +12,6 @@ public class Item : ScriptableObject
     public float mass;
     public Sprite icon;
 
-    private void Awake()
-    {
-        ItemCount++;
-        id = ItemCount;
-    }
 
     public override int GetHashCode()
     {

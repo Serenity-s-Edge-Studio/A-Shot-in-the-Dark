@@ -94,4 +94,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   MaxZombies: 500
   ZombieIncreaseMulti: 1.2
+  ZombieHealthIncrease: 1.1
   StartingMaxZombies: 200

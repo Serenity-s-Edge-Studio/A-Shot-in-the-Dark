@@ -15,7 +15,7 @@ public class PoissonEditor : Editor
         base.OnInspectorGUI();
         if (GUILayout.Button("Compute"))
         {
-            spawner.GeneratePositions();
+            spawner.GeneratePositions(1);
         }
     }
 }

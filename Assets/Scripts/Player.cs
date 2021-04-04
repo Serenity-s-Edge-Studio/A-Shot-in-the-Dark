@@ -11,7 +11,7 @@ public class Player : Entity
     [SerializeField]
     private new Rigidbody2D rigidbody;
     public float speed = 1;
-
+    [SerializeField]
     private new Camera camera;
     private AudioSource source;
 
@@ -38,6 +38,7 @@ public class Player : Entity
 
     public PlayerInventoryController inventory;
     private PlayerGunController gunController;
+    private PlayerBuildTool buildTool;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class Player : Entity
         gunController = GetComponent<PlayerGunController>();
         health = maxHealth;
         healthBar.maxValue = maxHealth;
+        buildTool = GetComponent<PlayerBuildTool>();
     }
 
     // Update is called once per frame
@@ -89,12 +91,14 @@ public class Player : Entity
         isDead = true;
         gunController.CanShoot = false;
 
+        closeWindows();
         deathContainer.SetActive(true);
         int avaliableCampfires = BuildingManager.instance.SpawnPoints.Count;
         respawnButton.interactable = avaliableCampfires > 0;
         campfireCount.text = $"Avaliable campfires: {avaliableCampfires}";
         respawnButton.onClick.RemoveAllListeners();
         respawnButton.onClick.AddListener(Respawn);
+        inventory.DropAllItems(.5f);
 
         this.enabled = false;
         rigidbody.simulated = false;
@@ -125,7 +129,13 @@ public class Player : Entity
     }
     public bool IsPositionInFOV(Vector2 position)
     {
-        Vector2 screenPos = camera.WorldToScreenPoint(position);
-        return Mathf.Abs(screenPos.x) < 1 || Mathf.Abs(screenPos.y) < 1;
+        Vector2 screenPos = camera.WorldToViewportPoint(position);
+        return screenPos.x < 1f && screenPos.x > 0f && screenPos.y < 1f && screenPos.y > 0f;
+    }
+    public void closeWindows()
+    {
+        inventory.HideInventory();
+        buildTool.HideBuildTool();
+        gunController.CanShoot = true;
     }
 }

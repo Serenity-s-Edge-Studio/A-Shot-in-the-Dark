@@ -161,7 +161,4 @@ MonoBehaviour:
     Amount: 60
   rigidbody: {fileID: 0}
   collider: {fileID: 0}
-  type: 3
-  max: 150
-  clipSize: 30
-  fireRate: 950
+  _PickUpClip: {fileID: 8300000, guid: f574bd13269f83640bd50b2c72130f78, type: 3}

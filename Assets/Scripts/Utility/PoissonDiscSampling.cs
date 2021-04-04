@@ -2,19 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Diagnostics;
 
 public class PoissonDiscSampling : MonoBehaviour
 {
-    public static PoissonGrid GetPositions(Collider2D collider, LayerMask OverlapCollider, float radius, int numSamplesBeforeRejection = 30)
+    public static IEnumerator GetPositionsCoroutine(PoissonGrid pGrid, LayerMask OverlapCollider, int numSamplesBeforeRejection = 30, int stepTime = 10)
     {
+        Collider2D collider = pGrid.collider;
+        float radius = pGrid.radius;
         float cellSize = radius / Mathf.Sqrt(2);
+        pGrid.cellSize = cellSize;
         Bounds bounds = collider.bounds;
         Vector3 size = bounds.size;
         int?[,] grid = new int?[Mathf.CeilToInt(size.x / cellSize), Mathf.CeilToInt(size.y / cellSize)];
+        pGrid.grid = grid;
         List<Vector2> points = new List<Vector2>(); //Where the points will actually be;
+        pGrid.points = points;
         List<Collider2D> colliders = CastColliders(collider, OverlapCollider);
         List<Vector2> spawnPoints = CalculateStartingSpawnPoints(collider, colliders);
 
+        var watch = new Stopwatch();
+        watch.Start();
         while (spawnPoints.Count > 0)
         {
             int spawnIndex = Random.Range(0, spawnPoints.Count);
@@ -24,13 +32,11 @@ public class PoissonDiscSampling : MonoBehaviour
             for (int i = 0; i < numSamplesBeforeRejection; i++)
             {
                 Vector2 dir = Random.insideUnitCircle;
-                //float currentRadius = storedRadii.TryGetValue(spawnCentre, out float stored) ? stored : radius;
                 Vector2 candidate = spawnCentre + dir * Random.Range(radius, 2 * radius);
                 if (ValidatePosition(candidate, collider, cellSize, radius, points, grid, colliders))
                 {
                     points.Add(candidate);
                     spawnPoints.Add(candidate);
-                    //storedRadii.Add(candidate, radius);
                     Vector2Int gridPos = GetIndex(candidate, bounds.min, cellSize);
                     grid[gridPos.x, gridPos.y] = points.Count - 1;
                     candidateAccepted = true;
@@ -41,17 +47,14 @@ public class PoissonDiscSampling : MonoBehaviour
             {
                 spawnPoints.RemoveAt(spawnIndex);
             }
+            if (watch.ElapsedMilliseconds > stepTime)
+            {
+                yield return null;
+                watch.Reset();
+            }
         }
-        return new PoissonGrid
-        {
-            points = points,
-            cellSize = cellSize,
-            radius = radius,
-            collider = collider,
-            grid = grid
-        };
+        watch.Stop();
     }
-
     private static List<Vector2> CalculateStartingSpawnPoints(Collider2D collider, List<Collider2D> others)
     {
         List<Vector2> spawnPoints = new List<Vector2>(); //Where we'll try to spawn points around;

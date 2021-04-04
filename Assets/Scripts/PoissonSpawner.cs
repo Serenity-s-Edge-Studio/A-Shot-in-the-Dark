@@ -20,14 +20,15 @@ public class PoissonSpawner : MonoBehaviour
     private Queue<Vector2> points;
 
     private PoissonGrid pGrid;
+    private bool isGenerating;
     protected virtual void Start()
     {
-        GeneratePositions();
+        StartCoroutine(GeneratePositions(1000));
     }
     protected bool GetNextPosition(out Vector2 position)
     {
         position = Vector2.zero;
-        if (collider == null)
+        if (collider == null || isGenerating)
             return false;
         if (points != null)
         {
@@ -43,7 +44,7 @@ public class PoissonSpawner : MonoBehaviour
                 }
             }
         }
-        GeneratePositions();
+        StartCoroutine(GeneratePositions(10));
         return false;
     }
     private void OnDrawGizmosSelected()
@@ -64,11 +65,15 @@ public class PoissonSpawner : MonoBehaviour
             Gizmos.DrawWireCube(bounds.center, bounds.size);
         }
     }
-    public void GeneratePositions()
+    public IEnumerator GeneratePositions(int stepTime)
     {
-        pGrid = PoissonDiscSampling.GetPositions(collider, layerMask, radius, numSamplesBeforeRejection);
+        isGenerating = true;
+        pGrid = new PoissonGrid
+        { collider = this.collider, radius = this.radius };
+        yield return PoissonDiscSampling.GetPositionsCoroutine(pGrid, layerMask, numSamplesBeforeRejection, stepTime);
         List<Vector2> newPositions = pGrid.points.ToArray().ToList();
         newPositions.Shuffle();
         points = new Queue<Vector2>(newPositions);
+        isGenerating = false;
     }
 }

@@ -21,7 +21,7 @@ MonoBehaviour:
   mass: 1
   icon: {fileID: 21300000, guid: 391ca3d49f37b614082123c17736df3a, type: 3}
   FireRate: 1
-  ReloadTime: 5
+  ReloadTime: 2
   DamageScale: 0
   ProjectileAmount: 1
   SpreadAngle: 65

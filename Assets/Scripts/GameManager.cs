@@ -35,7 +35,11 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
 #if !UNITY_EDITOR
-        LoadScene(1, new System.Action<AsyncOperation>[] { (AsyncOperation op) => SetLoadButtonListner(2)});
+        LoadScene(1, new System.Action<AsyncOperation>[]
+        {
+            _ => SetLoadButtonListner(2),
+            _ => FindAndUpdateSettingsButton()
+        }, true);
 #endif
     }
 
@@ -60,16 +64,17 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(int index)
     {
-        LoadScene(index, null);
+        LoadScene(index, null, true);
     }
 
-    public void LoadScene(int index, System.Action<AsyncOperation>[] onComplete)
+    public void LoadScene(int index, System.Action<AsyncOperation>[] onComplete, bool setActive)
     {
         LoadingScreen.SetActive(true);
         persistentCamera.gameObject.SetActive(true);
         if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
             SceneManager.UnloadSceneAsync(CurrentSceneIndex);
         AsyncOperation LoadSceneOperation = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
+        LoadSceneOperation.allowSceneActivation = setActive;
         if (onComplete != null)
         {
             foreach (System.Action<AsyncOperation> operation in onComplete)
@@ -84,7 +89,6 @@ public class GameManager : MonoBehaviour
     private void GameManager_completed(AsyncOperation obj)
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(CurrentSceneIndex));
-        SetLoadButtonListner(2);
         FindAndUpdateSettingsButton();
         LoadingScreen.SetActive(false);
         persistentCamera.gameObject.SetActive(false);
@@ -117,6 +121,7 @@ public class GameManager : MonoBehaviour
             if (buttonList.Count > 0)
             {
                 Button loadGameButton = buttonList[0];
+                loadGameButton.onClick.RemoveAllListeners();
                 loadGameButton.onClick.AddListener(() => LoadScene(index));
             }
             else

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 12 Gauge
   m_EditorClassIdentifier: 
   name: 12 guage
-  id: 6
-  description: Fuel for shotguns
+  id: 9
+  description: Fuel for shotguns.
   mass: 0.056
   icon: {fileID: -9120936505241938292, guid: 9b741b91bd01e0749ad0ab3f86cbb97a, type: 3}
   caliber: 

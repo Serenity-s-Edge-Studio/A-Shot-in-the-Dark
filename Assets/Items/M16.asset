@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: M16
   m_EditorClassIdentifier: 
   name: M16
-  id: 7
+  id: 6
   description: Military grade assault rifle with a high rate of fire. Good for those
     time when you have to spray and pray.
   mass: 2.89
   icon: {fileID: 21300000, guid: f66dd96c2ccc1b34a85bf345d626d299, type: 3}
-  FireRate: 0.06315789
-  ReloadTime: 3
+  FireRate: 0.09
+  ReloadTime: 1
   DamageScale: 1
   ProjectileAmount: 1
   SpreadAngle: 40

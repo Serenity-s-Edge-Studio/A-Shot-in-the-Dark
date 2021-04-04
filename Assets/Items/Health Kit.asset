@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Health Kit
   m_EditorClassIdentifier: 
   name: Health Kit
-  id: 21
-  description: 
+  id: 13
+  description: Quality medical supplies. Good for major wounds.
   mass: 5
   icon: {fileID: 21300000, guid: 9518c96e67e284a6aa4556bad997a8e9, type: 3}
   RestoredHealth: 30

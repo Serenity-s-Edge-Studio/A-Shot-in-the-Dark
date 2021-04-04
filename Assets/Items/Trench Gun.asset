@@ -18,7 +18,7 @@ MonoBehaviour:
   mass: 3.6
   icon: {fileID: -2408530018317867212, guid: 9b741b91bd01e0749ad0ab3f86cbb97a, type: 3}
   FireRate: 0.8333333
-  ReloadTime: 1
+  ReloadTime: 3
   DamageScale: 1
   ProjectileAmount: 4
   SpreadAngle: 65

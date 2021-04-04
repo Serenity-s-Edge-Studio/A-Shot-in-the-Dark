@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Mini Hospital
   id: 5
-  description: 
+  description: An emergency medkit. Good for life threatening wounds.
   mass: 10
   icon: {fileID: 21300000, guid: e3da6cedea5c44402b772cb2e115a5f4, type: 3}
   RestoredHealth: 50

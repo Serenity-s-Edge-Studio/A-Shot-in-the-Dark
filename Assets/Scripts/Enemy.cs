@@ -17,10 +17,11 @@ public class Enemy : MonoBehaviour, IIgnitable, IPooledObject
     public GameObject deathParticles;
     public int AttackDamage;
     private bool isOnFire = false;
+    public static float HealthMulti;
 
     public void OnObjectSpawn()
     {
-        health = StartingHealth;
+        health = Random.Range(StartingHealth, StartingHealth * HealthMulti);
     }
     public void Damage(float amount)
     {

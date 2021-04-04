@@ -21,12 +21,6 @@ public class ScoreManager : MonoBehaviour
         instance = this;
     }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-
-    }
-
     public void scoreHit()
     {
         score += pointsForHit;
@@ -45,8 +39,10 @@ public class ScoreManager : MonoBehaviour
     {
         int difficultyLevel = score / 500;
         UpdateSpawnRate(1f / (difficultyLevel + 1));
-        float multi = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieIncreaseMulti, difficultyLevel);
-        EnemyManager.instance.MaxEnemies = Mathf.Min(Mathf.RoundToInt(EnemyManager.instance.orginalMaxZombies * multi), GameManager.instance.SelectedDifficulty.MaxZombies);
+        float zombieAmountMulti = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieIncreaseMulti, difficultyLevel);
+        float zombieHealthMulti = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieHealthIncrease, difficultyLevel);
+        Enemy.HealthMulti = zombieHealthMulti;
+        EnemyManager.instance.MaxEnemies = Mathf.Min(Mathf.RoundToInt(EnemyManager.instance.orginalMaxZombies * zombieAmountMulti), GameManager.instance.SelectedDifficulty.MaxZombies);
     }
 
     private void updateUI()

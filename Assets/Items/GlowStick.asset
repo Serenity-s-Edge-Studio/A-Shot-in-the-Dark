@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GlowStick
   m_EditorClassIdentifier: 
   name: Glow Stick
-  id: 9
+  id: 15
   description: Temporary light source for illuminating dark areas. The light also
     attracts the undead, so be careful.
   mass: 0.01

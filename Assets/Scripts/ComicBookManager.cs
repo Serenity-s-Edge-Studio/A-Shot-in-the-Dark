@@ -18,69 +18,35 @@ public class ComicBookManager : MonoBehaviour
     public UnityEvent OnEndComic;
 
     public ComicBookSO[] SceneComic;
-    public ComicBookSO[] ClueComic;
 
     public AudioSource audioSource;
 
     public GameObject ComicContainer;
     public Image image;
     public TextMeshProUGUI subTitleText;
+    [SerializeField]
+    private Button ContinueButton;
+    [SerializeField]
+    private Button SkipButton;
 
     private ComicBookSO currentComicBook;
     private int panelIndex = 0;
     private int frameIndex = 0;
-    public void PlayComic(ComicType mode, int index)
-    {
-        switch (mode)
-        {
-            case ComicType.Scene:
-                if (index < SceneComic.Length)
-                {
-                    OnStartComic.Invoke();
-                    startComic(SceneComic[index]);
-                }
-                break;
-            case ComicType.Clue:
-                if (index < ClueComic.Length)
-                {
-                    OnStartComic.Invoke();
-                    startComic(SceneComic[index]);
-                }
-                break;
-        }
-        
-    }
-    private void startComic(ComicBookSO panel)
-    {
-        ComicContainer.SetActive(true);
-        panelIndex = 0;
-        frameIndex = 0;
-        currentComicBook = panel;
-        image.sprite = panel.comicPanels[panelIndex].panes[frameIndex].image;
-    }
-    private void nextComic()
-    {
-        if (frameIndex == currentComicBook.comicPanels[panelIndex].panes.Length)
-        {
-            frameIndex = 0;
-            panelIndex++;
-        }
 
-        if (panelIndex == currentComicBook.comicPanels.Length)
-        {
-            OnEndComic.Invoke();
-            ComicContainer.SetActive(false);
-            return;
-        }
-
-        ComicFrame frame = currentComicBook.comicPanels[panelIndex].panes[frameIndex];
-        image.sprite = frame.image;
-        audioSource.PlayOneShot(frame.voiceLine);
-        subTitleText.text = frame.subTitle;
-    }
-    private IEnumerator PlayComicCoroutine(ComicType mode, int index)
+    private bool ContinueButtonPressed;
+    private void Start()
     {
-        ComicBookSO currentBook = mode == ComicType.Scene ? SceneComic[index] : ClueComic[index];
+        ContinueButton.onClick.AddListener(() => ContinueButtonPressed = true);
+        SkipButton.onClick.AddListener(() =>
+        {
+            StopAllCoroutines();
+            GameManager.instance.LoadScene(3);
+        });
+        StartCoroutine(PlayComicCoroutine(0));
+    }
+    private IEnumerator PlayComicCoroutine(int index)
+    {
+        ComicBookSO currentBook = SceneComic[index];
         ComicContainer.SetActive(true);
         foreach (ComicPanel panel in currentBook.comicPanels)
         {
@@ -88,15 +54,16 @@ public class ComicBookManager : MonoBehaviour
             {
                 image.sprite = frame.image;
                 subTitleText.text = frame.subTitle;
-                audioSource.PlayOneShot(frame.voiceLine);
-                yield return new WaitForSecondsRealtime(frame.voiceLine.length);
+                if (frame.voiceLine != null)
+                    audioSource.PlayOneShot(frame.voiceLine);
+                float time = Time.time;
+                yield return new WaitUntil(() =>
+                {
+                    return (frame.voiceLine != null ? Time.time - time >= frame.voiceLine.length : false) || ContinueButtonPressed;
+                });
+                ContinueButtonPressed = false;
             }
         }
-        OnEndComic.Invoke();
+        GameManager.instance.LoadScene(3);
     }
-}
-public enum ComicType
-{
-    Scene,
-    Clue
 }

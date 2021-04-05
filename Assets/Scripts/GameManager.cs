@@ -26,8 +26,7 @@ public class GameManager : MonoBehaviour
     private GameObject LoadingScreen;
     public DifficultySettingsSO SelectedDifficulty;
     public static GameManager instance;
-    [SerializeField]
-    private int CurrentSceneIndex = 2;
+    private int CurrentSceneIndex => SceneManager.GetActiveScene().buildIndex;
     [SerializeField]
     private Camera persistentCamera;
 
@@ -47,7 +46,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 #if UNITY_EDITOR
-        CurrentSceneIndex = SceneManager.GetSceneByBuildIndex(1).isLoaded ? 1 : 2;
         SetLoadButtonListner(2);
         FindAndUpdateSettingsButton();
 #else
@@ -71,7 +69,7 @@ public class GameManager : MonoBehaviour
     {
         LoadingScreen.SetActive(true);
         persistentCamera.gameObject.SetActive(true);
-        if (SceneManager.GetSceneByBuildIndex(CurrentSceneIndex).isLoaded)
+        if (CurrentSceneIndex != 0)
             SceneManager.UnloadSceneAsync(CurrentSceneIndex);
         AsyncOperation LoadSceneOperation = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
         LoadSceneOperation.allowSceneActivation = setActive;
@@ -82,14 +80,14 @@ public class GameManager : MonoBehaviour
                 LoadSceneOperation.completed += operation;
             }
         }
-        CurrentSceneIndex = index;
-        LoadSceneOperation.completed += GameManager_completed;
+        LoadSceneOperation.completed += obj => SceneLoaded(index);
     }
 
-    private void GameManager_completed(AsyncOperation obj)
+    private void SceneLoaded(int index)
     {
-        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(CurrentSceneIndex));
+        SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(index));
         FindAndUpdateSettingsButton();
+        SetLoadButtonListner(2);
         LoadingScreen.SetActive(false);
         persistentCamera.gameObject.SetActive(false);
     }

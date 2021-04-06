@@ -18,4 +18,5 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 699fd54f526f1eb44bbfbb95f3aaf653, type: 2}
     Amount: 10
   buildingPrefab: {fileID: 5338054848661838153, guid: 8d2adde5c802ae74992fcbad77730ca4, type: 3}
-  icon: {fileID: 21300000, guid: 32fc4259d1c61644a8ed962feb001738, type: 3}
+  icon: {fileID: 21300000, guid: 35761fe6c2df34fd495c8a845df26e95, type: 3}
+  CanRotate: 1

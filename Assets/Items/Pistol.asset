@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61113536e113e1e49bb43384f04c13b7, type: 3}
   m_Name: Pistol
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   name: M1911
   id: 9
   description: 'Small but reliable firearm. These seven bullets could be the difference
@@ -20,7 +20,7 @@ MonoBehaviour:
 '
   mass: 1.1
   icon: {fileID: 21300000, guid: 570e62be06606dc4f9ea56cc54de30b6, type: 3}
-  FireRate: 0.7058824
+  FireRate: 0.5
   ReloadTime: 1
   DamageScale: 1
   ProjectileAmount: 1

@@ -3098,7 +3098,22 @@ MonoBehaviour:
   source: {fileID: 1573224067}
   songs:
   - name: Morning
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: 3fe51aa5e4c22da49be5a8a07d36707d, type: 3}
+  - name: Noon
+    clips:
+    - {fileID: 8300000, guid: 11f02ff31740d90459726d8b9bc40792, type: 3}
+  - name: Afternoon
+    clips:
+    - {fileID: 8300000, guid: 11f02ff31740d90459726d8b9bc40792, type: 3}
+  - name: Evening
+    clips:
+    - {fileID: 8300000, guid: 51e57179d2d2b1a47af3db06887f972c, type: 3}
+  - name: Night
+    clips:
+    - {fileID: 8300000, guid: eeb46d1b180063e40a7aec9b07cda8e1, type: 3}
+    - {fileID: 8300000, guid: 1416d968235fbb845816e4d779357154, type: 3}
+    - {fileID: 8300000, guid: e89932bcc85765a4fa84ee133cf9af85, type: 3}
 --- !u!4 &1573224069
 Transform:
   m_ObjectHideFlags: 0

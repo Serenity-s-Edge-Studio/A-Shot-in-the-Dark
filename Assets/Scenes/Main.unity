@@ -213,7 +213,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3090,14 +3090,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573224066}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 145a7fae1143a644182055bc8ec7e02e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 1573224067}
-  intro: {fileID: 8300000, guid: 2e6c32d5acc016843aec76fbc98d6313, type: 3}
-  loop: {fileID: 8300000, guid: 51e57179d2d2b1a47af3db06887f972c, type: 3}
+  songs:
+  - name: Morning
+    clips: []
 --- !u!4 &1573224069
 Transform:
   m_ObjectHideFlags: 0

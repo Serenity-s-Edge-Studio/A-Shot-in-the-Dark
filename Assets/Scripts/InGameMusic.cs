@@ -1,22 +1,35 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class InGameMusic : MonoBehaviour
 {
     public AudioSource source;
-    public AudioClip intro;
-    public AudioClip loop;
+    public Songs[] songs;
 
     private void Start()
     {
-        source.clip = intro;
-        source.Play();
-        Invoke("playLoop", intro.length);
+        StartCoroutine(CycleSongs());
     }
-
-    private void playLoop()
+    public IEnumerator CycleSongs()
     {
-        source.clip = loop;
-        source.loop = true;
-        source.Play();
+        if (songs.Length > 0)
+        {
+            while (true)
+            {
+                int index = Mathf.Min((int)DayNightCycle.instance.PeriodOfDay, songs.Length);
+                int clipAmount = songs[index].clips.Length;
+                AudioClip currentClip = songs[index].clips[Random.Range(0, clipAmount)];
+                source.clip = currentClip;
+                source.Play();
+                yield return new WaitForSeconds(currentClip.length);
+            }
+        }
     }
+}
+[System.Serializable]
+public class Songs
+{
+    [SerializeField]
+    private string name;
+    public AudioClip[] clips;
 }

@@ -18,6 +18,8 @@ public class InGameMusic : MonoBehaviour
             {
                 int index = Mathf.Min((int)DayNightCycle.instance.PeriodOfDay, songs.Length);
                 int clipAmount = songs[index].clips.Length;
+                if (songs[index].clips.Length == 0)
+                    break;
                 AudioClip currentClip = songs[index].clips[Random.Range(0, clipAmount)];
                 source.clip = currentClip;
                 source.Play();

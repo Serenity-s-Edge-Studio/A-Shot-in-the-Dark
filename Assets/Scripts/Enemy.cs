@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour, IIgnitable, IPooledObject
     }
     public void Damage(float amount)
     {
-        health = Mathf.Max(0, health - amount);
+        health -= amount;
         if (health < .01f)
         {
             if (ScoreManager.instance)

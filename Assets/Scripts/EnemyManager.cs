@@ -36,6 +36,7 @@ public class EnemyManager : MonoBehaviour
 
     private Queue<Enemy> EnemyPool;
     private int activeZombies = 0;
+    private List<Enemy> enemiesToRemove;
 
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class EnemyManager : MonoBehaviour
         orginalMaxZombies = MaxEnemies;
         originalSpawnRate = spawnRate;
         activeEnemies = new List<Enemy>();
+        enemiesToRemove = new List<Enemy>();
         InitializePool();
     }
 
@@ -65,6 +67,9 @@ public class EnemyManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        DisposeJobData();
+        enemiesToRemove.ForEach(enemy => activeEnemies.Remove(enemy));
+        enemiesToRemove.Clear();
         _Visibility = GameManager.instance.SelectedDifficulty.ComputeVisibility(DayNightCycle.instance._TimeValue/24f);
         if (activeEnemies.Count > 0)
         {
@@ -80,7 +85,16 @@ public class EnemyManager : MonoBehaviour
             moveJobHandle.Complete();
             ApplyJobResults();
         }
-        DisposeJobData();
+    }
+    private void FixedUpdate()
+    {
+        if (activeEnemies.Count > 0 && movePositionsNativeArray.IsCreated)
+        {
+            for (int i = 0; i < movePositionsNativeArray.Length; i++)
+            {
+                activeEnemies[i].rigidbody.MovePosition(movePositionsNativeArray[i]);
+            }
+        }
     }
     #region AI jobs
     private NativeMultiHashMap<int, Vector2> relativePositions;
@@ -137,7 +151,6 @@ public class EnemyManager : MonoBehaviour
         for (int i = 0; i < activeEnemies.Count; i++)
         {
             Enemy enemy = activeEnemies[i];
-            enemy.rigidbody.MovePosition(movePositionsNativeArray[i]);
             enemy.target = targets[i];
             enemy.timeTillNextRandom = timeTillNextNativeArray[i];
         }
@@ -163,12 +176,13 @@ public class EnemyManager : MonoBehaviour
     {
         foreach(Enemy enemy in activeEnemies)
         {
+            if (!enemy.isActiveAndEnabled) continue;
             RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, enemy.transform.right, attackRange, LayerMask.GetMask("Building"));
             bool playerInRange = Vector2.Distance(Player.instance.transform.position, enemy.transform.position) < attackRange;
             bool hitBuilding = hit.collider != null;
             if (playerInRange || hitBuilding)
             {
-                enemy.attackCooldown -= Time.deltaTime;
+                enemy.attackCooldown -= Time.fixedDeltaTime;
                 if (enemy.attackCooldown <= 0.01f)
                 {
                     if (hitBuilding && hit.collider.TryGetComponent(out Building building))
@@ -294,7 +308,7 @@ public class EnemyManager : MonoBehaviour
     public void DisableEnemy(Enemy enemy)
     {
         enemy.gameObject.SetActive(false);
-        activeEnemies.Remove(enemy);
+        enemiesToRemove.Add(enemy);
         activeZombies--;
     }
     public void EnableEnemy(Enemy enemy)

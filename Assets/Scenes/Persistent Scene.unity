@@ -1210,7 +1210,6 @@ MonoBehaviour:
   closeSettingsMenu: {fileID: 1988689886}
   LoadingScreen: {fileID: 915410876}
   SelectedDifficulty: {fileID: 11400000, guid: ea3c870c2fd684d4784ce899e5d6314f, type: 2}
-  CurrentSceneIndex: 2
   persistentCamera: {fileID: 2091598455}
 --- !u!4 &1089917219
 Transform:

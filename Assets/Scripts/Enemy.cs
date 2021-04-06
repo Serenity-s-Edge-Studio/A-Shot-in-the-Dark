@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour, IIgnitable, IPooledObject
     public float timeTillNextRandom;
     [SerializeField]
     private float StartingHealth;
+    [SerializeField]
     private float health;
 
     public new Rigidbody2D rigidbody;

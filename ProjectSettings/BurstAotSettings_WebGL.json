@@ -3,7 +3,7 @@
     "Version": 3,
     "EnableBurstCompilation": true,
     "EnableOptimisations": true,
-    "EnableSafetyChecks": false,
+    "EnableSafetyChecks": true,
     "EnableDebugInAllBuilds": false,
     "CpuMinTargetX32": 0,
     "CpuMaxTargetX32": 0,

@@ -1,6 +1,7 @@
+using Assets.Scripts.Utility;
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour
+public abstract class Entity : GridObject
 {
     protected int health = 100;
     [SerializeField]

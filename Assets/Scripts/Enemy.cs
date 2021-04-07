@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IIgnitable, IPooledObject
+public class Enemy : GridObject, IIgnitable, IPooledObject
 {
     public List<LightDrop> influencingLights = new List<LightDrop>();
     public Vector2 target;
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour, IIgnitable, IPooledObject
     public void OnObjectSpawn()
     {
         health = Random.Range(StartingHealth, StartingHealth * HealthMulti);
+        addToGrid();
     }
     public void Damage(float amount)
     {

@@ -7,6 +7,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Jobs;
 using System.Linq;
 using System;
+using Assets.Scripts.Utility;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -177,24 +178,27 @@ public class EnemyManager : MonoBehaviour
         foreach(Enemy enemy in activeEnemies)
         {
             if (!enemy.isActiveAndEnabled) continue;
-            RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, enemy.transform.right, attackRange, LayerMask.GetMask("Building"));
-            bool playerInRange = Vector2.Distance(Player.instance.transform.position, enemy.transform.position) < attackRange;
-            bool hitBuilding = hit.collider != null;
-            if (playerInRange || hitBuilding)
+            if (GridManager.instance.GetGridObjectsInRadius<Entity>(enemy.transform.position, attackRange).Count > 0)
             {
-                enemy.attackCooldown -= Time.fixedDeltaTime;
-                if (enemy.attackCooldown <= 0.01f)
+                RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, enemy.transform.right, attackRange, LayerMask.GetMask("Building"));
+                bool playerInRange = Vector2.Distance(Player.instance.transform.position, enemy.transform.position) < attackRange;
+                bool hitBuilding = hit.collider != null;
+                if (playerInRange || hitBuilding)
                 {
-                    if (hitBuilding && hit.collider.TryGetComponent(out Building building))
+                    enemy.attackCooldown -= Time.fixedDeltaTime;
+                    if (enemy.attackCooldown <= 0.01f)
                     {
-                        building.Damage(enemy.AttackDamage);
+                        if (hitBuilding && hit.collider.TryGetComponent(out Building building))
+                        {
+                            building.Damage(enemy.AttackDamage);
+                        }
+                        else if (playerInRange)
+                        {
+                            Player.instance.Damage(enemy.AttackDamage);
+                        }
+                        enemy.animator.SetTrigger("Attack");
+                        enemy.attackCooldown = cooldown;
                     }
-                    else if (playerInRange)
-                    {
-                        Player.instance.Damage(enemy.AttackDamage);
-                    }
-                    enemy.animator.SetTrigger("Attack");
-                    enemy.attackCooldown = cooldown;
                 }
             }
         }

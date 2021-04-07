@@ -33,6 +33,7 @@ public class Building : Entity
         OnDeath.AddListener(() => 
             Instantiate(DestructionEffect, transform.position, transform.rotation * Quaternion.AngleAxis(-90f, Vector3.right)));
         BuildingManager.instance.Add(this);
+        addToGrid();
     }
 
     public bool IsBuildAreaClear()
@@ -64,6 +65,7 @@ public class Building : Entity
         {
             OnDeath.Invoke();
             BuildingManager.instance.Remove(this);
+            removeFromGrid();
             Destroy(gameObject);
         }
     }

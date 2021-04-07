@@ -58,6 +58,7 @@ public class Player : Entity
         health = maxHealth;
         healthBar.maxValue = maxHealth;
         buildTool = GetComponent<PlayerBuildTool>();
+        addToGrid();
     }
 
     // Update is called once per frame

@@ -71,7 +71,7 @@ namespace Assets.Scripts.Utility {
                 mapPositionJobs[gridObject].Result.Dispose();
             }
         }
-        public List<T> GetGridObjectsInRadius<T>(Vector2 position, float radius) where T : GridObject
+        public T[] GetGridObjectsInRadius<T>(Vector2 position, float radius) where T : GridObject
         {
             Vector2Int myIndex = WorldPosToGridPos(position);
             Vector2Int min = WorldPosToGridPos(new Vector2(position.x - radius, position.y - radius));
@@ -91,7 +91,7 @@ namespace Assets.Scripts.Utility {
                     }
                 }
             }
-            return result;
+            return result.ToArray();
         }
         public Vector2Int WorldPosToGridPos(Vector2 worldPos)
         {

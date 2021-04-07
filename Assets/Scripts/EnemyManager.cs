@@ -178,7 +178,7 @@ public class EnemyManager : MonoBehaviour
         foreach(Enemy enemy in activeEnemies)
         {
             if (!enemy.isActiveAndEnabled) continue;
-            if (GridManager.instance.GetGridObjectsInRadius<Entity>(enemy.transform.position, attackRange).Count > 0)
+            if (GridManager.instance.GetGridObjectsInRadius<Entity>(enemy.transform.position, attackRange).Length > 0)
             {
                 RaycastHit2D hit = Physics2D.Raycast(enemy.transform.position, enemy.transform.right, attackRange, LayerMask.GetMask("Building"));
                 bool playerInRange = Vector2.Distance(Player.instance.transform.position, enemy.transform.position) < attackRange;

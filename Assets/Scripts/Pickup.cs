@@ -24,8 +24,8 @@ public class Pickup : MonoBehaviour
             {
                 foreach (ItemStack item in items)
                     player.inventory.inventory.TryAddItems(item.item, item.Amount);
-                if (_PickUpClip != null) 
-                    AudioSource.PlayClipAtPoint(_PickUpClip, transform.position);
+                if (_PickUpClip != null)
+                    player.GetComponent<AudioSource>().PlayOneShot(_PickUpClip, 10);
                 Destroy(gameObject);
             }
         }

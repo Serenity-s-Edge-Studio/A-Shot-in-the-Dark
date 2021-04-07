@@ -73,7 +73,6 @@ namespace Assets.Scripts.Utility {
         }
         public T[] GetGridObjectsInRadius<T>(Vector2 position, float radius) where T : GridObject
         {
-            Vector2Int myIndex = WorldPosToGridPos(position);
             Vector2Int min = WorldPosToGridPos(new Vector2(position.x - radius, position.y - radius));
             Vector2Int max = WorldPosToGridPos(new Vector2(position.x + radius, position.y + radius));
             List<T> result = new List<T>();
@@ -85,7 +84,7 @@ namespace Assets.Scripts.Utility {
                     {
                         foreach(GridObject gridObject in objectsInCell)
                         {
-                            if (gridObject is T desiredType)
+                            if (gridObject is T desiredType && desiredType.isActiveAndEnabled)
                                 result.Add(desiredType);
                         }
                     }

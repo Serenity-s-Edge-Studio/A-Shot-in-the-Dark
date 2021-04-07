@@ -5,6 +5,8 @@ using UnityEngine.Jobs;
 using Unity.Collections;
 using Unity.Mathematics;
 using Unity.Jobs;
+using Assets.Scripts.Utility;
+using System.Linq;
 
 public class TurretManager : MonoBehaviour
 {
@@ -16,8 +18,6 @@ public class TurretManager : MonoBehaviour
         if (instance != null) Destroy(instance);
         instance = this;
     }
-    [DeallocateOnJobCompletion]
-    NativeArray<float2> enemies;
     [DeallocateOnJobCompletion]
     NativeArray<float2> _TurretTargets;
     [DeallocateOnJobCompletion]
@@ -46,7 +46,6 @@ public class TurretManager : MonoBehaviour
             return;
 
         //Allocate data for jobs
-        enemies = EnemyManager.instance.GetActiveEnemyPositionsAsNativeArray(Allocator.TempJob);
         FindTargetJobHandles = new NativeArray<JobHandle>(_Turrets.Count, Allocator.TempJob);
         FindTargetJobs = new FindClosestEnemyJob[_Turrets.Count];
         _Cooldowns = new NativeArray<float>(_Turrets.Count, Allocator.TempJob);
@@ -55,15 +54,17 @@ public class TurretManager : MonoBehaviour
         //Also cache cooldowns.
         for (int i = 0; i < _Turrets.Count; i++)
         {
+            float2[] targets = GridManager.instance.GetGridObjectsInRadius<Enemy>(_Turrets[i].transform.position, 10f)
+                .Select(enemy => new float2(enemy.transform.position.x, enemy.transform.position.y)).ToArray();
             //Save job struct to access result later.
             FindTargetJobs[i] = new FindClosestEnemyJob
             {
                 Position = (Vector2)_Turrets[i].transform.position,
-                EnemyPositions = enemies,
+                EnemyPositions = new NativeArray<float2>(targets, Allocator.TempJob),
                 Distance = float.MaxValue,
                 Result = new NativeArray<float2>(1, Allocator.TempJob)
             };
-            FindTargetJobHandles[i] = FindTargetJobs[i].Schedule(enemies.Length, new JobHandle());
+            FindTargetJobHandles[i] = FindTargetJobs[i].Schedule(targets.Length, new JobHandle());
             float cooldown = _Turrets[i].Cooldown;
             if (cooldown < 0.01f)
             {
@@ -93,7 +94,6 @@ public class TurretManager : MonoBehaviour
         JobHandle.CompleteAll(FindTargetJobHandles);
         _ReduceCooldownsJobHandle.Complete();
         //Dispose of data used to find targets
-        enemies.Dispose();
         FindTargetJobHandles.Dispose();
         //Retrieve values from targeting jobs and prepare data for the rotation jobs.
         for (int i = 0; i < _Turrets.Count && i < FindTargetJobs.Length; i++)
@@ -104,6 +104,7 @@ public class TurretManager : MonoBehaviour
             _Turrets[i].TargetPos = result;
             //Result has been retrieved now dispose of the data.
             FindTargetJobs[i].Result.Dispose();
+            FindTargetJobs[i].EnemyPositions.Dispose();
             //Store Turret transform
             _TurretTransformAccessArray.Add(_Turrets[i].transform);
             _Turrets[i].Cooldown = _Cooldowns[i];

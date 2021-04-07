@@ -16,16 +16,26 @@ MonoBehaviour:
   - panes:
     - image: {fileID: 21300000, guid: 3506e485a81264a9aa2482b76c8980e9, type: 3}
       voiceLine: {fileID: 0}
-      subTitle: 
+      subTitle: Deep in space, unbeknownst to humans, a Galactic Committee meets
+        to discuss the fate of humans and Earth. These space inhabitants view humans
+        as the scourge of the galaxy. The committee enlists a recon team to infiltrate
+        Earth and mitigate the threat.
     - image: {fileID: 21300000, guid: e085ff6ac6d81455eb35858fb0f42375, type: 3}
       voiceLine: {fileID: 0}
-      subTitle: 
+      subTitle: The Galactic Committee decides to send a team to Earth to change
+        the trajectory of human behavior through means of alien technology. Subduing
+        the humans would save the planet and all that reside on Earth and beyond.
     - image: {fileID: 21300000, guid: f808a9cacb20745e68bbc2066f541205, type: 3}
       voiceLine: {fileID: 0}
-      subTitle: 
+      subTitle: After some time and with no word from the team on Earth, the committee
+        has no choice but to send another as they fear their team has changed the
+        plan.
     - image: {fileID: 21300000, guid: 5ac9153fa58354c04a5ec1179dc2a5f2, type: 3}
       voiceLine: {fileID: 0}
-      subTitle: 
+      subTitle: 'His name is DFV and he gets called upon for the most uncertain of
+        missions. As a bounty hunter, DFV is an outcast and will take any job for
+        the right price. '
     - image: {fileID: 21300000, guid: 0013d8adb3e5340078f4d2982ef57924, type: 3}
       voiceLine: {fileID: 0}
-      subTitle: 
+      subTitle: DFV heads to Earth with an uncertain mission; Survive whatever may
+        come.

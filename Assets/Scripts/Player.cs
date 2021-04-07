@@ -51,7 +51,7 @@ public class Player : Entity
         rigidbody = GetComponent<Rigidbody2D>();
         input = new PlayerInput().Player;
         input.Enable();
-        camera = FindObjectOfType<Camera>();
+        camera = Camera.main;
         source = GetComponent<AudioSource>();
         inventory = GetComponent<PlayerInventoryController>();
         gunController = GetComponent<PlayerGunController>();

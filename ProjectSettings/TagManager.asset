@@ -18,7 +18,7 @@ TagManager:
   - Building
   - NoSpawn
   - Unwalkable
-  - 
+  - Minimap
   - 
   - 
   - 
@@ -42,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Minimap
+    uniqueID: 692296293
+    locked: 0
   - name: Ground
     uniqueID: 2060545153
     locked: 0

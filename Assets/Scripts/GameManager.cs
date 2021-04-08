@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,6 +52,10 @@ public class GameManager : MonoBehaviour
 #else
         updateSettings();
 #endif
+    }
+    private void Update()
+    {
+        InputSystem.Update();
     }
 
     public void updateSettings()

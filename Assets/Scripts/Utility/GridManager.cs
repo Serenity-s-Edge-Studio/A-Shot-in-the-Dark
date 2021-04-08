@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.Burst;
 
 namespace Assets.Scripts.Utility {
     public class GridManager : MonoBehaviour
@@ -51,7 +52,7 @@ namespace Assets.Scripts.Utility {
                     CellSize = cellSize,
                     Position = gridObjects[i].transform.position,
                     OffSet = transform.position,
-                    Result = new NativeArray<Vector2Int>(1, Allocator.TempJob)
+                    Result = new NativeArray<Vector2Int>(1, Allocator.TempJob, NativeArrayOptions.UninitializedMemory)
                 };
                 mapPositionJobs.Add(gridObjects[i], mapPos);
                 jobs[i] = mapPos.Schedule();
@@ -101,6 +102,7 @@ namespace Assets.Scripts.Utility {
             Vector2 adjusted = worldPos - offset;
             return new Vector2Int(Mathf.FloorToInt(adjusted.x / cellSize), Mathf.FloorToInt(adjusted.y / cellSize));
         }
+        [BurstCompile]
         private struct MapPositionJob : IJob
         {
             public Vector2 Position;

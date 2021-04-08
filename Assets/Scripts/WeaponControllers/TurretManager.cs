@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.Jobs;
 using Assets.Scripts.Utility;
 using System.Linq;
+using Unity.Burst;
 
 public class TurretManager : MonoBehaviour
 {
@@ -120,6 +121,7 @@ public class TurretManager : MonoBehaviour
     /// <summary>
     /// This job iterates through all EnemyPositions and runs distance checks to find the closest target.
     /// </summary>
+    [BurstCompile]
     private struct FindClosestEnemyJob : IJobFor
     {
         [ReadOnly]
@@ -144,6 +146,7 @@ public class TurretManager : MonoBehaviour
     /// This job rotates all turret transforms to face the desired target
     /// TODO: Needs smoothing.
     /// </summary>
+    [BurstCompile]
     private struct RotateTowardsTarget : IJobParallelForTransform
     {
         [ReadOnly]
@@ -158,6 +161,7 @@ public class TurretManager : MonoBehaviour
             transform.rotation = Quaternion.AngleAxis(targetAngle - 90f, Vector3.forward);
         }
     }
+    [BurstCompile]
     private struct ReduceCooldowns : IJobFor
     {
         public NativeArray<float> CurrentCooldowns;

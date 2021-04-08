@@ -8,6 +8,7 @@ using UnityEngine.Jobs;
 using System.Linq;
 using System;
 using Assets.Scripts.Utility;
+using Unity.Burst;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -149,7 +150,7 @@ public class EnemyManager : MonoBehaviour
 
     private void ApplyJobResults()
     {
-        for (int i = 0; i < activeEnemies.Count; i++)
+        for (int i = 0; i < activeEnemies.Count && i < targets.Length && i < timeTillNextNativeArray.Length; i++)
         {
             Enemy enemy = activeEnemies[i];
             enemy.target = targets[i];
@@ -203,6 +204,7 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
+    [BurstCompile]
     private struct MoveEnemiesJob : IJobParallelForTransform
     {
         [ReadOnly]
@@ -220,7 +222,7 @@ public class EnemyManager : MonoBehaviour
             movePositions[index] = (Vector2)transform.position + (Vector2.Distance(transform.position, targetPositions[index]) > 2f ? (Vector2)(transform.rotation * Vector2.right * (deltaTime * 2)) : Vector2.zero);
         }
     }
-
+    [BurstCompile]
     private struct FindTargetsJob : IJobParallelForTransform
     {
         [ReadOnly]

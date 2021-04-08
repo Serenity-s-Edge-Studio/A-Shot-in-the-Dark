@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -70,7 +71,7 @@ public class LightManager : MonoBehaviour
         }
         decayLightsHandle = new DecayJob { lightDrops = lightDropStructs, deltaTime = Time.deltaTime }.Schedule(lightDropStructs.Length, 1);
     }
-
+    [BurstCompile]
     private struct DecayJob : IJobParallelFor
     {
         public NativeArray<LightDropStruct> lightDrops;
@@ -151,7 +152,7 @@ public class LightManager : MonoBehaviour
         lightRadii.Dispose();
         currentSpawnPositions.Dispose();
     }
-
+    [BurstCompile]
     private struct FindSpawnPositionsJob : IJob
     {
         [ReadOnly]

@@ -56,9 +56,6 @@ public class PoissonSpawner : MonoBehaviour
                 Gizmos.DrawSphere(position, displayRadius);
             }
         }
-    }
-    private void OnDrawGizmos()
-    {
         if (collider != null)
         {
             Bounds bounds = collider.bounds;

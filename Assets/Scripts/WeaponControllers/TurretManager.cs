@@ -57,6 +57,7 @@ public class TurretManager : MonoBehaviour
         {
             float2[] targets = GridManager.instance.GetGridObjectsInRadius<Enemy>(_Turrets[i].transform.position, 10f)
                 .Select(enemy => new float2(enemy.transform.position.x, enemy.transform.position.y)).ToArray();
+            targets = targets.Length > 0 ? targets : new float2[]{ (Vector2)(_Turrets[i].transform.up * 15f) };
             //Save job struct to access result later.
             FindTargetJobs[i] = new FindClosestEnemyJob
             {

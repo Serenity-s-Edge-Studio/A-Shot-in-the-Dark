@@ -473,7 +473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 202, y: -57.19995}
+  m_AnchoredPosition: {x: 202, y: -57.25}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &214221870
@@ -689,7 +689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c508cc5e07aa043a9fe3a640cfd6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size: {x: 260, y: 212}
+  Size: {x: 260, y: 220}
   cellSize: 10
   gridObjects: []
 --- !u!4 &344874130
@@ -2555,7 +2555,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -99.98096, y: 100.670364}
+  m_AnchoredPosition: {x: -100, y: 100.75}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1184875918
@@ -3406,8 +3406,8 @@ RectTransform:
   - {fileID: 904326222}
   - {fileID: 1213583242}
   - {fileID: 1266565106}
-  - {fileID: 1610915921}
   - {fileID: 1889738592}
+  - {fileID: 1610915921}
   - {fileID: 1146598073}
   m_Father: {fileID: 0}
   m_RootOrder: 11
@@ -4777,7 +4777,7 @@ RectTransform:
   - {fileID: 355047344}
   - {fileID: 759261117}
   m_Father: {fileID: 1460398482}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5242,6 +5242,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4510968772110986069, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 336
+      objectReference: {fileID: 0}
+    - target: {fileID: 4510968772110986069, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125
+      objectReference: {fileID: 0}
     - target: {fileID: 4510968772195826446, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -5268,7 +5276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4510968772312090702, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 357.26886
+      value: 357.25
       objectReference: {fileID: 0}
     - target: {fileID: 4510968772312090702, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5380,7 +5388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4510968773053681618, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.064453125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4510968773053681618, guid: 8be12bbb3a3733a4a8f23a94feb11a13, type: 3}
       propertyPath: m_AnchoredPosition.y

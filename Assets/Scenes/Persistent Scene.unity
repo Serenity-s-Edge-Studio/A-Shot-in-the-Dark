@@ -791,6 +791,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &793202675 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2228551248746992643, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
+  m_PrefabInstance: {fileID: 940829674}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &798620536
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +830,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 88.06348, y: -119}
+  m_AnchoredPosition: {x: 88, y: -119}
   m_SizeDelta: {x: 176.12741, y: 35.390007}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &798620538
@@ -1237,10 +1242,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1301692676}
     m_Modifications:
-    - target: {fileID: 2228551248992583385, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 1595652233, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1089917222}
     - target: {fileID: 2228551249294236086, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
       propertyPath: m_Name
       value: HighScore
@@ -1334,14 +1339,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1089917222}
@@ -1349,34 +1346,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1089917218}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetScore
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: LoadScene
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ScoreManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551249418855091, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
+    - target: {fileID: 2228551249512855156, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1089917222}
     - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1385,36 +1358,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1089917218}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetScore
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: LoadScene
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ScoreManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2228551250002853230, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
 --- !u!224 &940829675 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2228551249294236087, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
-  m_PrefabInstance: {fileID: 940829674}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &940829676 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2228551248992583385, guid: 5cc84cd7fa5d5e54caef55ddf4295faa, type: 3}
   m_PrefabInstance: {fileID: 940829674}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &940829677 stripped
@@ -1652,7 +1600,7 @@ MonoBehaviour:
   ScoreText: {fileID: 798620538}
   inputField: {fileID: 940829678}
   ScoreScrollView: {fileID: 940829677}
-  ScoreContainer: {fileID: 940829676}
+  ScoreContainer: {fileID: 793202675}
   prefab: {fileID: 158749681956330930, guid: 53458be28038d7c449f0d77e2049f780, type: 3}
   ScoreWindow: {fileID: 940829681}
   OnDifficultyIncrease:

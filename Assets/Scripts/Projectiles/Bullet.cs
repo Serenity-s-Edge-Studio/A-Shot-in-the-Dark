@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
         {
             enemy.Damage(damage);
             Destroy(transform.parent.gameObject, 0.2f);
-            ScoreManager.instance.scoreHit();
+            DifficultyAdjuster.instance.scoreHit();
             gameObject.SetActive(false);
         }
     }

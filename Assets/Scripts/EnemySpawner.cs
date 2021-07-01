@@ -12,8 +12,8 @@ public class EnemySpawner : PoissonSpawner
     {
         base.Start();
         originalSpawnRate = spawnRate;
-        if (ScoreManager.instance != null)
-            ScoreManager.instance.UpdateSpawnRate += factor => spawnRate = originalSpawnRate * factor;
+        if (DifficultyAdjuster.instance != null)
+            DifficultyAdjuster.instance.UpdateSpawnRate += factor => spawnRate = originalSpawnRate * factor;
     }
     private void Update()
     {

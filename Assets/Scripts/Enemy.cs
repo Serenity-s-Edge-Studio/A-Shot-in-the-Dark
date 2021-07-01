@@ -31,8 +31,8 @@ public class Enemy : GridObject, IIgnitable, IPooledObject
         health -= amount;
         if (health < .01f)
         {
-            if (ScoreManager.instance)
-                ScoreManager.instance.scoreKill();
+            if (DifficultyAdjuster.instance)
+                DifficultyAdjuster.instance.scoreKill();
             EnemyManager.instance.DisableEnemy(this);
         }
         Destroy(Instantiate(deathParticles, transform.position, Quaternion.identity), 5);

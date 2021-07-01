@@ -2,56 +2,44 @@
 using TMPro;
 using UnityEngine;
 
-public class ScoreManager : MonoBehaviour
+public class DifficultyAdjuster : MonoBehaviour
 {
     [SerializeField]
     private int pointsForHit;
     [SerializeField]
     private int pointsForKill;
-    [SerializeField]
-    private TextMeshProUGUI ScoreText;
-    [SerializeField]
-    private TextMeshProUGUI DeathScoreText;
-    private int score;
-    public static ScoreManager instance;
+    public static DifficultyAdjuster instance;
     public event Action<float> UpdateSpawnRate;
 
     private void Awake()
     {
         instance = this;
     }
+    private void Start()
+    {
+        ScoreManager.instance.OnDifficultyIncrease.AddListener(adjustDifficulty);
+    }
 
     public void scoreHit()
     {
-        score += pointsForHit;
-        updateUI();
-        adjustDifficulty();
+        ScoreManager.instance.AddScore(pointsForHit);
     }
 
     public void scoreKill()
     {
-        score += pointsForKill;
-        updateUI();
-        adjustDifficulty();
+        ScoreManager.instance.AddScore(pointsForKill);
     }
 
-    private void adjustDifficulty()
+    private void adjustDifficulty(int difficultyLevel)
     {
-        int difficultyLevel = score / 500;
         UpdateSpawnRate(1f / (difficultyLevel + 1));
         float zombieAmountMulti = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieIncreaseMulti, difficultyLevel);
         float zombieHealthMulti = Mathf.Pow(GameManager.instance.SelectedDifficulty.ZombieHealthIncrease, difficultyLevel);
         Enemy.HealthMulti = zombieHealthMulti;
         EnemyManager.instance.MaxEnemies = Mathf.Min(Mathf.RoundToInt(EnemyManager.instance.orginalMaxZombies * zombieAmountMulti), GameManager.instance.SelectedDifficulty.MaxZombies);
     }
-
-    private void updateUI()
+    public void GiveUp()
     {
-        ScoreText.text = $"Score: {score}";
-        DeathScoreText.text = $"Score: {score}";
-    }
-    public void LoadScene(int scene)
-    {
-        GameManager.instance.LoadScene(scene);
+        ScoreManager.instance.ScoreWindow.SetActive(true);
     }
 }

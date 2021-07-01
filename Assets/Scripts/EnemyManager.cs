@@ -290,25 +290,35 @@ public class EnemyManager : MonoBehaviour
     }
     public Enemy GetNextEnemyInPool()
     {
-        Enemy spawnedEnemy;
-        if (activeZombies < MaxEnemies)
-        {
-            index = 0;
-            do
-            {
-                spawnedEnemy = EnemyPool.Dequeue();
-                EnemyPool.Enqueue(spawnedEnemy);
-                index++;
-            } while (spawnedEnemy.isActiveAndEnabled && index < EnemyPool.Count);
-            activeZombies++;
-        }
-        else
+        Enemy spawnedEnemy = null;
+        bool reuse = activeZombies >= MaxEnemies;
+        int index = 0;
+        while (spawnedEnemy == null)
         {
             spawnedEnemy = EnemyPool.Dequeue();
+            if (spawnedEnemy == null)
+                throw new InvalidOperationException("A pooled object has been destroyed, This is not allowed!");
             EnemyPool.Enqueue(spawnedEnemy);
+            index++;
+            if (reuse)
+            {
+                if (spawnedEnemy.isActiveAndEnabled) {
+                    spawnedEnemy.OnObjectSpawn();
+                    return spawnedEnemy;
+                }
+                else
+                {
+                    spawnedEnemy = null;
+                }
+            }
+            if (index >= EnemyPool.Count)
+                break;
         }
-        spawnedEnemy.OnObjectSpawn();
-        EnableEnemy(spawnedEnemy);
+        if (spawnedEnemy != null)
+        {
+            spawnedEnemy.OnObjectSpawn();
+            EnableEnemy(spawnedEnemy);
+        }
         return spawnedEnemy;
     }
     public void DisableEnemy(Enemy enemy)

@@ -58,6 +58,7 @@ namespace Assets.Scripts.Utility {
                 jobs[i] = mapPos.Schedule();
             }
             JobHandle.CompleteAll(jobs);
+            jobs.Dispose();
             foreach (GridObject gridObject in gridObjects)
             {
                 Vector2Int gridPos = mapPositionJobs[gridObject].Result[0];

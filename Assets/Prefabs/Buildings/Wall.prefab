@@ -225,6 +225,7 @@ MonoBehaviour:
     Amount: 15
   _MaxHealth: 100
   _BuildAreaCollider: {fileID: 1195435025941049855}
+  _SpawnBlock: {fileID: 2568658755579584565}
   currentHealth: 0
   DestructionEffect: {fileID: 6822054186999540450, guid: f86e0bed2bdb21d47bc2c229102fdd91, type: 3}
   isBuilt: 0

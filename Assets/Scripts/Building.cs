@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Pathfinding;
 
 public class Building : Entity
 {
@@ -11,6 +12,8 @@ public class Building : Entity
     private int _MaxHealth;
     [SerializeField]
     private Collider2D _BuildAreaCollider;
+    [SerializeField]
+    private Collider2D _SpawnBlock;
     [SerializeField]
     private int currentHealth;
     [SerializeField]
@@ -32,6 +35,12 @@ public class Building : Entity
         _BuildAreaCollider.isTrigger = false;
         OnDeath.AddListener(() => 
             Instantiate(DestructionEffect, transform.position, transform.rotation * Quaternion.AngleAxis(-90f, Vector3.right)));
+        if (_SpawnBlock)
+        {
+            Bounds bounds = _SpawnBlock.bounds;
+            bounds.Expand(Vector3.forward * 1000);
+            AstarPath.active.UpdateGraphs(new GraphUpdateObject(bounds));
+        }
         BuildingManager.instance.Add(this);
         addToGrid();
     }

@@ -1,20 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
+using Pathfinding;
 
 namespace Assets.Scripts.AI
 {
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(AIPath))]
     public class Soldier : RTSObject
     {
-        private NavMeshAgent agent;
+        private Seeker agent;
         // Use this for initialization
         protected override void Start()
         {
             base.Start();
-            agent = GetComponent<NavMeshAgent>();
-            agent.updateUpAxis = true;
-            agent.updateRotation = true;
+            agent = GetComponent<Seeker>();
         }
     }
 }

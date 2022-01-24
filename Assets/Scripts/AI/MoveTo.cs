@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
+using Pathfinding;
 
 namespace Assets.Scripts.AI
 {
@@ -13,8 +13,11 @@ namespace Assets.Scripts.AI
         }
         public override void Continue(RTSObject caller)
         {
-            if (caller.TryGetComponent(out NavMeshAgent agent))
-                isComplete = agent.SetDestination(Target);
+            if (caller.TryGetComponent(out AIPath agent))
+            {
+                agent.destination = Target;
+                isComplete = true;
+            }
             else
                 throw new MissingComponentException("Cannot set the target of a non-agent!");
         }

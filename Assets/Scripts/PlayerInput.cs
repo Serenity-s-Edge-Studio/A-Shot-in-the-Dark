@@ -317,6 +317,94 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Tools"",
+            ""id"": ""ec798732-b93f-429a-a637-ad15d60cd4ab"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleRTSMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""2218b5c8-fe7d-4891-9c36-7e8ef8a83174"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""cab782b2-d3bd-48fc-9318-760053d72917"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrimaryActionHeld"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d62d5e7-ec40-4418-9554-fd55384643ca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7a6f5e2-17ea-48d5-aa44-10cacba807d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ecb5927b-1b3d-4ef9-8da2-75cb93ac1902"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleRTSMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""733090f1-7db4-4273-b3dd-6a42824f0d42"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25f06f4a-29ef-42c8-916a-ea0d297757fc"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7fd1ec6a-317d-4063-aa0d-39d4a5c857db"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryActionHeld"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -334,6 +422,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_BuildTool_ToggleBuildTool = m_BuildTool.FindAction("ToggleBuildTool", throwIfNotFound: true);
         m_BuildTool_PlaceBuilding = m_BuildTool.FindAction("PlaceBuilding", throwIfNotFound: true);
         m_BuildTool_RotateBuilding = m_BuildTool.FindAction("RotateBuilding", throwIfNotFound: true);
+        // Tools
+        m_Tools = asset.FindActionMap("Tools", throwIfNotFound: true);
+        m_Tools_ToggleRTSMode = m_Tools.FindAction("ToggleRTSMode", throwIfNotFound: true);
+        m_Tools_PrimaryAction = m_Tools.FindAction("PrimaryAction", throwIfNotFound: true);
+        m_Tools_PrimaryActionHeld = m_Tools.FindAction("PrimaryActionHeld", throwIfNotFound: true);
+        m_Tools_SecondaryAction = m_Tools.FindAction("SecondaryAction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -511,6 +605,63 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public BuildToolActions @BuildTool => new BuildToolActions(this);
+
+    // Tools
+    private readonly InputActionMap m_Tools;
+    private IToolsActions m_ToolsActionsCallbackInterface;
+    private readonly InputAction m_Tools_ToggleRTSMode;
+    private readonly InputAction m_Tools_PrimaryAction;
+    private readonly InputAction m_Tools_PrimaryActionHeld;
+    private readonly InputAction m_Tools_SecondaryAction;
+    public struct ToolsActions
+    {
+        private @PlayerInput m_Wrapper;
+        public ToolsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleRTSMode => m_Wrapper.m_Tools_ToggleRTSMode;
+        public InputAction @PrimaryAction => m_Wrapper.m_Tools_PrimaryAction;
+        public InputAction @PrimaryActionHeld => m_Wrapper.m_Tools_PrimaryActionHeld;
+        public InputAction @SecondaryAction => m_Wrapper.m_Tools_SecondaryAction;
+        public InputActionMap Get() { return m_Wrapper.m_Tools; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ToolsActions set) { return set.Get(); }
+        public void SetCallbacks(IToolsActions instance)
+        {
+            if (m_Wrapper.m_ToolsActionsCallbackInterface != null)
+            {
+                @ToggleRTSMode.started -= m_Wrapper.m_ToolsActionsCallbackInterface.OnToggleRTSMode;
+                @ToggleRTSMode.performed -= m_Wrapper.m_ToolsActionsCallbackInterface.OnToggleRTSMode;
+                @ToggleRTSMode.canceled -= m_Wrapper.m_ToolsActionsCallbackInterface.OnToggleRTSMode;
+                @PrimaryAction.started -= m_Wrapper.m_ToolsActionsCallbackInterface.OnPrimaryAction;
+                @PrimaryAction.performed -= m_Wrapper.m_ToolsActionsCallbackInterface.OnPrimaryAction;
+                @PrimaryAction.canceled -= m_Wrapper.m_ToolsActionsCallbackInterface.OnPrimaryAction;
+                @PrimaryActionHeld.started -= m_Wrapper.m_ToolsActionsCallbackInterface.OnPrimaryActionHeld;
+                @PrimaryActionHeld.performed -= m_Wrapper.m_ToolsActionsCallbackInterface.OnPrimaryActionHeld;
+                @PrimaryActionHeld.canceled -= m_Wrapper.m_ToolsActionsCallbackInterface.OnPrimaryActionHeld;
+                @SecondaryAction.started -= m_Wrapper.m_ToolsActionsCallbackInterface.OnSecondaryAction;
+                @SecondaryAction.performed -= m_Wrapper.m_ToolsActionsCallbackInterface.OnSecondaryAction;
+                @SecondaryAction.canceled -= m_Wrapper.m_ToolsActionsCallbackInterface.OnSecondaryAction;
+            }
+            m_Wrapper.m_ToolsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleRTSMode.started += instance.OnToggleRTSMode;
+                @ToggleRTSMode.performed += instance.OnToggleRTSMode;
+                @ToggleRTSMode.canceled += instance.OnToggleRTSMode;
+                @PrimaryAction.started += instance.OnPrimaryAction;
+                @PrimaryAction.performed += instance.OnPrimaryAction;
+                @PrimaryAction.canceled += instance.OnPrimaryAction;
+                @PrimaryActionHeld.started += instance.OnPrimaryActionHeld;
+                @PrimaryActionHeld.performed += instance.OnPrimaryActionHeld;
+                @PrimaryActionHeld.canceled += instance.OnPrimaryActionHeld;
+                @SecondaryAction.started += instance.OnSecondaryAction;
+                @SecondaryAction.performed += instance.OnSecondaryAction;
+                @SecondaryAction.canceled += instance.OnSecondaryAction;
+            }
+        }
+    }
+    public ToolsActions @Tools => new ToolsActions(this);
     public interface IPlayerActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -525,5 +676,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnToggleBuildTool(InputAction.CallbackContext context);
         void OnPlaceBuilding(InputAction.CallbackContext context);
         void OnRotateBuilding(InputAction.CallbackContext context);
+    }
+    public interface IToolsActions
+    {
+        void OnToggleRTSMode(InputAction.CallbackContext context);
+        void OnPrimaryAction(InputAction.CallbackContext context);
+        void OnPrimaryActionHeld(InputAction.CallbackContext context);
+        void OnSecondaryAction(InputAction.CallbackContext context);
     }
 }

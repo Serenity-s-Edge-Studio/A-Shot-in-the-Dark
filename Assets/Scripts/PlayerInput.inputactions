@@ -11,7 +11,8 @@
                     "id": "9049de6a-b93a-4621-a6bd-1aed376b9b39",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Shoot",
@@ -19,7 +20,8 @@
                     "id": "167666ee-f23e-4c3a-95cb-b3356e12c7e1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)"
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Mouse position",
@@ -27,7 +29,8 @@
                     "id": "c0797d7f-6008-4575-84a4-196977166308",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Drop Weapon",
@@ -35,7 +38,8 @@
                     "id": "c1436ce9-4657-4aaf-9896-dc2614136252",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Reload",
@@ -43,7 +47,8 @@
                     "id": "aff92b58-da60-4c8f-ae04-adb7d48dfe68",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Open inventory",
@@ -51,7 +56,8 @@
                     "id": "a5e828bd-399e-470c-b535-63e1b1aea39c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -232,7 +238,8 @@
                     "id": "2328135f-6cf2-4ef2-b55c-a7385cac3bcf",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "PlaceBuilding",
@@ -240,7 +247,8 @@
                     "id": "2671aedd-d67a-48b0-b3f9-05cc5a33bcb0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "RotateBuilding",
@@ -248,7 +256,8 @@
                     "id": "fe75b75d-66f3-46fd-b7f8-7a0e3d79d0c5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)"
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -282,6 +291,94 @@
                     "processors": "",
                     "groups": "",
                     "action": "RotateBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Tools",
+            "id": "ec798732-b93f-429a-a637-ad15d60cd4ab",
+            "actions": [
+                {
+                    "name": "ToggleRTSMode",
+                    "type": "Button",
+                    "id": "2218b5c8-fe7d-4891-9c36-7e8ef8a83174",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PrimaryAction",
+                    "type": "Button",
+                    "id": "cab782b2-d3bd-48fc-9318-760053d72917",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PrimaryActionHeld",
+                    "type": "Button",
+                    "id": "1d62d5e7-ec40-4418-9554-fd55384643ca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondaryAction",
+                    "type": "Button",
+                    "id": "e7a6f5e2-17ea-48d5-aa44-10cacba807d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ecb5927b-1b3d-4ef9-8da2-75cb93ac1902",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleRTSMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "733090f1-7db4-4273-b3dd-6a42824f0d42",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrimaryAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "25f06f4a-29ef-42c8-916a-ea0d297757fc",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SecondaryAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7fd1ec6a-317d-4063-aa0d-39d4a5c857db",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrimaryActionHeld",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

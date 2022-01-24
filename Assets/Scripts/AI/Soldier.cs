@@ -13,7 +13,8 @@ namespace Assets.Scripts.AI
         {
             base.Start();
             agent = GetComponent<NavMeshAgent>();
-            agent.updateUpAxis = false;
+            agent.updateUpAxis = true;
+            agent.updateRotation = true;
         }
     }
 }

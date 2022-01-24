@@ -94,6 +94,27 @@ namespace Assets.Scripts.Utility {
             }
             return result.ToArray();
         }
+        public T[] GetGridObjectsInBounds<T>(Bounds bounds) where T : GridObject
+        {
+            Vector2Int min = WorldPosToGridPos(bounds.min);
+            Vector2Int max = WorldPosToGridPos(bounds.max);
+            List<T> result = new List<T>();
+            for (int x = min.x; x < max.x + 1; x++)
+            {
+                for (int y = min.y; y < max.y + 1; y++)
+                {
+                    if (grid.TryGetValue(new Vector2Int(x, y), out List<GridObject> objectsInCell))
+                    {
+                        foreach (GridObject gridObject in objectsInCell)
+                        {
+                            if (gridObject is T desiredType && desiredType.isActiveAndEnabled)
+                                result.Add(desiredType);
+                        }
+                    }
+                }
+            }
+            return result.ToArray();
+        }
         public Vector2Int WorldPosToGridPos(Vector2 worldPos)
         {
             return WorldPosToGridPos(worldPos, transform.position, cellSize);

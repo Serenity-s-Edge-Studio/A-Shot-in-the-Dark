@@ -288,9 +288,10 @@ public class EnemyManager : MonoBehaviour
         }
         return result;
     }
-    public Enemy GetNextEnemyInPool()
+#nullable enable
+    public Enemy? GetNextEnemyInPool()
     {
-        Enemy spawnedEnemy = null;
+        Enemy? spawnedEnemy = null;
         bool reuse = activeZombies >= MaxEnemies;
         int index = 0;
         while (spawnedEnemy == null)
@@ -302,7 +303,7 @@ public class EnemyManager : MonoBehaviour
             index++;
             if (reuse)
             {
-                if (spawnedEnemy.isActiveAndEnabled) {
+                if (spawnedEnemy.isActiveAndEnabled && !Player.instance.IsPositionInFOV(spawnedEnemy.transform.position)) {
                     spawnedEnemy.OnObjectSpawn();
                     return spawnedEnemy;
                 }

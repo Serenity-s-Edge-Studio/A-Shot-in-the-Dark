@@ -24,13 +24,14 @@ public class EnemySpawner : PoissonSpawner
             _spawnRate = spawnRate;
         }
     }
-
+#nullable enable
     private void SpawnEnemies()
     {
         if (GetNextPosition(out Vector2 position))
         {
-            Enemy SpawnedZombie = EnemyManager.instance.GetNextEnemyInPool();
-            SpawnedZombie.transform.position = position;
+            Enemy? SpawnedZombie = EnemyManager.instance.GetNextEnemyInPool();
+            if (SpawnedZombie)
+                SpawnedZombie.transform.position = position;
         }
         else
         {

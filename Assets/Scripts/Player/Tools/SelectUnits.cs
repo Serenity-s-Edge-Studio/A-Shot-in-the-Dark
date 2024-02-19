@@ -18,8 +18,10 @@ namespace Assets.Scripts.Player.Tools
         private Vector2 currentPos;
         [SerializeField]
         private GameObject graphic;
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+            selectedUnits = new List<RTSObject>();
             toolsManager = GetComponent<ToolsManager>();
             isSelecting = false;
         }

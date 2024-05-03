@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public class LightDrop : MonoBehaviour
 {
     public new Rigidbody2D rigidbody;
     [SerializeField]
-    public new Light2D light;
+    public new UnityEngine.Rendering.Universal.Light2D light;
     [SerializeField]
     private bool Decay;
     [SerializeField]
@@ -26,7 +26,7 @@ public class LightDrop : MonoBehaviour
         remainingTime = decayTime;
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<CircleCollider2D>();
-        light = GetComponent<Light2D>();
+        light = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         startingColliderRadius = collider.radius;
         startingLightRadius = light.pointLightOuterRadius;
         LightManager.instance.add(this);

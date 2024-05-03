@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 [ExecuteInEditMode]
 public class DayNightCycle : MonoBehaviour
@@ -14,7 +14,7 @@ public class DayNightCycle : MonoBehaviour
     public float _TimeValue;
     public float _TimeProgress;
     [SerializeField]
-    private Light2D _GlobalLight;
+    private UnityEngine.Rendering.Universal.Light2D _GlobalLight;
     [SerializeField, Range(0, .5f)]
     private float _MinIntensity;
     [SerializeField, Range(.5f, 1f)]

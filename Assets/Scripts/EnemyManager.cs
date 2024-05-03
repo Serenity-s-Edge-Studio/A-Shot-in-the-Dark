@@ -3,7 +3,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 using UnityEngine.Jobs;
 using System.Linq;
 using System;
@@ -21,7 +21,7 @@ public class EnemyManager : MonoBehaviour
     public int orginalMaxZombies;
 
     [SerializeField]
-    private Light2D center;
+    private UnityEngine.Rendering.Universal.Light2D center;
     [SerializeField]
     private int spawnRadius;
     [SerializeField]
@@ -99,7 +99,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
     #region AI jobs
-    private NativeMultiHashMap<int, Vector2> relativePositions;
+    private NativeParallelMultiHashMap<int, Vector2> relativePositions;
     private TransformAccessArray transformAccessArray;
     private NativeArray<Vector2> targets, previousTargetNativeArray, movePositionsNativeArray;
     private NativeArray<float> timeTillNextNativeArray;
@@ -110,7 +110,7 @@ public class EnemyManager : MonoBehaviour
         Transform[] transforms = new Transform[activeEnemies.Count];
         Vector2[] previousTargets = new Vector2[activeEnemies.Count];
         float[] timeTillNext = new float[activeEnemies.Count];
-        relativePositions = new NativeMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
+        relativePositions = new NativeParallelMultiHashMap<int, Vector2>(activeEnemies.Count, Allocator.TempJob);
         //Iterate through all enemies storing the necessary info.
         for (int i = 0; i < activeEnemies.Count; i++)
         {
@@ -226,7 +226,7 @@ public class EnemyManager : MonoBehaviour
     private struct FindTargetsJob : IJobParallelForTransform
     {
         [ReadOnly]
-        public NativeMultiHashMap<int, Vector2> relativeTargets;
+        public NativeParallelMultiHashMap<int, Vector2> relativeTargets;
         [ReadOnly]
         public NativeArray<Vector2> previousTargets;
         [WriteOnly]
@@ -251,7 +251,7 @@ public class EnemyManager : MonoBehaviour
             }
             Vector2 closest = Vector2.zero;
             float lastClosest = float.MaxValue;
-            if (relativeTargets.TryGetFirstValue(index, out Vector2 target, out NativeMultiHashMapIterator<int> it))
+            if (relativeTargets.TryGetFirstValue(index, out Vector2 target, out NativeParallelMultiHashMapIterator<int> it))
             {
                 do
                 {

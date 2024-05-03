@@ -41,7 +41,7 @@ public class Building : Entity
         List<Collider2D> colliders = new List<Collider2D>();
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(LayerMask.GetMask("Building"));
-        return _BuildAreaCollider.OverlapCollider(filter, colliders) == 0;
+        return _BuildAreaCollider.Overlap(filter, colliders) == 0;
     }
     public ItemStack[] GetRequiredItems()
     {

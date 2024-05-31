@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(int index, System.Action<AsyncOperation>[] onComplete, bool setActive)
     {
+        Debug.Log($"Loading scene {index}");
         LoadingScreen.SetActive(true);
         persistentCamera.gameObject.SetActive(true);
         if (CurrentSceneIndex != 0)

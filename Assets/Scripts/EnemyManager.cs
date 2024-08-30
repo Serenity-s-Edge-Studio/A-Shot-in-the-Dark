@@ -33,9 +33,6 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private float _Visibility = 10f;
 
-    private float _spawnRate;
-    private int index = 0;
-
     private Queue<Enemy> EnemyPool;
     private int activeZombies = 0;
     private List<Enemy> enemiesToRemove;

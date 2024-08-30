@@ -29,10 +29,6 @@ public class ComicBookManager : MonoBehaviour
     [SerializeField]
     private Button SkipButton;
 
-    private ComicBookSO currentComicBook;
-    private int panelIndex = 0;
-    private int frameIndex = 0;
-
     private bool ContinueButtonPressed;
     private void Start()
     {

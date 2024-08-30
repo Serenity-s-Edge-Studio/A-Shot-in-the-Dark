@@ -30,7 +30,7 @@ public class EnemySpawner : PoissonSpawner
         if (GetNextPosition(out Vector2 position))
         {
             Enemy? SpawnedZombie = EnemyManager.instance.GetNextEnemyInPool();
-            if (SpawnedZombie)
+            if (SpawnedZombie != null)
                 SpawnedZombie.transform.position = position;
         }
         else
